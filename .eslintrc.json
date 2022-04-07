@@ -10,8 +10,8 @@
     "eslint:recommended",
     "next",
     "next/core-web-vitals",
-    "airbnb-base",
-    "prettier"
+    "prettier",
+    "airbnb-base"
   ],
   // parser는 코드를 ESLint에 맞게 파싱하기 위해 사용하는 것으로 값을 주지 않으면 default 'Espree'
   // parseOptions는 자바스크립트 지원 옵션을 설정하기 위한 부분, default EC5 지원
