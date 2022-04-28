@@ -7,11 +7,11 @@ import {
   PUT_GOOGLECALENDAR,
   PUT_AUTHENTICATIONS,
 } from './googleCalendar';
-import { getGoogleCalendarCalendarList, putAuthentications } from '../../../api/connect/authentication';
-import { postGoogleCalendar } from '../../../api/connect/webAdmin/googleCalendar';
+import { getAuthenticationGoogleCalendarCalendarList, deleteAuthentications } from '../../../api/connect/Authentication/authentication';
+import { postTeamsGoogleCalendar } from '../../../api/connect/WebAdmin/GoogleCalendar/googleCalendar';
 
 export function* googleCalendarCalendarList() {
-  const result = yield call(getGoogleCalendarCalendarList);
+  const result = yield call(getAuthenticationGoogleCalendarCalendarList);
   yield put(setGooglecalendarCalendarlist(result.data));
 }
 export function* saveGoogleCalendar() {
@@ -38,11 +38,11 @@ export function* saveGoogleCalendar() {
     defaultBotName: 'Google 캘린더',
     lang: 'ko',
   };
-  const result = yield call(postGoogleCalendar, { teamId: 279, data: params });
+  const result = yield call(postTeamsGoogleCalendar, { teamId: 279, data: params });
   // yield put(putGooglecalendar(result.data));
 }
 export function* saveAuthentications(data) {
-  const result = yield call(putAuthentications, { teamId: 279, authenticationId: data.data.authenticationId });
+  const result = yield call(deleteAuthentications, { teamId: 279, authenticationId: data.data.authenticationId });
   if (result.status === 200) {
 
   }

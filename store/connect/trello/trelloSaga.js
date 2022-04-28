@@ -8,11 +8,11 @@ import {
   PUT_TRELLO,
   PUT_AUTHENTICATIONS,
 } from './trello';
-import { getTrelloBoards, putAuthentications } from '../../../api/connect/authentication';
-import { postTrello } from '../../../api/connect/webAdmin/trello';
+import { getAuthenticationTrelloBoardsList, deleteAuthentications } from '../../../api/connect/Authentication/authentication';
+import { postTeamsTrello } from '../../../api/connect/WebAdmin/Trello/trello';
 
 export function* trelloBoardsSaga() {
-  const result = yield call(getTrelloBoards);
+  const result = yield call(getAuthenticationTrelloBoardsList);
   if (result.status === 200) {
     yield put(setTrelloBoards(result.data));
   }
@@ -52,11 +52,11 @@ export function* saveTrello() {
     trelloBoardId: '6268eb6cfa80bf7f39def56d',
     trelloBoardName: 'first',
   };
-  yield call(postTrello, { teamId: 279, data: params });
+  yield call(postTeamsTrello, { teamId: 279, data: params });
   // yield put(putGooglecalendar(result.data));
 }
 export function* saveAuthentications(data) {
-  const result = yield call(putAuthentications, { teamId: 279, authenticationId: data.data.authenticationId });
+  const result = yield call(deleteAuthentications, { teamId: 279, authenticationId: data.data.authenticationId });
   if (result.status === 200) {
     yield put(setTrelloBoards({}));
   }

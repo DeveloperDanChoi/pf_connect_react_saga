@@ -8,11 +8,11 @@ import {
   PUT_GITHUB,
   PUT_AUTHENTICATIONS,
 } from './github';
-import { getGithubRepos, putAuthentications } from '../../../api/connect/authentication';
-import { postGithub } from '../../../api/connect/webAdmin/github';
+import { getAuthenticationGithubReposList, deleteAuthentications } from '../../../api/connect/Authentication/authentication';
+import { postGithub } from '../../../api/connect/WebAdmin/Github/github';
 
 export function* githubReposSaga() {
-  const result = yield call(getGithubRepos);
+  const result = yield call(getAuthenticationGithubReposList);
   if (result.status === 200) {
     yield put(setGithubRepos(result.data));
   }
@@ -35,7 +35,7 @@ export function* saveGithub() {
   // yield put(putGooglecalendar(result.data));
 }
 export function* saveAuthentications(data) {
-  const result = yield call(putAuthentications, { teamId: 279, authenticationId: data.data.authenticationId });
+  const result = yield call(deleteAuthentications, { teamId: 279, authenticationId: data.data.authenticationId });
   if (result.status === 200) {
     yield put(setGithubRepos({}));
   }

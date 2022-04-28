@@ -18,10 +18,10 @@ import { reqUser, setUser } from '../user/user';
 import {
   getConnect,
   getTeamsConnect,
-} from '../../api/connect/webAdmin';
+} from '../../api/connect/WebAdmin/webAdmin';
 import {
-  getAuthentication,
-} from '../../api/connect/authentication';
+  getAuthenticationList,
+} from '../../api/connect/Authentication/authentication';
 import {
   getAccountV2,
 } from '../../api/inner/account';
@@ -68,7 +68,7 @@ function* authorize(action) {
       if (result.status === 200) {
         yield put(setTeamsConnect(result.data));
       }
-      result = yield call(getAuthentication, teamId);
+      result = yield call(getAuthenticationList, teamId);
       yield put(setAuthentication(result.data));
       // result = yield call(getAccountV2);
       // console.log('result1 !!' , result)
