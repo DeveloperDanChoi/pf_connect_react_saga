@@ -1,7 +1,7 @@
 /* eslint-disable max-len,no-param-reassign,default-param-last */
 import produce from '../../lib/produce';
 
-export const GET_TEAMS_TOKEN = ''
+export const GET_TEAMS_TOKEN = 'connect/GET_TEAMS_TOKEN';
 export const GET_CONNECTS = 'connect/GET_CONNECTS';
 export const SET_CONNECTS = 'connect/SET_CONNECTS';
 export const SET_TEAMS_CONNECT = 'connect/SET_TEAMS_CONNECT';
@@ -9,6 +9,7 @@ export const SET_AUTHENTICATION = 'connect/SET_AUTHENTICATION';
 export const SET_CONNECTS_OPEN = 'connect/SET_CONNECTS_OPEN';
 
 export const getConnects = () => ({ type: GET_CONNECTS });
+export const getTeamsToken = () => ({ type: GET_TEAMS_TOKEN });
 export const setConnects = (data) => ({ type: SET_CONNECTS, data });
 export const setTeamsConnect = (data) => ({ type: SET_TEAMS_CONNECT, data });
 export const setAuthentication = (data) => ({ type: SET_AUTHENTICATION, data });
