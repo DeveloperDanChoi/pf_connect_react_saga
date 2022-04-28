@@ -1,6 +1,7 @@
 /* eslint-disable max-len,no-param-reassign,default-param-last */
 import produce from '../../lib/produce';
 
+export const GET_TEAMS_TOKEN = ''
 export const GET_CONNECTS = 'connect/GET_CONNECTS';
 export const SET_CONNECTS = 'connect/SET_CONNECTS';
 export const SET_TEAMS_CONNECT = 'connect/SET_TEAMS_CONNECT';

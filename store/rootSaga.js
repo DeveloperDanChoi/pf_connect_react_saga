@@ -5,6 +5,7 @@ import {
 import authorizeSaga from './authority/authoritySaga';
 import connectSaga from './connect/connectSaga';
 import trelloSaga from './connect/trello/trelloSaga';
+import jiraSaga from './connect/jira/jiraSaga';
 import githubSaga from './connect/github/githubSaga';
 import googleCalendarSaga from './connect/googleCalendar/googleCalendarSaga';
 import teamSaga from './team/teamSaga';
@@ -21,6 +22,7 @@ export default function* rootSaga() {
     fork(authorizeSaga),
     fork(connectSaga),
     fork(trelloSaga),
+    fork(jiraSaga),
     fork(githubSaga),
     fork(googleCalendarSaga),
     // fork(commonSaga),
