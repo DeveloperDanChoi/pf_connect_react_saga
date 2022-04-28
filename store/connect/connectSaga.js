@@ -1,10 +1,14 @@
 import {
   all, call, fork, put, select, takeLatest,
 } from 'redux-saga/effects';
-import { GET_TEAMS_TOKEN } from './connect';
+import { GET_TEAMS_TOKEN, setTeamsToken } from './connect';
+import { getTeamsToken } from '../../api/connect/WebAdmin/webAdmin';
 
-function* getTeamsTokenSaga() {
-  console.log(' >>>>> !! ');
+function* getTeamsTokenSaga(data) {
+  data.data.teamId = 279;
+  const result = yield call(getTeamsToken, data.data);
+  console.log(result);
+  yield put(setTeamsToken(result.data));
 }
 
 function* watchTeamsToken() {

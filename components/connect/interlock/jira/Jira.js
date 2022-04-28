@@ -3,10 +3,9 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import {
-  getTrelloBoards,
-  putTrello,
-  putAuthentications,
-} from '../../../../store/connect/trello/trello';
+  getTeamsToken,
+} from '../../../../store/connect/connect';
+import { postTeamsJira } from '../../../../store/connect/jira/jira';
 
 const Jira = () => {
   const dispatch = useDispatch();
@@ -30,13 +29,13 @@ const Jira = () => {
    * 연동하고자 하는 리스트
    */
   const getList = () => {
-    dispatch(getTrelloBoards());
+    dispatch(getTeamsToken({ connectType: 'jira' }));
   };
   /**
    * 연동 항목 추가하기
    */
   const addConnect = () => {
-    dispatch(putTrello());
+    dispatch(postTeamsJira());
   };
   /**
    * 인증된 계정 삭제
