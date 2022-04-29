@@ -22,6 +22,9 @@ export const initialState = {
   connects: [],
   teamsConnect: [],
   authentication: [],
+  teamsToken: {
+    webhookToken: '',
+  },
 };
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {

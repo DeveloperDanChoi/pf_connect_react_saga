@@ -1,5 +1,5 @@
 import {
-  all, call, fork, put, select, takeLatest,
+  all,
 } from 'redux-saga/effects';
 
 export default function* teamSaga() {

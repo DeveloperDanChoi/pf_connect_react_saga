@@ -6,6 +6,10 @@ import authorizeSaga from './authority/authoritySaga';
 import connectSaga from './connect/connectSaga';
 import trelloSaga from './connect/trello/trelloSaga';
 import jiraSaga from './connect/jira/jiraSaga';
+import bitbucketSaga from './connect/bitbucket/bitbucketSaga';
+import rssSaga from './connect/rss/rssSaga';
+import outgoingSaga from './connect/outgoing/outgoingSaga';
+import incomingSaga from './connect/incoming/incomingSaga';
 import githubSaga from './connect/github/githubSaga';
 import googleCalendarSaga from './connect/googleCalendar/googleCalendarSaga';
 import teamSaga from './team/teamSaga';
@@ -23,6 +27,10 @@ export default function* rootSaga() {
     fork(connectSaga),
     fork(trelloSaga),
     fork(jiraSaga),
+    fork(bitbucketSaga),
+    fork(rssSaga),
+    fork(outgoingSaga),
+    fork(incomingSaga),
     fork(githubSaga),
     fork(googleCalendarSaga),
     // fork(commonSaga),

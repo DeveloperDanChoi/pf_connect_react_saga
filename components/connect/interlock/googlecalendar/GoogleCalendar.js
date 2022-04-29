@@ -6,73 +6,22 @@ import {
   putGooglecalendar,
   putAuthentications,
 } from '../../../../store/connect/googleCalendar/googleCalendar';
+import { template1 } from '../../../../service/connect';
 
 const GoogleCalendar = () => {
   const dispatch = useDispatch();
   const { team, googleCalendar } = useSelector((state) => {
-    // console.log('GoogleCalendar state !!', state);
+    console.log('GoogleCalendar state !!', state);
     return state;
   });
 
-  /**
-   * @deprecated
-   */
-  const handleClick = () => {
-    // Router.push('/');
-  };
-  /**
-   * 계정 인증하기
-   */
-  const authConnect = () => {
-    console.log('create auth !!');
-    window.addEventListener('popupDone', () => {
-      console.log('popupDone !!!!!');
-    });
-    window.addEventListener('googleCalendar', () => {
-      console.log('googleCalendar !!!!!');
-    });
-    window.addEventListener('beforeunload', () => {
-      console.log('beforeunload !!!!!');
-    });
-    window.popupDone = () => {
-      console.warn('popupDone >>>>');
-    };
-    window.googleCalendar = () => {
-      console.warn('googleCalendar >>>>');
-    };
-    // TODO: popupDone callback ??
-    // const popup
-    window.open(
-      'https://www.jandi.io/connect/auth/googleCalendar?callbackEventName=popupDone',
-      'googleAuth',
-      'resizable=no, scrollbars=1, toolbar=no, menubar=no, status=no, directories=no, width=1024, height=768',
-    );
-  };
-  /**
-   * 연동하고자 하는 리스트
-   */
-  const getList = () => {
-    dispatch(getGooglecalendarCalendarlist());
-  };
-  /**
-   * 연동 항목 추가하기
-   */
-  const addConnect = () => {
-    dispatch(putGooglecalendar());
-  };
-  /**
-   * 인증된 계정 삭제
-   */
-  const deleteConnect = (e, data) => {
-    dispatch(putAuthentications(data, data));
-  };
-
   useEffect(() => {
-    getList();
+    template1.initialize({ dispatch, connectType: 'googleCalendar' });
+    template1.list(getGooglecalendarCalendarlist);
   }, []);
 
   return (<>
-    <div onClick={handleClick} style={{
+    <div style={{
       width: '100%',
     }}>
       {/* ********** 인증 영역 !! ************* */}
@@ -80,10 +29,11 @@ const GoogleCalendar = () => {
       <div>인증된 계정</div>
       <ul>
         <li>계정 추가하기</li>
-        { googleCalendar.calendarList && googleCalendar.calendarList.length === 0 && <button onClick={authConnect}>구글 캘린더 계정 인증하기</button> }
+        { googleCalendar.calendarList && googleCalendar.calendarList.length === 0 && <button onClick={template1.authorize}>구글 캘린더 계정 인증하기</button> }
         { googleCalendar.calendarList && googleCalendar.calendarList.map((data, i) => (
             <div key={i}><li>{data.authenticationName}</li><button onClick={(e) => {
-              deleteConnect(e, data);
+              // deleteConnect(e, data);
+              template1.disconnect(e, data, putAuthentications);
             }}>X</button></div>
         ))}
       </ul>
@@ -153,7 +103,9 @@ const GoogleCalendar = () => {
       <ul>
         <li>언어</li>
       </ul>
-      <button onClick={addConnect}>연동 항목 추가하기</button>
+      <button onClick={(e) => {
+        template1.connect(e, {}, putGooglecalendar);
+      }}>연동 항목 추가하기</button>
     </div>
   </>);
 };

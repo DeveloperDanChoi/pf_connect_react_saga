@@ -1,8 +1,8 @@
 import React from 'react';
 import wrapper from '../../store/configureStore';
-import GoogleCalendar from '../../components/connect/interlock/googlecalendar/GoogleCalendar';
+import Incoming from '../../components/connect/interlock/incoming/Incoming';
 
-const Page = () => <GoogleCalendar />;
+const Page = () => <Incoming />;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx) => {

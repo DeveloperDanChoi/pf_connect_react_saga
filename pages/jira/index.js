@@ -1,8 +1,8 @@
 import React from 'react';
 import wrapper from '../../store/configureStore';
-import Jira from '../../components/connect/interlock/jira';
+import Jira from '../../components/connect/interlock/jira/Jira';
 
-const JiraIndex = () => <Jira />;
+const Page = () => <Jira />;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx) => {
@@ -17,4 +17,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   },
 );
 
-export default JiraIndex;
+export default Page;

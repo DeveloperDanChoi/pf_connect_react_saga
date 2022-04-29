@@ -1,8 +1,8 @@
 import React from 'react';
 import wrapper from '../../store/configureStore';
-import Github from '../../components/connect/interlock/github';
+import Github from '../../components/connect/interlock/github/Github';
 
-const GithubIndex = () => <Github />;
+const Page = () => <Github />;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx) => {
@@ -17,4 +17,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   },
 );
 
-export default GithubIndex;
+export default Page;

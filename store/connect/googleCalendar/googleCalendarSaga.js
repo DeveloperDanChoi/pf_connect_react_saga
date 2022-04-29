@@ -42,6 +42,7 @@ export function* saveGoogleCalendar() {
   // yield put(putGooglecalendar(result.data));
 }
 export function* saveAuthentications(data) {
+  console.log(data);
   const result = yield call(deleteAuthentications, { teamId: 279, authenticationId: data.data.authenticationId });
   if (result.status === 200) {
 

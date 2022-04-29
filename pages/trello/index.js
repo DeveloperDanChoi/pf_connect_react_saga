@@ -1,8 +1,8 @@
 import React from 'react';
 import wrapper from '../../store/configureStore';
-import Trello from '../../components/connect/interlock/trello';
+import Trello from '../../components/connect/interlock/trello/Trello';
 
-const TrelloIndex = () => <Trello />;
+const Page = () => <Trello />;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx) => {
@@ -17,4 +17,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   },
 );
 
-export default TrelloIndex;
+export default Page;
