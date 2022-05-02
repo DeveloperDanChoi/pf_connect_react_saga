@@ -1,4 +1,4 @@
-/* eslint-disable comma-dangle,no-undef,max-len */
+/* eslint-disable comma-dangle,no-undef,max-len,no-restricted-syntax,no-restricted-globals */
 import {
   all, call, fork, put, select, takeLatest,
 } from 'redux-saga/effects';
@@ -14,13 +14,17 @@ import {
   setTeamsConnect,
   setAuthentication,
 } from '../connect/connect';
-import { reqUser, setUser } from '../user/user';
+import {
+  setGooglecalendarCalendarlist,
+} from '../connect/googleCalendar/googleCalendar';
+
 import {
   getConnect,
   getTeamsConnect,
 } from '../../api/connect/WebAdmin/webAdmin';
 import {
   getAuthenticationList,
+  getAuthenticationGoogleCalendarCalendarList,
 } from '../../api/connect/Authentication/authentication';
 import {
   getAccountV2,
@@ -46,7 +50,7 @@ function* authorize(action) {
       return;
     }
 
-    let result = yield call(
+    const result = yield call(
       getTeamV2,
       action.data === 'local' ? 'tosslab' : action.data,
     );
@@ -54,38 +58,48 @@ function* authorize(action) {
       const { teamId } = result.data;
       yield put(setTeamId(teamId));
 
-      result = yield call(getConnect);
-      if (result.status === 200) {
+      const apis = [
+        call(getConnect),
+        call(getTeamsConnect, teamId),
+        call(getAuthenticationList, teamId),
+        call(getStartAccountV2),
+      ];
+
+      if (history.state.url === '/googleCalendar') {
+        apis.push(call(getAuthenticationGoogleCalendarCalendarList));
+      } else if (history.state.url !== '/') {
+        console.log(history.state);
+      }
+
+      const results = yield all(apis);
+
+      if (results[0].status === 200) {
         yield put(setConnects(((data) => {
-          // eslint-disable-next-line no-restricted-syntax
           for (const item of data) {
             item.display = 'block';
           }
           return data;
-        })(result.data.connects)));
+        })(results[0].data.connects)));
       }
-      result = yield call(getTeamsConnect, teamId);
-      if (result.status === 200) {
-        yield put(setTeamsConnect(result.data));
+
+      if (results[1].status === 200) {
+        yield put(setTeamsConnect(results[1].data));
       }
-      result = yield call(getAuthenticationList, teamId);
-      yield put(setAuthentication(result.data));
-      // result = yield call(getAccountV2);
-      // console.log('result1 !!' , result)
-      // if (result.status === 200) {
-      //   yield put(setUser(result.data));
-      // }
-      result = yield call(getStartAccountV2);
-      console.log('result2 !!', result);
-      if (result.status === 200) {
-        // console.log( _.filter(result.data.memberships, (f) => f.teamId === teamId) )
-        yield put(setTeam(_.filter(result.data.memberships, (d) => d.teamId === teamId)[0]));
+
+      yield put(setAuthentication(results[2].data));
+
+      if (results[3].status === 200) {
+        yield put(setTeam(_.filter(results[3].data.memberships, (d) => d.teamId === teamId)[0]));
+      }
+
+      if (history.state.url === '/googleCalendar') {
+        yield put(setGooglecalendarCalendarlist(results[4].data));
       }
 
       isUnauthorized = false;
     }
-  } catch ({ response }) {
-    console.error(response);
+  } catch (e) {
+    console.error(e);
   } finally {
     if (isUnauthorized) {
       redirectToLoginAndList();

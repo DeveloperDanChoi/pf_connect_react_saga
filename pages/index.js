@@ -3,7 +3,7 @@ import React from 'react';
 // eslint-disable-next-line import/no-unresolved
 import wrapper from 'store/configureStore';
 
-const WebHome = () => <></>;
+const Page = () => <></>;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   // eslint-disable-next-line no-unused-vars
@@ -17,4 +17,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }),
 );
 
-export default WebHome;
+export default Page;

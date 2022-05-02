@@ -17,7 +17,7 @@ const GoogleCalendar = () => {
 
   useEffect(() => {
     template1.initialize({ dispatch, connectType: 'googleCalendar' });
-    template1.list(getGooglecalendarCalendarlist);
+    // template1.list(getGooglecalendarCalendarlist);
   }, []);
 
   return (<>
