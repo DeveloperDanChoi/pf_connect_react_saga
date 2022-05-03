@@ -1,23 +1,31 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import {
   getGooglecalendarCalendarlist,
-  putGooglecalendar,
-  putAuthentications,
+  postGooglecalendar,
+  putAuthentications, getGooglecalendarCalendar,
 } from '../../../../store/connect/googleCalendar/googleCalendar';
 import { template1 } from '../../../../service/connect';
 
 const GoogleCalendar = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { query: { id } } = router;
   const { team, googleCalendar } = useSelector((state) => {
-    console.log('GoogleCalendar state !!', state);
+    // console.log('GoogleCalendar state !!', state);
     return state;
   });
 
   useEffect(() => {
-    template1.initialize({ dispatch, connectType: 'googleCalendar' });
-    // template1.list(getGooglecalendarCalendarlist);
+    template1.initialize({ dispatch, connectType: 'googleCalendar', connectId: id });
+    template1.list(getGooglecalendarCalendarlist);
+    if (id) {
+      template1.load(getGooglecalendarCalendar, {
+        teamId: team.teamId, connectId: id,
+      });
+    }
   }, []);
 
   return (<>
@@ -104,7 +112,7 @@ const GoogleCalendar = () => {
         <li>언어</li>
       </ul>
       <button onClick={(e) => {
-        template1.connect(e, {}, putGooglecalendar);
+        template1.connect(e, {}, postGooglecalendar);
       }}>연동 항목 추가하기</button>
     </div>
   </>);

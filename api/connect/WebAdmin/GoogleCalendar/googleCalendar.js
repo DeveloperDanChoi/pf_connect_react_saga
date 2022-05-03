@@ -6,7 +6,7 @@ import { api } from '../../../_call';
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const deleteTeamsGoogleCalendar = (data) => api.delete(`/connect-api/teams/${data.teamId}/googleCalendar`, data.data, { version: 1 });
+export const deleteTeamsGoogleCalendar = (data) => api.delete(`/connect-api/teams/${data.teamId}/googleCalendar?connectId=${data.connectId}`, {}, { version: 1 });
 
 /**
  * 구글 캘린더 Connect 연동 정보를 반환하는 API

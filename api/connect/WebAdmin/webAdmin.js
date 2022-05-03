@@ -1,4 +1,119 @@
 import { api } from '../../_call';
+import {
+  deleteTeamsBitbucket,
+  getTeamsBitbucket,
+  postTeamsBitbucket,
+  putTeamsBitbucketSetting,
+  putTeamsBitbucketStatus,
+} from './Bitbucket/bitbucket';
+import {
+  deleteTeamsGithub,
+  getTeamsGithub,
+  postGithub,
+  putTeamsGithubSetting,
+  putTeamsGithubStatus,
+} from './Github/github';
+import {
+  deleteTeamsGoogleCalendar,
+  getTeamsGoogleCalendar,
+  postTeamsGoogleCalendar,
+  putTeamsGoogleCalendarSetting,
+  putTeamsGoogleCalendarStatus,
+} from './GoogleCalendar/googleCalendar';
+import {
+  deleteTeamsIncoming,
+  getTeamsIncoming,
+  postTeamsIncoming,
+  putTeamsIncomingSetting,
+  putTeamsIncomingStatus,
+} from './Incoming/incoming';
+import {
+  deleteTeamsJira,
+  getTeamsJira,
+  postTeamsJira,
+  putTeamsJiraSetting,
+  putTeamsJiraStatus,
+} from './Jira/jira';
+import {
+  deleteTeamsOutgoing,
+  getTeamsOutgoing,
+  postTeamsOutgoing,
+  putTeamsOutgoingSetting,
+  putTeamsOutgoingStatus,
+} from './Outgoing/outgoing';
+import {
+  deleteTeamsRss,
+  getTeamsRss,
+  postTeamsRss,
+  putTeamsRssSetting,
+  putTeamsRssStatus,
+} from './RSS/rss';
+import {
+  deleteTeamsTrello,
+  getTeamsTrello,
+  postTeamsTrello,
+  putTeamsTrelloSetting,
+  putTeamsTrelloStatus,
+} from './Trello/trello';
+
+export const webAdmin = (() => ({
+  bitbucket: {
+    deleteTeams: deleteTeamsBitbucket,
+    getTeams: getTeamsBitbucket,
+    postTeams: postTeamsBitbucket,
+    putTeamsSetting: putTeamsBitbucketSetting,
+    putTeamsStatus: putTeamsBitbucketStatus,
+  },
+  github: {
+    deleteTeams: deleteTeamsGithub,
+    getTeams: getTeamsGithub,
+    post: postGithub,
+    putTeamsSetting: putTeamsGithubSetting,
+    putTeamsStatus: putTeamsGithubStatus,
+  },
+  googleCalendar: {
+    deleteTeams: deleteTeamsGoogleCalendar,
+    getTeams: getTeamsGoogleCalendar,
+    postTeams: postTeamsGoogleCalendar,
+    putTeamsSetting: putTeamsGoogleCalendarSetting,
+    putTeamsStatus: putTeamsGoogleCalendarStatus,
+  },
+  incoming: {
+    deleteTeams: deleteTeamsIncoming,
+    getTeams: getTeamsIncoming,
+    postTeams: postTeamsIncoming,
+    putTeamsSetting: putTeamsIncomingSetting,
+    putTeamsStatus: putTeamsIncomingStatus,
+  },
+  jira: {
+    deleteTeams: deleteTeamsJira,
+    getTeams: getTeamsJira,
+    postTeams: postTeamsJira,
+    putTeamsSetting: putTeamsJiraSetting,
+    putTeamsStatus: putTeamsJiraStatus,
+  },
+  outgoing: {
+    deleteTeams: deleteTeamsOutgoing,
+    getTeams: getTeamsOutgoing,
+    postTeams: postTeamsOutgoing,
+    putTeamsSetting: putTeamsOutgoingSetting,
+    putTeamsStatus: putTeamsOutgoingStatus,
+  },
+  rss: {
+    deleteTeams: deleteTeamsRss,
+    getTeams: getTeamsRss,
+    postTeams: postTeamsRss,
+    putTeamsSetting: putTeamsRssSetting,
+    putTeamsStatus: putTeamsRssStatus,
+  },
+  trello: {
+    deleteTeams: deleteTeamsTrello,
+    getTeams: getTeamsTrello,
+    postTeams: postTeamsTrello,
+    putTeamsSetting: putTeamsTrelloSetting,
+    putTeamsStatus: putTeamsTrelloStatus,
+  },
+}))();
 
 /**
  * 외부에서 Connect에 값을 넘기기 위한 Webhook API

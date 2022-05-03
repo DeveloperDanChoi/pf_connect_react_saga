@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import {
   getGithubRepos,
   putGithub,
@@ -9,6 +10,8 @@ import {
 
 const Github = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { query: { id } } = router;
   const { team, github } = useSelector((state) => {
     // console.log('Github state !!', state);
     return state;

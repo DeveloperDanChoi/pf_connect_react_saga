@@ -6,7 +6,7 @@ import { api } from '../../../_call';
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const deleteTeamsJira = (data) => api.delete(`/connect-api/teams/${data.teamId}/jira`, data.data, { version: 1 });
+export const deleteTeamsJira = (data) => api.delete(`/connect-api/teams/${data.teamId}/jira?connectId=${data.connectId}`, data.data, { version: 1 });
 
 /**
  * Jira Connect 설정을 단일 조회하는 API

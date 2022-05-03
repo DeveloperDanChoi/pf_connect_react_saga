@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
   useDispatch,
 } from 'react-redux';
+import { useRouter } from 'next/router';
 import {
   redirectToLoginAndList,
 } from '../lib/helpers/routeHelper';
@@ -19,7 +20,6 @@ import '../styles/globals.css';
 import _ from 'lodash';
 import FixedMeta from '../components/FixedMeta';
 import Layout from '../components/Layout';
-import { useRouter } from 'next/router';
 
 const App = ({ Component, pageProps }) => {
   const { pageInfo } = pageProps;

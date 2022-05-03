@@ -6,7 +6,7 @@ import { api } from '../../../_call';
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const deleteTeamsGithub = (data) => api.delete(`/connect-api/teams/${data.teamId}/github`, data.data, { version: 1 });
+export const deleteTeamsGithub = (data) => api.delete(`/connect-api/teams/${data.teamId}/github?connectId=${data.connectId}`, data.data, { version: 1 });
 
 /**
  * 단일 Github Connect 조회
@@ -40,6 +40,13 @@ export const putTeamsGithubSetting = (data) => api.put(`/connect-api/teams/${dat
  */
 export const putTeamsGithubStatus = (data) => api.put(`/connect-api/teams/${data.teamId}/github/status`, data.data, { version: 1 });
 
+export const github = (() => ({
+  deleteTeamsGithub,
+  getTeamsGithub,
+  postGithub,
+  putTeamsGithubSetting,
+  putTeamsGithubStatus,
+}))();
 /**
  * API List > Connect API > Web admin > Github
  */

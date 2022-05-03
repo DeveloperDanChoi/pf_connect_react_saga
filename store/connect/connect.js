@@ -11,6 +11,8 @@ export const SET_AUTHENTICATION = 'connect/SET_AUTHENTICATION';
 export const SET_CONNECTS_OPEN = 'connect/SET_CONNECTS_OPEN';
 export const SET_BANNER_HIDE = 'connect/SET_BANNER_HIDE';
 export const UPDATE_CONNECTS = 'connect/UPDATE_CONNECTS';
+export const UPDATE_STATUS = 'connect/UPDATE_STATUS';
+export const DELETE_CONNECT = 'connect/DELETE_CONNECT';
 
 export const getConnects = () => ({ type: GET_CONNECTS });
 export const getTeamsToken = (data) => ({ type: GET_TEAMS_TOKEN, data });
@@ -20,6 +22,19 @@ export const updateConnects = (data) => ({ type: UPDATE_CONNECTS, data });
 export const setTeamsConnect = (data) => ({ type: SET_TEAMS_CONNECT, data });
 export const setAuthentication = (data) => ({ type: SET_AUTHENTICATION, data });
 export const setConnectsOpen = (data) => ({ type: SET_CONNECTS_OPEN, data });
+/**
+ * 연결 상태 변경<br>
+ * enabled/disabled<br>
+ * @param data
+ * @returns {{data, type: string}}
+ */
+export const updateStatus = (data) => ({ type: UPDATE_STATUS, data });
+/**
+ * 연결 삭제<br>
+ * @param data
+ * @returns {{data, type: string}}
+ */
+export const deleteConnect = (data) => ({ type: DELETE_CONNECT, data });
 
 /**
  * 배너 숨기기

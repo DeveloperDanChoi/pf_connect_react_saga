@@ -6,7 +6,7 @@ import { api } from '../../../_call';
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const deleteTeamsBitbucket = (data) => api.delete(`/connect-api/teams/${data.teamId}/bitbucket`, data.data, { version: 1 });
+export const deleteTeamsBitbucket = (data) => api.delete(`/connect-api/teams/${data.teamId}/bitbucket?connectId=${data.connectId}`, data.data, { version: 1 });
 
 /**
  * Bitbucket Connect 설정을 단일 조회하는 API

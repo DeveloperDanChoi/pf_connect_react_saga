@@ -15,6 +15,9 @@ import {
   setAuthentication,
 } from '../connect/connect';
 import {
+  setUser,
+} from '../user/user';
+import {
   setGooglecalendarCalendarlist,
 } from '../connect/googleCalendar/googleCalendar';
 
@@ -63,6 +66,7 @@ function* authorize(action) {
         call(getTeamsConnect, teamId),
         call(getAuthenticationList, teamId),
         call(getStartAccountV2),
+        call(getAccountV2),
       ];
 
       if (history.state.url === '/googleCalendar') {
@@ -92,8 +96,12 @@ function* authorize(action) {
         yield put(setTeam(_.filter(results[3].data.memberships, (d) => d.teamId === teamId)[0]));
       }
 
+      if (results[4].status === 200) {
+        yield put(setUser(results[4].data));
+      }
+
       if (history.state.url === '/googleCalendar') {
-        yield put(setGooglecalendarCalendarlist(results[4].data));
+        yield put(setGooglecalendarCalendarlist(results[results.length - 1].data));
       }
 
       isUnauthorized = false;

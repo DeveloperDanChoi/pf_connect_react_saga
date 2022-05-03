@@ -13,6 +13,10 @@ export const template1 = (() => {
     variable.dispatch(data.call());
   }
 
+  function load(data, connectId) {
+    variable.dispatch(data.call(null, connectId));
+  }
+
   /**
    * 인증 계정 삭제
    * @param e
@@ -50,6 +54,7 @@ export const template1 = (() => {
   return {
     initialize,
     list,
+    load,
     disconnect,
     authorize,
     connect,

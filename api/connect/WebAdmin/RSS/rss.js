@@ -6,7 +6,7 @@ import { api } from '../../../_call';
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const deleteTeamsRss = (data) => api.delete(`/connect-api/teams/${data.teamId}/rss`, data.data, { version: 1 });
+export const deleteTeamsRss = (data) => api.delete(`/connect-api/teams/${data.teamId}/rss?connectId=${data.connectId}`, data.data, { version: 1 });
 
 /**
  * RSS Connect 설정 단일 조회

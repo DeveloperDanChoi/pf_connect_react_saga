@@ -6,7 +6,7 @@ import { api } from '../../../_call';
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const deleteTeamsTrello = (data) => api.delete(`/connect-api/teams/${data.teamId}/trello`, data.data, { version: 1 });
+export const deleteTeamsTrello = (data) => api.delete(`/connect-api/teams/${data.teamId}/trello?connectId=${data.connectId}`, data.data, { version: 1 });
 
 /**
  * Connect Trello Service 조회

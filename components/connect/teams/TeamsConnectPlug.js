@@ -1,12 +1,44 @@
 /* eslint-disable max-len */
-import { useSelector } from 'react-redux';
-import React, { useEffect } from 'react';
-import Link from "next/link";
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import Router, { useRouter } from 'next/router';
+import Link from 'next/Link';
+import { updateStatus, deleteConnect } from '../../../store/connect/connect';
+import { setConnectId } from '../../../store/connect/github/github';
 
 const TeamsConnectPlug = (props) => {
-  const { team, connect } = useSelector((state) => {
+  const dispatch = useDispatch();
+  const { connect } = useSelector((state) => {
+    console.log(state);
     return state;
   });
+
+  /**
+   * 연결 정보 변경<br>
+   * @param data
+   */
+  const changedSetting = (data) => {
+    console.log(data);
+    Router.push(`/${data.type}?id=${data.id}`, `/${data.type}`);
+    // dispatch(updateStatus(data));
+  };
+  /**
+   * 연결 상태 변경<br>
+   * enabled/disabled<br>
+   * @param data
+   */
+  const changedStatus = (data) => {
+    // TODO: 동작 -> 미동작할 때 confirm
+    dispatch(updateStatus(data));
+  };
+  /**
+   * 연결 삭제<br>
+   * @param data
+   */
+  const deletedConnect = (data) => {
+    // TODO: 삭제할 때 confirm
+    dispatch(deleteConnect(data));
+  };
 
   useEffect(() => {
   }, [props.display]);
@@ -57,9 +89,16 @@ const TeamsConnectPlug = (props) => {
                 </div>
               </div>
               <div>{data.createdAt}</div>
-              <div>{data.status === 'enabled' ? '작동중' : '미작동'}</div>
-              <button>편집</button>
-              <button>삭제</button>
+              <div onClick={() => {
+                changedStatus(data);
+              }}>{data.status === 'enabled' ? '작동중' : '미작동'}</div>
+              <button onClick={() => {
+                changedSetting(data);
+              }}>편집</button>
+              {/*<Link href={props.parent.name + '?' + data.id}>편집</Link>*/}
+              <button onClick={() => {
+                deletedConnect(data);
+              }}>삭제</button>
             </div>
           </div>
         </li>

@@ -6,7 +6,7 @@ import { api } from '../../../_call';
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const deleteTeamsOutgoing = (data) => api.delete(`/connect-api/teams/${data.teamId}/outgoing`, data.data, { version: 1 });
+export const deleteTeamsOutgoing = (data) => api.delete(`/connect-api/teams/${data.teamId}/outgoing?connectId=${data.connectId}`, data.data, { version: 1 });
 
 /**
  * Outgoing Webhook Connect 설정을 단일 조회하는 API

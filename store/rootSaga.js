@@ -13,6 +13,7 @@ import incomingSaga from './connect/incoming/incomingSaga';
 import githubSaga from './connect/github/githubSaga';
 import googleCalendarSaga from './connect/googleCalendar/googleCalendarSaga';
 import teamSaga from './team/teamSaga';
+import userSaga from './user/userSaga';
 import { config } from '../lib/config';
 
 // eslint-disable-next-line require-yield
@@ -38,6 +39,7 @@ export default function* rootSaga() {
     // fork(authSagas),
     // fork(memberManagementSaga),
     // fork(organizationSaga),
+    fork(userSaga),
     fork(teamSaga),
     // fork(securitySagas),
     // fork(paymentSagas),

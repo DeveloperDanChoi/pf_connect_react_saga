@@ -12,6 +12,7 @@ import incoming from './connect/incoming/incoming';
 import github from './connect/github/github';
 import googleCalendar from './connect/googleCalendar/googleCalendar';
 import team from './team/team';
+import user from './user/user';
 
 const persistConfig = {
   key: 'root',
@@ -31,6 +32,7 @@ const combinedReducer = combineReducers({
   github,
   googleCalendar,
   team,
+  user,
 });
 
 export default persistReducer(persistConfig, combinedReducer);
