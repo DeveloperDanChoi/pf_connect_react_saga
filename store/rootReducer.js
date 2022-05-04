@@ -23,14 +23,16 @@ const persistConfig = {
 const combinedReducer = combineReducers({
   authority,
   connect,
-  trello,
-  jira,
+
   bitbucket,
-  rss,
-  outgoing,
-  incoming,
   github,
   googleCalendar,
+  incoming,
+  jira,
+  outgoing,
+  rss,
+  trello,
+
   team,
   user,
 });

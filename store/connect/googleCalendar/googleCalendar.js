@@ -1,22 +1,71 @@
-/* eslint-disable max-len,no-param-reassign,default-param-last */
+/* eslint-disable max-len,no-param-reassign,default-param-last,no-shadow,no-restricted-syntax */
 import produce from '../../../lib/produce';
 import { util } from '../../../service/util';
+import {
+  getTeamsGoogleCalendar,
+  postTeamsGoogleCalendar,
+  putTeamsGoogleCalendarSetting,
+} from '../../../api/connect/WebAdmin/GoogleCalendar/googleCalendar';
+import {
+  deleteAuthentications,
+  getAuthenticationGoogleCalendarCalendarList,
+} from '../../../api/connect/Authentication/authentication';
 
-export const GET_GOOGLECALENDAR_CALENDARLIST = 'connect/googleCalendar/GET_GOOGLECALENDAR_CALENDARLIST';
-export const GET_GOOGLECALENDAR = 'connect/googleCalendar/GET_GOOGLECALENDAR';
-export const SET_GOOGLECALENDAR = 'connect/googleCalendar/SET_GOOGLECALENDAR';
-export const SET_GOOGLECALENDAR_CALENDARLIST = 'connect/googleCalendar/SET_GOOGLECALENDAR_CALENDARLIST';
-export const POST_GOOGLECALENDAR = 'connect/googleCalendar/POST_GOOGLECALENDAR';
-export const PUT_GOOGLECALENDAR_SETTING = 'connect/googleCalendar/PUT_GOOGLECALENDAR_SETTING';
-export const PUT_AUTHENTICATIONS = 'connect/googleCalendar/PUT_AUTHENTICATIONS';
-
-export const getGooglecalendarCalendarlist = () => ({ type: GET_GOOGLECALENDAR_CALENDARLIST });
-export const setGooglecalendarCalendarlist = (data) => ({ type: SET_GOOGLECALENDAR_CALENDARLIST, data });
-export const getGooglecalendarCalendar = (data) => ({ type: GET_GOOGLECALENDAR, data });
-export const setGooglecalendarCalendar = (data) => ({ type: SET_GOOGLECALENDAR, data });
-export const postGooglecalendar = () => ({ type: POST_GOOGLECALENDAR });
-export const putGooglecalendarSetting = (data) => ({ type: PUT_GOOGLECALENDAR_SETTING, data });
-export const putAuthentications = (data) => ({ type: PUT_AUTHENTICATIONS, data });
+export const initialModules = [
+  /**
+   * 구글 캘린더에 등록된 캘린더 리스트를 반환하는 API
+   */
+  {
+    type: 'get',
+    name: 'GOOGLECALENDAR_CALENDARLIST',
+    data: false,
+    api: getAuthenticationGoogleCalendarCalendarList,
+    watch: 'googleCalendarCalendarList',
+  },
+  { type: 'set', name: 'GOOGLECALENDAR_CALENDARLIST', data: true },
+  /**
+   * 구글 캘린더 Connect 연동 정보를 반환하는 API
+   */
+  {
+    type: 'get',
+    name: 'GOOGLECALENDAR',
+    data: true,
+    api: getTeamsGoogleCalendar,
+  },
+  {
+    type: 'set',
+    name: 'GOOGLECALENDAR',
+    data: true
+  },
+  /**
+   * 구글 캘린더와 Connect 연동을 하는 API
+   */
+  {
+    type: 'post',
+    name: 'GOOGLECALENDAR',
+    data: false,
+    api: postTeamsGoogleCalendar,
+  },
+  /**
+   * 구글 캘린더 Connect 연동 설정을 변경하는 API
+   */
+  {
+    type: 'put',
+    name: 'GOOGLECALENDAR_SETTING',
+    data: true,
+    api: putTeamsGoogleCalendarSetting
+  },
+  /**
+   * 연동 서비스 인증 삭제
+   */
+  {
+    type: 'put',
+    name: 'AUTHENTICATIONS',
+    data: true,
+    api: deleteAuthentications,
+  },
+];
+export const modules = (() => util.createModule(initialModules))();
 
 export const initialState = {
   connects: [],
@@ -26,10 +75,10 @@ export const initialState = {
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
-    case SET_GOOGLECALENDAR_CALENDARLIST:
+    case modules.types.SET_GOOGLECALENDAR_CALENDARLIST:
       draft.calendarList = action.data;
       break;
-    case SET_GOOGLECALENDAR:
+    case modules.types.SET_GOOGLECALENDAR:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
       break;
     default:

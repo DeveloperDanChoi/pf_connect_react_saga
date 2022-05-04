@@ -12,7 +12,6 @@ const isDev = process.env.NODE_ENV === 'development';
 const isLocal = process.env.ISLOCAL === 'true';
 const isGcp = process.env.NODE_ENV === 'oprs';
 const basePath = '';
-console.log(process.env.NODE_ENV)
 const getAddress = (data) => data[process.env.NODE_ENV];
 const getAddress2 = (data) => data[isLocal ? 'local' : process.env.NODE_ENV];
 const publicRuntimeConfig = {

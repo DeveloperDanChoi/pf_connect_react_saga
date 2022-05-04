@@ -17,9 +17,7 @@ import {
 import {
   setUser,
 } from '../user/user';
-import {
-  setGooglecalendarCalendarlist,
-} from '../connect/googleCalendar/googleCalendar';
+import { modules as googleCalendarModules } from '../connect/googleCalendar/googleCalendar';
 
 import {
   getConnect,
@@ -70,7 +68,7 @@ function* authorize(action) {
       ];
 
       if (history.state.url === '/googleCalendar') {
-        apis.push(call(getAuthenticationGoogleCalendarCalendarList));
+        // apis.push(call(getAuthenticationGoogleCalendarCalendarList));
       } else if (history.state.url !== '/') {
         console.log(history.state);
       }
@@ -101,7 +99,8 @@ function* authorize(action) {
       }
 
       if (history.state.url === '/googleCalendar') {
-        yield put(setGooglecalendarCalendarlist(results[results.length - 1].data));
+        console.log('go !!')
+        // yield put(googleCalendarModules.creators.setGooglecalendarCalendarlist(results[results.length - 1].data));
       }
 
       isUnauthorized = false;

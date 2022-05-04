@@ -10,6 +10,7 @@ export const template1 = (() => {
    */
   function list(data) {
     // variable.dispatch(getGooglecalendarCalendarlist());
+    console.log( data )
     variable.dispatch(data.call());
   }
 

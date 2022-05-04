@@ -1,92 +1,56 @@
-/* eslint-disable max-len */
+/* eslint-disable max-len,no-empty-function */
 import {
   all, call, fork, put, takeLatest,
 } from 'redux-saga/effects';
-import {
-  GET_GOOGLECALENDAR_CALENDARLIST,
-  GET_GOOGLECALENDAR,
-  setGooglecalendarCalendarlist,
-  POST_GOOGLECALENDAR,
-  PUT_AUTHENTICATIONS, setGooglecalendarCalendar, PUT_GOOGLECALENDAR_SETTING,
-} from './googleCalendar';
+import { initialModules, modules } from './googleCalendar';
 import { getAuthenticationGoogleCalendarCalendarList, deleteAuthentications } from '../../../api/connect/Authentication/authentication';
 import {
   getTeamsGoogleCalendar,
-  postTeamsGoogleCalendar
+  postTeamsGoogleCalendar,
 } from '../../../api/connect/WebAdmin/GoogleCalendar/googleCalendar';
+import { util } from '../../../service/util';
 
-export function* googleCalendarCalendarList() {
-  const result = yield call(getAuthenticationGoogleCalendarCalendarList);
-  yield put(setGooglecalendarCalendarlist(result.data));
-}
-export function* googleCalendarCalendarSaga(data) {
-  const result = yield call(getTeamsGoogleCalendar, data.data);
-  yield put(setGooglecalendarCalendar(result.data));
-}
+export const saga = (() => ({
+  getGooglecalendarCalendarlist: function* getGooglecalendarCalendarlist() {
+    const result = yield call(getAuthenticationGoogleCalendarCalendarList);
+    yield put(modules.creators.setGooglecalendarCalendarlist(result.data));
+  },
+  getGoogleCalendarCalendar: function* googleCalendarCalendarSaga(data) {
+    const result = yield call(getTeamsGoogleCalendar, data.data);
+    yield put(modules.creators.setGooglecalendarCalendar(result.data));
+  },
+  saveGoogleCalendar: function* saveGoogleCalendar(data) {
+    const params = {
+      googleId: 'dan.choi@tosslab.com',
+      calendarId: 'dan.choi@tosslab.com',
+      calendarSummary: 'dan.choi@tosslab.com',
+      roomId: '20128232',
+      hasNotificationBefore: 'true',
+      notificationBefore: '15m',
+      hasAllDayNotification: 'true',
+      allDayNotificationBeforeDates: '0d',
+      allDayNotificationHour: '9',
+      hasDailyScheduleSummary: 'true',
+      dailyScheduleSummary: '9',
+      hasWeeklyScheduleSummary: 'true',
+      weeklyScheduleSummaryHour: '9',
+      weeklyScheduleSummaryDayOfWeek: 'MO',
+      newEventNotification: 'true',
+      updatedEventNotification: 'true',
+      cancelledEventNotification: 'true',
+      botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-googleCalendar.png',
+      botName: 'Google 캘린더',
+      defaultBotName: 'Google 캘린더',
+      lang: 'ko',
+    };
+    const result = yield call(postTeamsGoogleCalendar, { teamId: 279, data: params });
+  },
+  saveAuthentications: function* saveAuthentications(data) {
+    const result = yield call(deleteAuthentications, { teamId: 279, authenticationId: data.data.authenticationId });
+  },
+  putGoogleCalendarSetting: function* putGoogleCalendarSetting(data) {
+    const result = yield call(deleteAuthentications, { teamId: 279, authenticationId: data.data.authenticationId });
+  },
+}))();
 
-export function* saveGoogleCalendar() {
-  const params = {
-    googleId: 'dan.choi@tosslab.com',
-    calendarId: 'dan.choi@tosslab.com',
-    calendarSummary: 'dan.choi@tosslab.com',
-    roomId: '20128232',
-    hasNotificationBefore: 'true',
-    notificationBefore: '15m',
-    hasAllDayNotification: 'true',
-    allDayNotificationBeforeDates: '0d',
-    allDayNotificationHour: '9',
-    hasDailyScheduleSummary: 'true',
-    dailyScheduleSummary: '9',
-    hasWeeklyScheduleSummary: 'true',
-    weeklyScheduleSummaryHour: '9',
-    weeklyScheduleSummaryDayOfWeek: 'MO',
-    newEventNotification: 'true',
-    updatedEventNotification: 'true',
-    cancelledEventNotification: 'true',
-    botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-googleCalendar.png',
-    botName: 'Google 캘린더',
-    defaultBotName: 'Google 캘린더',
-    lang: 'ko',
-  };
-  const result = yield call(postTeamsGoogleCalendar, { teamId: 279, data: params });
-  // yield put(putGooglecalendar(result.data));
-}
-export function* saveAuthentications(data) {
-  const result = yield call(deleteAuthentications, { teamId: 279, authenticationId: data.data.authenticationId });
-  if (result.status === 200) {
-
-  }
-  // yield put(putGooglecalendar(result.data));
-}
-export function* putGoogleCalendarSetting(data) {
-  const result = yield call(deleteAuthentications, { teamId: 279, authenticationId: data.data.authenticationId });
-  if (result.status === 200) {
-
-  }
-  // yield put(putGooglecalendar(result.data));
-}
-
-function* watchGoogleCalendarCalendarList() {
-  yield takeLatest(GET_GOOGLECALENDAR_CALENDARLIST, googleCalendarCalendarList);
-}
-function* watchGoogleCalendarCalendar() {
-  yield takeLatest(GET_GOOGLECALENDAR, googleCalendarCalendarSaga);
-}
-function* watchGoogleCalendar() {
-  yield takeLatest(POST_GOOGLECALENDAR, saveGoogleCalendar);
-}
-function* watchAuthentications() {
-  yield takeLatest(PUT_AUTHENTICATIONS, saveAuthentications);
-}
-function* watchGoogleCalendarSetting() {
-  yield takeLatest(PUT_GOOGLECALENDAR_SETTING, putGoogleCalendarSetting);
-}
-export default function* googleCalendarSaga() {
-  yield all([
-    fork(watchGoogleCalendarCalendarList),
-    fork(watchGoogleCalendarCalendar),
-    fork(watchGoogleCalendar),
-    fork(watchAuthentications),
-    fork(watchGoogleCalendarSetting),
-  ]);
-}
+export default function* googleCalendarSaga() {}

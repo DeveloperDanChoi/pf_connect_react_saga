@@ -3,9 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import {
-  getGooglecalendarCalendarlist,
-  postGooglecalendar,
-  putAuthentications, getGooglecalendarCalendar,
+  modules
 } from '../../../../store/connect/googleCalendar/googleCalendar';
 import { template1 } from '../../../../service/connect';
 
@@ -20,11 +18,12 @@ const GoogleCalendar = () => {
 
   useEffect(() => {
     template1.initialize({ dispatch, connectType: 'googleCalendar', connectId: id });
-    template1.list(getGooglecalendarCalendarlist);
+    console.log('!!!!!!', modules.creators.getGooglecalendarCalendarlist)
+    template1.list(modules.creators.getGooglecalendarCalendarlist);
     if (id) {
-      template1.load(getGooglecalendarCalendar, {
-        teamId: team.teamId, connectId: id,
-      });
+      // template1.load(getGooglecalendarCalendar, {
+      //   teamId: team.teamId, connectId: id,
+      // });
     }
   }, []);
 
