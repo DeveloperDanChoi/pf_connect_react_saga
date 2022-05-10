@@ -22,7 +22,7 @@ export const getTeamsGithub = (data) => api.get(`/connect-api/teams/${data.teamI
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const postGithub = (data) => api.post(`/connect-api/teams/${data.teamId}/github`, data.data, { version: 1 });
+export const postTeamsGithub = (data) => api.post(`/connect-api/teams/${data.teamId}/github`, data.data, { version: 1 });
 
 /**
  * Github Connect 설정 수정
@@ -43,7 +43,7 @@ export const putTeamsGithubStatus = (data) => api.put(`/connect-api/teams/${data
 export const github = (() => ({
   deleteTeamsGithub,
   getTeamsGithub,
-  postGithub,
+  postTeamsGithub,
   putTeamsGithubSetting,
   putTeamsGithubStatus,
 }))();

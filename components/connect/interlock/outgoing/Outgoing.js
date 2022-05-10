@@ -1,54 +1,32 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import _ from 'lodash';
-import {
-  getTeamsToken,
-} from '../../../../store/connect/connect';
-import { postTeamsOutgoing } from '../../../../store/connect/outgoing/outgoing';
+import { useRouter } from 'next/router';
+import { modules } from '../../../../store/connect/outgoing/outgoing';
+import { template1 } from '../../../../service/connect';
 
 const Outgoing = () => {
   const dispatch = useDispatch();
-  const { team, bitbucket, trello, connect } = useSelector((state) => {
-    console.log('outgoing state !!', state);
+  const router = useRouter();
+  const { team, outgoing } = useSelector((state) => {
     return state;
   });
-
-  /**
-   * @deprecated
-   */
-  const handleClick = () => {
-    // Router.push('/');
-  };
-  /**
-   * 계정 인증하기
-   */
-  const authConnect = () => {
-  };
-  /**
-   * 연동하고자 하는 리스트
-   */
-  const getList = () => {
-    dispatch(getTeamsToken({ connectType: 'outgoing' }));
-  };
-  /**
-   * 연동 항목 추가하기
-   */
-  const addConnect = () => {
-    dispatch(postTeamsOutgoing());
-  };
-  /**
-   * 인증된 계정 삭제
-   */
-  const deleteConnect = (e, data) => {
-  };
+  const { creators } = modules;
 
   useEffect(() => {
-    getList();
+    template1.initialize({
+      dispatch,
+      router,
+      connectType: 'outgoing',
+      modules,
+      list: creators.getTeamsToken,
+      load: creators.getTeamsOutgoing,
+      connect: [creators.postTeamsOutgoing, creators.putTeamsOutgoingSetting],
+    });
   }, []);
 
   return (<>
-    <div onClick={handleClick} style={{
+    <div style={{
       width: '100%',
     }}>
       {/* ********** 인증 영역 !! ************* */}
@@ -58,7 +36,7 @@ const Outgoing = () => {
       <div>설정방법 안내</div>
       <div>URL</div>
       <div>시작 키워드 입력</div>
-      <div>토큰: {connect.teamsToken.webhookToken}</div>
+      <div>토큰: {outgoing.teamsToken.webhookToken}</div>
       {/* ********** 토픽 영역 !! ************* */}
       <div>알림 메시지를 등록할 토픽 또는 채팅 JANDI를 선택해주세요.</div>
       <ul>
@@ -78,7 +56,9 @@ const Outgoing = () => {
       <ul>
         <li>언어</li>
       </ul>
-      <button onClick={addConnect}>연동 항목 추가하기</button>
+      <button onClick={(e) => {
+        template1.connect(e, { outgoing });
+      }}>연동 항목 추가하기</button>
     </div>
   </>);
 };

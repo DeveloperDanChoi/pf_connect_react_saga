@@ -45,23 +45,23 @@ const call = (target, method, uri, headersInfo, data = null) => {
     case 'get': {
       return axios.get(url, {
         headers,
-      });
+      }).catch((err) => console.error(err));
     }
     case 'post': {
       return axios.post(url, data, {
         headers,
-      });
+      }).catch((err) => console.error(err));
     }
     case 'put': {
       return axios.put(url, data, {
         headers,
-      });
+      }).catch((err) => console.error(err));
     }
     case 'delete': {
       return axios.delete(url, {
         data,
         headers,
-      });
+      }).catch((err) => console.error(err));
     }
     default: {
       console.error('error');

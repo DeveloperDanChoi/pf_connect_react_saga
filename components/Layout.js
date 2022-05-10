@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Router, { withRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import ConnectList from './connect/ConnectCard';
@@ -8,18 +8,26 @@ import { helpUrl, surveyUrl } from '../constants/path';
 const Layout = (props) => {
   const dispatch = useDispatch();
   const { connect, user } = useSelector((state) => state);
-
-  // eslint-disable-next-line no-unused-vars
-  Router.events.on('routeChangeStart', (url) => {
+  const routeChangeStart = (url) => {
     console.log('routeChangeStart', url);
-  });
-  // eslint-disable-next-line no-unused-vars
-  Router.events.on('routeChangeComplete', (url) => {
+  };
+  const routeChangeComplete = (url) => {
     console.log('routeChangeComplete', url);
-  });
-  // eslint-disable-next-line no-unused-vars
-  Router.events.on('routeChangeError', (url) => {
+  };
+  const routeChangeError = (url) => {
     console.log('routeChangeError', url);
+  };
+
+  useEffect(() => {
+    Router.events.on('routeChangeStart', routeChangeStart);
+    Router.events.on('routeChangeComplete', routeChangeComplete);
+    Router.events.on('routeChangeError', routeChangeError);
+
+    return () => {
+      Router.events.off('routeChangeStart', routeChangeStart);
+      Router.events.off('routeChangeComplete', routeChangeComplete);
+      Router.events.off('routeChangeError', routeChangeError);
+    };
   });
 
   /**
@@ -27,12 +35,21 @@ const Layout = (props) => {
    * @type {{link: link, close: close}}
    */
   const banner = (({ lang }) => {
+    /**
+     * 배너 닫기
+     */
     const close = () => {
       dispatch(setBannerHide('none'));
     };
+    /**
+     * 더 알아보기<br>
+     */
     const help = () => {
       window.open(helpUrl[lang]);
     };
+    /**
+     * 서비스 연동 요청하기<br>
+     */
     const survey = () => {
       // window.open(surveyUrl.ko + '?email=' + primary.email);
       window.open(surveyUrl[lang]);

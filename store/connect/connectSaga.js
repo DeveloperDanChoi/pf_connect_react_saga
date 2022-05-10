@@ -1,16 +1,9 @@
 import {
   all, call, fork, put, select, takeLatest,
 } from 'redux-saga/effects';
-import {DELETE_CONNECT, GET_TEAMS_TOKEN, setTeamsToken, UPDATE_STATUS, updateStatus} from './connect';
+import {DELETE_CONNECT, UPDATE_STATUS, updateStatus} from './connect';
 import { getTeamsToken, webAdmin } from '../../api/connect/WebAdmin/webAdmin';
 import { putTeamsGithubStatus } from '../../api/connect/WebAdmin/Github/github';
-
-function* getTeamsTokenSaga(data) {
-  data.data.teamId = 279;
-  const result = yield call(getTeamsToken, data.data);
-  console.log(result);
-  yield put(setTeamsToken(result.data));
-}
 
 /**
  * 연결 상태 변경<br>
@@ -43,9 +36,6 @@ function* deleteConnectSaga({ data }) {
   console.log(result);
 }
 
-function* watchTeamsToken() {
-  yield takeLatest(GET_TEAMS_TOKEN, getTeamsTokenSaga);
-}
 function* watchUpdateStatus() {
   yield takeLatest(UPDATE_STATUS, updateStatusSaga);
 }
@@ -55,7 +45,6 @@ function* watchDeleteConnect() {
 
 export default function* connectSaga() {
   yield all([
-    fork(watchTeamsToken),
     fork(watchUpdateStatus),
     fork(watchDeleteConnect),
   ]);

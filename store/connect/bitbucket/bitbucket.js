@@ -1,28 +1,66 @@
 /* eslint-disable max-len,no-param-reassign,default-param-last */
 import produce from '../../../lib/produce';
 import { util } from '../../../service/util';
+import {
+  getTeamsBitbucket,
+  postTeamsBitbucket,
+  putTeamsBitbucketSetting,
+} from '../../../api/connect/WebAdmin/Bitbucket/bitbucket';
+import { getTeamsToken } from '../../../api/connect/WebAdmin/webAdmin';
 
-export const POST_TEAMS_BITBUCKET = 'connect/bitbucket/POST_TEAMS_BITBUCKET';
-export const SET_TEAMS_BITBUCKET_TOKEN = 'connect/bitbucket/SET_TEAMS_BITBUCKET_TOKEN';
-export const GET_TRELLO_BOARDS = 'connect/trello/GET_TRELLO_BOARDS';
-export const SET_TRELLO_BOARDS = 'connect/trello/SET_TRELLO_BOARDS';
-export const PUT_TRELLO = 'connect/trello/PUT_TRELLO';
-export const PUT_AUTHENTICATIONS = 'connect/trello/PUT_AUTHENTICATIONS';
-
-export const postTeamsBitbucket = (data) => ({ type: POST_TEAMS_BITBUCKET, data });
-export const setTeamsBitbucketToken = (data) => ({ type: SET_TEAMS_BITBUCKET_TOKEN, data });
-export const getTrelloBoards = () => ({ type: GET_TRELLO_BOARDS });
-export const setTrelloBoards = (data) => ({ type: SET_TRELLO_BOARDS, data });
-export const putTrello = () => ({ type: PUT_TRELLO });
-export const putAuthentications = (data) => ({ type: PUT_AUTHENTICATIONS, data });
-
+export const initialModules = [
+  /**
+   * Webhook용 Token을 요청하는 API
+   */
+  {
+    type: 'get',
+    name: 'TEAMS_TOKEN',
+    data: false,
+    api: getTeamsToken,
+  },
+  { type: 'set', name: 'TEAMS_TOKEN', data: true },
+  /**
+   * Bitbucket Connect 설정을 단일 조회하는 API
+   */
+  {
+    type: 'get',
+    name: 'TEAMS_BITBUCKET',
+    data: true,
+    api: getTeamsBitbucket,
+  },
+  {
+    type: 'set',
+    name: 'TEAMS_BITBUCKET',
+    data: true,
+  },
+  /**
+   * Bitbucket Connect 설정을 생성하는 API
+   */
+  {
+    type: 'post',
+    name: 'TEAMS_BITBUCKET',
+    data: false,
+    api: postTeamsBitbucket,
+  },
+  /**
+   * Bitbucket Connect 설정을 수정하는 API
+   */
+  {
+    type: 'put',
+    name: 'TEAMS_BITBUCKET_SETTING',
+    data: true,
+    api: putTeamsBitbucketSetting,
+  },
+];
+export const modules = (() => util.createModule(initialModules, 'bitbucket'))();
 export const initialState = {
 };
 
+const { types } = modules;
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
-    case SET_TRELLO_BOARDS:
-    case SET_TEAMS_BITBUCKET_TOKEN:
+    case types.SET_TEAMS_TOKEN:
+    case types.SET_TEAMS_BITBUCKET:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
       break;
     default:

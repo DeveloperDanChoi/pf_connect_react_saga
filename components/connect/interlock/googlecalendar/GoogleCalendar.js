@@ -2,29 +2,29 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import {
-  modules
-} from '../../../../store/connect/googleCalendar/googleCalendar';
+import { modules } from '../../../../store/connect/googleCalendar/googleCalendar';
 import { template1 } from '../../../../service/connect';
 
 const GoogleCalendar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { query: { id } } = router;
   const { team, googleCalendar } = useSelector((state) => {
     // console.log('GoogleCalendar state !!', state);
     return state;
   });
+  const { creators } = modules;
 
   useEffect(() => {
-    template1.initialize({ dispatch, connectType: 'googleCalendar', connectId: id });
-    console.log('!!!!!!', modules.creators.getGooglecalendarCalendarlist)
-    template1.list(modules.creators.getGooglecalendarCalendarlist);
-    if (id) {
-      // template1.load(getGooglecalendarCalendar, {
-      //   teamId: team.teamId, connectId: id,
-      // });
-    }
+    template1.initialize({
+      dispatch,
+      router,
+      connectType: 'googleCalendar',
+      modules,
+      list: creators.getAuthenticationGoogleCalendarCalendarList,
+      load: creators.getTeamsGoogleCalendar,
+      connect: [creators.postTeamsGoogleCalendar, creators.putTeamsGoogleCalendarSetting],
+      disconnect: creators.deleteAuthentications,
+    });
   }, []);
 
   return (<>
@@ -39,8 +39,7 @@ const GoogleCalendar = () => {
         { googleCalendar.calendarList && googleCalendar.calendarList.length === 0 && <button onClick={template1.authorize}>구글 캘린더 계정 인증하기</button> }
         { googleCalendar.calendarList && googleCalendar.calendarList.map((data, i) => (
             <div key={i}><li>{data.authenticationName}</li><button onClick={(e) => {
-              // deleteConnect(e, data);
-              template1.disconnect(e, data, putAuthentications);
+              template1.disconnect(e, data);
             }}>X</button></div>
         ))}
       </ul>
@@ -111,7 +110,7 @@ const GoogleCalendar = () => {
         <li>언어</li>
       </ul>
       <button onClick={(e) => {
-        template1.connect(e, {}, postGooglecalendar);
+        template1.connect(e, {});
       }}>연동 항목 추가하기</button>
     </div>
   </>);

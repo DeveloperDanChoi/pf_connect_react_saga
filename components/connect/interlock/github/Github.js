@@ -2,64 +2,34 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import {
-  getGithubRepos,
-  putGithub,
-  putAuthentications,
-} from '../../../../store/connect/github/github';
+import { modules } from '../../../../store/connect/github/github';
+import { template1 } from '../../../../service/connect';
+import {postTeamsGithub} from "../../../../api/connect/WebAdmin/Github/github";
 
 const Github = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { query: { id } } = router;
   const { team, github } = useSelector((state) => {
     // console.log('Github state !!', state);
     return state;
   });
-
-  /**
-   * @deprecated
-   */
-  const handleClick = () => {
-    // Router.push('/');
-  };
-  /**
-   * 계정 인증하기
-   */
-  const authConnect = () => {
-    // TODO: popupDone callback ??
-    // const popup
-    window.open(
-      'https://www.jandi.io/connect/auth/github?callbackEventName=popupDone',
-      'connectAuth',
-      'resizable=no, scrollbars=1, toolbar=no, menubar=no, status=no, directories=no, width=1024, height=768',
-    );
-  };
-  /**
-   * 연동하고자 하는 리스트
-   */
-  const getList = () => {
-    dispatch(getGithubRepos());
-  };
-  /**
-   * 연동 항목 추가하기
-   */
-  const addConnect = () => {
-    dispatch(putGithub());
-  };
-  /**
-   * 인증된 계정 삭제
-   */
-  const deleteConnect = (e, data) => {
-    dispatch(putAuthentications(data, data));
-  };
+  const { creators } = modules;
 
   useEffect(() => {
-    getList();
+    template1.initialize({
+      dispatch,
+      router,
+      connectType: 'github',
+      modules,
+      list: creators.getAuthenticationGithubReposList,
+      load: creators.getTeamsGithub,
+      connect: [creators.postTeamsGithub, creators.putTeamsGithubSetting],
+      disconnect: creators.deleteAuthentications,
+    });
   }, []);
 
   return (<>
-    <div onClick={handleClick} style={{
+    <div style={{
       width: '100%',
     }}>
       {/* ********** 인증 영역 !! ************* */}
@@ -67,17 +37,17 @@ const Github = () => {
       <div>인증된 계정</div>
       <ul>
         <li>계정 추가하기</li>
-        { !github.githubRepos.authenticationId && <button onClick={authConnect}>Github 계정 인증하기</button> }
-        { github.githubRepos.authenticationId
-        && <div><li>{github.githubRepos.authenticationName}</li><button onClick={(e) => {
-          deleteConnect(e, github.githubRepos);
+        { !github.authenticationGithubReposList.authenticationId && <button onClick={template1.authorize}>Github 계정 인증하기</button> }
+        { github.authenticationGithubReposList.authenticationId
+        && <div><li>{github.authenticationGithubReposList.authenticationName}</li><button onClick={(e) => {
+          template1.disconnect(e, github.authenticationGithubReposList);
         }}>X</button></div> }
       </ul>
       {/* ********** 리스트 영역 !! ************* */}
       <div>알림을 받고자 하는 Repository/Branch를 선택해주세요.</div>
       <ul>
         <li>Repository 선택</li>
-        { github.githubRepos.repos && github.githubRepos.repos.map((data) => (
+        { github.authenticationGithubReposList.repos && github.authenticationGithubReposList.repos.map((data) => (
           <div key={data.owner}>
             <li>{data.owner}</li>
               <ul>
@@ -117,7 +87,9 @@ const Github = () => {
       <ul>
         <li>언어</li>
       </ul>
-      <button onClick={addConnect}>연동 항목 추가하기</button>
+      <button onClick={(e) => {
+        template1.connect(e, {});
+      }}>연동 항목 추가하기</button>
     </div>
   </>);
 };

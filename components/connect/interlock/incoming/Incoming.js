@@ -1,42 +1,33 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getTeamsToken,
-} from '../../../../store/connect/connect';
-import { postTeamsIncoming } from '../../../../store/connect/incoming/incoming';
+import { useRouter } from 'next/router';
+import { modules } from '../../../../store/connect/incoming/incoming';
+import { template1 } from '../../../../service/connect';
 
 const Incoming = () => {
   const dispatch = useDispatch();
-  const { team } = useSelector((state) => {
-    console.log('incoming state !!', state);
+  const router = useRouter();
+  const { team, incoming } = useSelector((state) => {
+    // console.log('incoming state !!', state);
     return state;
   });
-
-  /**
-   * @deprecated
-   */
-  const handleClick = () => {
-    // Router.push('/');
-  };
-  /**
-   * 연동하고자 하는 리스트
-   */
-  const getList = () => {
-    dispatch(getTeamsToken({ connectType: 'incoming' }));
-  };
-  /**
-   * 연동 항목 추가하기
-   */
-  const addConnect = () => {
-    dispatch(postTeamsIncoming());
-  };
+  const { creators } = modules;
   useEffect(() => {
-    getList();
+    template1.initialize({
+      dispatch,
+      router,
+      connectType: 'incoming',
+      modules,
+      list: creators.getTeamsToken,
+      load: creators.getTeamsIncoming,
+      connect: [creators.postTeamsIncoming, creators.putTeamsIncomingSetting],
+      disconnect: creators.deleteAuthentications,
+    });
   }, []);
 
   return (<>
-    <div onClick={handleClick} style={{
+    <div style={{
       width: '100%',
     }}>
       {/* ********** 인증 영역 !! ************* */}
@@ -62,7 +53,9 @@ const Incoming = () => {
       <ul>
         <li>언어</li>
       </ul>
-      <button onClick={addConnect}>연동 항목 추가하기</button>
+      <button onClick={(e) => {
+        template1.connect(e, { incoming });
+      }}>연동 항목 추가하기</button>
     </div>
   </>);
 };

@@ -1,13 +1,51 @@
 /* eslint-disable max-len,no-param-reassign,default-param-last */
 import produce from '../../../lib/produce';
+import { util } from '../../../service/util';
+import {
+  getTeamsRss,
+  postTeamsRss,
+  putTeamsRssSetting,
+} from '../../../api/connect/WebAdmin/RSS/rss';
 
-export const POST_TEAMS_RSS = 'connect/rss/POST_TEAMS_RSS';
-
-export const postTeamsRss = (data) => ({ type: POST_TEAMS_RSS, data });
-
+export const initialModules = [
+  /**
+   * RSS Connect 설정 단일 조회
+   */
+  {
+    type: 'get',
+    name: 'TEAMS_RSS',
+    data: true,
+    api: getTeamsRss,
+  },
+  {
+    type: 'set',
+    name: 'TEAMS_RSS',
+    data: true,
+  },
+  /**
+   * RSS Connect 설정 생성
+   */
+  {
+    type: 'post',
+    name: 'TEAMS_RSS',
+    data: false,
+    api: postTeamsRss,
+  },
+  /**
+   * RSS Connect 설정 수정
+   */
+  {
+    type: 'put',
+    name: 'TEAMS_RSS_SETTING',
+    data: true,
+    api: putTeamsRssSetting,
+  },
+];
+export const modules = (() => util.createModule(initialModules, 'bitbucket'))();
 export const initialState = {
 };
 
+const { types } = modules;
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
     default:

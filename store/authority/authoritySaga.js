@@ -68,7 +68,7 @@ function* authorize(action) {
       ];
 
       if (history.state.url === '/googleCalendar') {
-        // apis.push(call(getAuthenticationGoogleCalendarCalendarList));
+        apis.push(call(getAuthenticationGoogleCalendarCalendarList));
       } else if (history.state.url !== '/') {
         console.log(history.state);
       }
@@ -99,8 +99,7 @@ function* authorize(action) {
       }
 
       if (history.state.url === '/googleCalendar') {
-        console.log('go !!')
-        // yield put(googleCalendarModules.creators.setGooglecalendarCalendarlist(results[results.length - 1].data));
+        yield put(googleCalendarModules.creators.setAuthenticationGoogleCalendarCalendarList(results[results.length - 1].data));
       }
 
       isUnauthorized = false;

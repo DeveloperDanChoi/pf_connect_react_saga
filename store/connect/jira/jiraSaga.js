@@ -1,51 +1,63 @@
-/* eslint-disable max-len */
+/* eslint-disable max-len,no-empty-function */
 import {
-  all, call, fork, put, takeLatest, select,
+  call, put,
 } from 'redux-saga/effects';
+import { initialModules, modules } from './jira';
 import {
-  GET_TRELLO_BOARDS,
-  setTrelloBoards,
-  PUT_TRELLO,
-  PUT_AUTHENTICATIONS, POST_TEAMS_JIRA,
-  setTeamsJiraToken,
-} from './jira';
-import { getAuthenticationTrelloBoardsList, deleteAuthentications } from '../../../api/connect/Authentication/authentication';
-import { postTeamsJira } from '../../../api/connect/WebAdmin/Jira/jira';
-import {getTeamsToken} from "../connect";
+  getTeamsJira,
+  postTeamsJira,
+  putTeamsJiraSetting,
+} from '../../../api/connect/WebAdmin/Jira/jira';
+import { getTeamsToken } from '../../../api/connect/WebAdmin/webAdmin';
 
-export function* trelloBoardsSaga() {
-  const result = yield call(getAuthenticationTrelloBoardsList);
-  if (result.status === 200) {
-    yield put(setTrelloBoards(result.data));
-  }
-}
-export function* postTeamsJiraSaga() {
-  const data = yield select(getTeamsToken);
-  console.log(data.data.connect.teamsToken.webhookToken);
-  const params = {
-    botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-jira.png',
-    botName: 'JIRA1',
-    defaultBotName: 'JIRA',
-    lang: 'ko',
-    webhookToken: data.data.connect.teamsToken.webhookToken,
-    roomId: 20128232,
-  };
-  yield call(postTeamsJira, { teamId: 279, data: params });
-  // yield put(putGooglecalendar(result.data));
-}
-export function* saveAuthentications(data) {
-  const result = yield call(deleteAuthentications, { teamId: 279, authenticationId: data.data.authenticationId });
-  if (result.status === 200) {
-    yield put(setTrelloBoards({}));
-  }
-  // yield put(putGooglecalendar(result.data));
-}
+const { creators } = modules;
+export const saga = (() => ({
+  /**
+   * Webhook용 Token을 요청하는 API
+   */
+  * getTeamsToken(data) {
+    const result = yield call(getTeamsToken, { connectType: 'jira', teamId: 279 });
+    yield put(creators.setTeamsToken(result.data));
+  },
+  /**
+   * Jira Connect 설정을 단일 조회하는 API
+   * @param data
+   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>|SimpleEffect<"PUT", PutEffectDescriptor<*>>, void, *>}
+   */
+  * getTeamsJira(data) {
+    const result = yield call(getTeamsJira, data.data);
+    yield put(creators.setTeamsJira(result.data));
+  },
+  /**
+   * Jira Connect 설정을 생성하는 API
+   * @param data
+   * @returns {Generator<*, void, *>}
+   */
+  * postTeamsJira(data) {
+    const params = {
+      botName: 'Jira_OK',
+      defaultBotName: 'Jira',
+      lang: 'ko',
+      webhookToken: data.data.jira.teamsToken.webhookToken,
+      roomId: 20128232,
+    };
+    const result = yield call(postTeamsJira, { teamId: 279, data: params });
+  },
+  /**
+   * Jira Connect 설정을 수정하는 API
+   * @param data
+   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
+   */
+  * putTeamsJiraSetting(data) {
+    const params = {
+      connectId: data.data.connectId,
+      botName: 'Jira_UDP',
+      defaultBotName: 'Jira',
+      lang: 'ko',
+      roomId: '20128232',
+    };
+    const result = yield call(putTeamsJiraSetting, { teamId: 279, data: params });
+  },
+}))();
 
-function* watchPostTeamsJira() {
-  yield takeLatest(POST_TEAMS_JIRA, postTeamsJiraSaga);
-}
-export default function* jiraSaga() {
-  yield all([
-    fork(watchPostTeamsJira),
-  ]);
-}
+export default function* jiraSaga() {}

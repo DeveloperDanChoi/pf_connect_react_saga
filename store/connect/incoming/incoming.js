@@ -1,19 +1,66 @@
 /* eslint-disable max-len,no-param-reassign,default-param-last */
 import produce from '../../../lib/produce';
 import { util } from '../../../service/util';
+import {
+  getTeamsIncoming,
+  postTeamsIncoming,
+  putTeamsIncomingSetting,
+} from '../../../api/connect/WebAdmin/Incoming/incoming';
+import { getTeamsToken } from '../../../api/connect/WebAdmin/webAdmin';
 
-export const POST_TEAMS_INCOMING = 'connect/incoming/POST_TEAMS_INCOMING';
-export const SET_TEAMS_INCOMING_TOKEN = 'connect/incoming/SET_TEAMS_INCOMING_TOKEN';
-
-export const postTeamsIncoming = (data) => ({ type: POST_TEAMS_INCOMING, data });
-export const setTeamsIncomingToken = (data) => ({ type: SET_TEAMS_INCOMING_TOKEN, data });
-
+export const initialModules = [
+  /**
+   * Webhook용 Token을 요청하는 API
+   */
+  {
+    type: 'get',
+    name: 'TEAMS_TOKEN',
+    data: false,
+    api: getTeamsToken,
+  },
+  { type: 'set', name: 'TEAMS_TOKEN', data: true },
+  /**
+   * Incoming Webhook Connect 설정을 단일 조회하는 API
+   */
+  {
+    type: 'get',
+    name: 'TEAMS_INCOMING',
+    data: true,
+    api: getTeamsIncoming,
+  },
+  {
+    type: 'set',
+    name: 'TEAMS_INCOMING',
+    data: true,
+  },
+  /**
+   * Incoming Webhook Connect 설정을 생성하는 API
+   */
+  {
+    type: 'post',
+    name: 'TEAMS_INCOMING',
+    data: false,
+    api: postTeamsIncoming,
+  },
+  /**
+   * Incoming Webhook Connect 설정을 수정하는 API
+   */
+  {
+    type: 'put',
+    name: 'TEAMS_INCOMING_SETTING',
+    data: true,
+    api: putTeamsIncomingSetting,
+  },
+];
+export const modules = (() => util.createModule(initialModules, 'incoming'))();
 export const initialState = {
 };
 
+const { types } = modules;
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
-    case SET_TEAMS_INCOMING_TOKEN:
+    case types.SET_TEAMS_TOKEN:
+    case types.SET_TEAMS_INCOMING:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
       break;
     default:

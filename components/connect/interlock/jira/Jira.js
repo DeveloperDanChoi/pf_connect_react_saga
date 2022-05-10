@@ -1,68 +1,38 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import _ from 'lodash';
-import {
-  getTeamsToken,
-} from '../../../../store/connect/connect';
-import { postTeamsJira } from '../../../../store/connect/jira/jira';
+import { useRouter } from 'next/router';
+import { modules } from '../../../../store/connect/jira/jira';
+import { template1 } from '../../../../service/connect';
 
 const Jira = () => {
   const dispatch = useDispatch();
-  const { team, jira, trello, connect } = useSelector((state) => {
+  const router = useRouter();
+  const { team, jira } = useSelector((state) => {
     console.log('Jira state !!', state);
     return state;
   });
-
-  /**
-   * @deprecated
-   */
-  const handleClick = () => {
-    // Router.push('/');
-  };
-  /**
-   * 계정 인증하기
-   */
-  const authConnect = () => {
-  };
-  /**
-   * 연동하고자 하는 리스트
-   */
-  const getList = () => {
-    dispatch(getTeamsToken({ connectType: 'jira' }));
-  };
-  /**
-   * 연동 항목 추가하기
-   */
-  const addConnect = () => {
-    dispatch(postTeamsJira());
-  };
-  /**
-   * 인증된 계정 삭제
-   */
-  const deleteConnect = (e, data) => {
-  };
+  const { creators } = modules;
 
   useEffect(() => {
-    getList();
+    template1.initialize({
+      dispatch,
+      router,
+      connectType: 'jira',
+      modules,
+      list: creators.getTeamsToken,
+      load: creators.getTeamsJira,
+      connect: [creators.postTeamsJira, creators.putTeamsJiraSetting],
+    });
   }, []);
 
   return (<>
-    <div onClick={handleClick} style={{
+    <div style={{
       width: '100%',
     }}>
       {/* ********** 인증 영역 !! ************* */}
       <div>dan의 JIRA</div>
       {/* ********** 리스트 영역 !! ************* */}
-      <div>알림을 받고자 하는 보드(Board)를 선택해주세요.</div>
-      <ul>
-        <li>Board 선택</li>
-        { trello.trelloBoards.boards && trello.trelloBoards.boards.map((data) => (
-          <div key={data.name}>
-            <li>{data.name}</li>
-          </div>
-        ))}
-      </ul>
       {/* ********** 토픽 영역 !! ************* */}
       <div>알림 메시지를 등록할 토픽 또는 채팅 JANDI를 선택해주세요.</div>
       <ul>
@@ -73,29 +43,6 @@ const Jira = () => {
       </ul>
       <button>토픽 생성하기</button>
       {/* ********** 설정 영역 !! ************* */}
-      <div>메시지 발생 이벤트 선택</div>
-      <div>카드</div>
-      <div>카드가 생성되었을 때</div>
-      <div>카드가 옮겨졌을 때</div>
-      <div>카드 이름이 변경되었을 때</div>
-      <div>코멘트가 카드에 추가되었을 때</div>
-      <div>첨부 파일이 카드에 추가되었을 때</div>
-      <div>설명(Description)이 변경되었을 때</div>
-      <div>마감일(Due date)이 변경되었을 때</div>
-      <div>라벨(Label)이 변경되었을 때</div>
-      <div>카드에 멤버가 추가되었을 때</div>
-      <div>카드가 archive 또는 unarchive되었을 때</div>
-      <div>리스트</div>
-      <div>리스트가 생성되었을 때</div>
-      <div>리스트 이름이 바뀌었을 때</div>
-      <div>리스트가 다른 보드로 옮겨졌을 때</div>
-      <div>리스트가 archive 또는 unarchive되었을 때</div>
-      <div>보드 이름이 바뀌었을 때</div>
-      <div>보드에 멤버가 추가되었을 때</div>
-      <div>체크리스트</div>
-      <div>체크리스트가 카드에 추가되었을 때</div>
-      <div>체크리스트 아이템이 생성되었을 때</div>
-      <div>체크리스트 아이템이 완료(Complete)/미완료(Incomplete)로 될 때</div>
       {/* ********** 프로필 영역 !! ************* */}
       <div>연동 서비스 프로필 설정</div>
       <div>팀 내에서 이 커넥트 항목이 메시지를 보낼 때의 프로필 이미지와 이름을 지정하실 수 있습니다.</div>
@@ -106,7 +53,9 @@ const Jira = () => {
       <ul>
         <li>언어</li>
       </ul>
-      <button onClick={addConnect}>연동 항목 추가하기</button>
+      <button onClick={(e) => {
+        template1.connect(e, { jira });
+      }}>연동 항목 추가하기</button>
     </div>
   </>);
 };

@@ -17,32 +17,32 @@ export const initialModules = [
    */
   {
     type: 'get',
-    name: 'GOOGLECALENDAR_CALENDARLIST',
+    name: 'AUTHENTICATION_GOOGLE_CALENDAR_CALENDAR_LIST',
     data: false,
     api: getAuthenticationGoogleCalendarCalendarList,
     watch: 'googleCalendarCalendarList',
   },
-  { type: 'set', name: 'GOOGLECALENDAR_CALENDARLIST', data: true },
+  { type: 'set', name: 'AUTHENTICATION_GOOGLE_CALENDAR_CALENDAR_LIST', data: true },
   /**
    * 구글 캘린더 Connect 연동 정보를 반환하는 API
    */
   {
     type: 'get',
-    name: 'GOOGLECALENDAR',
+    name: 'TEAMS_GOOGLE_CALENDAR',
     data: true,
     api: getTeamsGoogleCalendar,
   },
   {
     type: 'set',
-    name: 'GOOGLECALENDAR',
-    data: true
+    name: 'TEAMS_GOOGLE_CALENDAR',
+    data: true,
   },
   /**
    * 구글 캘린더와 Connect 연동을 하는 API
    */
   {
     type: 'post',
-    name: 'GOOGLECALENDAR',
+    name: 'TEAMS_GOOGLE_CALENDAR',
     data: false,
     api: postTeamsGoogleCalendar,
   },
@@ -51,34 +51,34 @@ export const initialModules = [
    */
   {
     type: 'put',
-    name: 'GOOGLECALENDAR_SETTING',
+    name: 'TEAMS_GOOGLE_CALENDAR_SETTING',
     data: true,
-    api: putTeamsGoogleCalendarSetting
+    api: putTeamsGoogleCalendarSetting,
   },
   /**
    * 연동 서비스 인증 삭제
    */
   {
-    type: 'put',
+    type: 'delete',
     name: 'AUTHENTICATIONS',
     data: true,
     api: deleteAuthentications,
   },
 ];
-export const modules = (() => util.createModule(initialModules))();
-
+export const modules = (() => util.createModule(initialModules, 'googleCalendar'))();
 export const initialState = {
   connects: [],
   teamsConnect: [],
   authentication: [],
 };
 
+const { types } = modules;
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
-    case modules.types.SET_GOOGLECALENDAR_CALENDARLIST:
+    case types.SET_AUTHENTICATION_GOOGLE_CALENDAR_CALENDAR_LIST:
       draft.calendarList = action.data;
       break;
-    case modules.types.SET_GOOGLECALENDAR:
+    case types.SET_TEAMS_GOOGLE_CALENDAR:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
       break;
     default:

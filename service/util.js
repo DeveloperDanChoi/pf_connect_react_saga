@@ -23,8 +23,9 @@ export const util = (() => {
   /**
    * 리덕스 모듈 생성
    */
-  function createModule(initialModules) {
-    const prefix = 'connect/googleCalendar/';
+  function createModule(initialModules, connectType) {
+    // eslint-disable-next-line no-param-reassign
+    const prefix = `connect/${connectType}/`;
     const types = {};
     const creators = {};
     let key = '';
@@ -40,6 +41,12 @@ export const util = (() => {
       creators,
     };
   }
+
+  /**
+   * @deprecated
+   * @param initialModules
+   * @returns {*[]}
+   */
   function addWatch(initialModules) {
     const watch = [];
     for (const module of initialModules) {

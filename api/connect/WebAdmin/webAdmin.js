@@ -9,7 +9,7 @@ import {
 import {
   deleteTeamsGithub,
   getTeamsGithub,
-  postGithub,
+  postTeamsGithub,
   putTeamsGithubSetting,
   putTeamsGithubStatus,
 } from './Github/github';
@@ -67,7 +67,7 @@ export const webAdmin = (() => ({
   github: {
     deleteTeams: deleteTeamsGithub,
     getTeams: getTeamsGithub,
-    post: postGithub,
+    postTeams: postTeamsGithub,
     putTeamsSetting: putTeamsGithubSetting,
     putTeamsStatus: putTeamsGithubStatus,
   },

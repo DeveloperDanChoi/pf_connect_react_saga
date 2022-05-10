@@ -1,64 +1,34 @@
 /* eslint-disable max-len */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import _ from 'lodash';
-import {
-  getTrelloBoards,
-  putTrello,
-  putAuthentications,
-} from '../../../../store/connect/trello/trello';
+import { useRouter } from 'next/router';
+import { modules } from '../../../../store/connect/trello/trello';
+import { template1 } from '../../../../service/connect';
 
 const Trello = () => {
   const dispatch = useDispatch();
-  const { team, trello, connect } = useSelector((state) => {
+  const router = useRouter();
+  const { team, trello } = useSelector((state) => {
     // console.log('Trello state !!', state);
     return state;
   });
-
-  /**
-   * @deprecated
-   */
-  const handleClick = () => {
-    // Router.push('/');
-  };
-  /**
-   * 계정 인증하기
-   */
-  const authConnect = () => {
-    // TODO: popupDone callback ??
-    // const popup
-    window.open(
-      'https://www.jandi.io/connect/auth/trello?callbackEventName=popupDone',
-      'connectAuth',
-      'resizable=no, scrollbars=1, toolbar=no, menubar=no, status=no, directories=no, width=1024, height=768',
-    );
-  };
-  /**
-   * 연동하고자 하는 리스트
-   */
-  const getList = () => {
-    // if (isAuth) dispatch(getTrelloBoards());
-    dispatch(getTrelloBoards());
-  };
-  /**
-   * 연동 항목 추가하기
-   */
-  const addConnect = () => {
-    dispatch(putTrello());
-  };
-  /**
-   * 인증된 계정 삭제
-   */
-  const deleteConnect = (e, data) => {
-    dispatch(putAuthentications(data, data));
-  };
+  const { creators } = modules;
 
   useEffect(() => {
-    getList();
+    template1.initialize({
+      dispatch,
+      router,
+      connectType: 'trello',
+      modules,
+      list: creators.getAuthenticationTrelloBoardsList,
+      load: creators.getTeamsTrello,
+      connect: [creators.postTeamsTrello, creators.putTeamsTrelloSetting],
+      disconnect: creators.deleteAuthentications,
+    });
   }, []);
 
   return (<>
-    <div onClick={handleClick} style={{
+    <div style={{
       width: '100%',
     }}>
       {/* ********** 인증 영역 !! ************* */}
@@ -66,17 +36,17 @@ const Trello = () => {
       <div>인증된 계정</div>
       <ul>
         <li>계정 추가하기</li>
-        { !trello.trelloBoards.authenticationId && <button onClick={authConnect}>Trello 계정 인증하기</button> }
-        { trello.trelloBoards.authenticationId
-        && <div><li>{trello.trelloBoards.authenticationName}</li><button onClick={(e) => {
-          deleteConnect(e, trello.trelloBoards);
+        { !trello.authenticationTrelloBoardsList.authenticationId && <button onClick={template1.authorize}>Trello 계정 인증하기</button> }
+        { trello.authenticationTrelloBoardsList.authenticationId
+        && <div><li>{trello.authenticationTrelloBoardsList.authenticationName}</li><button onClick={(e) => {
+          template1.disconnect(e, trello.authenticationTrelloBoardsList);
         }}>X</button></div> }
       </ul>
       {/* ********** 리스트 영역 !! ************* */}
       <div>알림을 받고자 하는 보드(Board)를 선택해주세요.</div>
       <ul>
         <li>Board 선택</li>
-        { trello.trelloBoards.boards && trello.trelloBoards.boards.map((data) => (
+        { trello.authenticationTrelloBoardsList.boards && trello.authenticationTrelloBoardsList.boards.map((data) => (
           <div key={data.name}>
             <li>{data.name}</li>
           </div>
@@ -125,7 +95,9 @@ const Trello = () => {
       <ul>
         <li>언어</li>
       </ul>
-      <button onClick={addConnect}>연동 항목 추가하기</button>
+      <button onClick={(e) => {
+        template1.connect(e, { trello });
+      }}>연동 항목 추가하기</button>
     </div>
   </>);
 };

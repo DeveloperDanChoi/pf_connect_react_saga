@@ -2,8 +2,6 @@
 import produce from '../../lib/produce';
 import {util} from "../../service/util";
 
-export const GET_TEAMS_TOKEN = 'connect/GET_TEAMS_TOKEN';
-export const SET_TEAMS_TOKEN = 'connect/SET_TEAMS_TOKEN';
 export const GET_CONNECTS = 'connect/GET_CONNECTS';
 export const SET_CONNECTS = 'connect/SET_CONNECTS';
 export const SET_TEAMS_CONNECT = 'connect/SET_TEAMS_CONNECT';
@@ -15,8 +13,6 @@ export const UPDATE_STATUS = 'connect/UPDATE_STATUS';
 export const DELETE_CONNECT = 'connect/DELETE_CONNECT';
 
 export const getConnects = () => ({ type: GET_CONNECTS });
-export const getTeamsToken = (data) => ({ type: GET_TEAMS_TOKEN, data });
-export const setTeamsToken = (data) => ({ type: SET_TEAMS_TOKEN, data });
 export const setConnects = (data) => ({ type: SET_CONNECTS, data });
 export const updateConnects = (data) => ({ type: UPDATE_CONNECTS, data });
 export const setTeamsConnect = (data) => ({ type: SET_TEAMS_CONNECT, data });
@@ -112,7 +108,6 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case SET_CONNECTS_OPEN:
       draft.connects = [...draft.connects, action.data];
       break;
-    case SET_TEAMS_TOKEN:
     case SET_BANNER_HIDE:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
       break;

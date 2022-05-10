@@ -1,38 +1,64 @@
-/* eslint-disable max-len */
+/* eslint-disable max-len,no-empty-function */
 import {
-  all, call, fork, put, takeLatest, select,
+  call, put,
 } from 'redux-saga/effects';
+import { initialModules, modules } from './bitbucket';
 import {
-  GET_TRELLO_BOARDS,
-  setTrelloBoards,
-  PUT_TRELLO,
-  PUT_AUTHENTICATIONS, POST_TEAMS_BITBUCKET,
-  setTeamsJiraToken,
-} from './bitbucket';
-import { getAuthenticationTrelloBoardsList, deleteAuthentications } from '../../../api/connect/Authentication/authentication';
-import { postTeamsBitbucket } from '../../../api/connect/WebAdmin/Bitbucket/bitbucket';
-import { getTeamsToken } from '../connect';
+  getTeamsBitbucket,
+  postTeamsBitbucket, putTeamsBitbucketSetting,
+} from '../../../api/connect/WebAdmin/Bitbucket/bitbucket';
+import { getTeamsToken } from '../../../api/connect/WebAdmin/webAdmin';
 
-export function* postTeamsBitbucketSaga() {
-  const data = yield select(getTeamsToken);
-  console.log(data.data.connect.teamsToken.webhookToken);
-  const params = {
-    botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-bitbucket.png',
-    botName: 'Bitbucket2',
-    defaultBotName: 'Bitbucket',
-    lang: 'ko',
-    webhookToken: data.data.connect.teamsToken.webhookToken,
-    roomId: 20128232,
-  };
-  yield call(postTeamsBitbucket, { teamId: 279, data: params });
-  // yield put(putGooglecalendar(result.data));
-}
+const { creators } = modules;
+export const saga = (() => ({
+  /**
+   * Webhook용 Token을 요청하는 API
+   */
+  * getTeamsToken(data) {
+    const result = yield call(getTeamsToken, { connectType: 'bitbucket', teamId: 279 });
+    yield put(creators.setTeamsToken(result.data));
+  },
+  /**
+   * Bitbucket Connect 설정을 단일 조회하는 API
+   * @param data
+   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>|SimpleEffect<"PUT", PutEffectDescriptor<*>>, void, *>}
+   */
+  * getTeamsBitbucket(data) {
+    const result = yield call(getTeamsBitbucket, data.data);
+    yield put(creators.setTeamsBitbucket(result.data));
+  },
+  /**
+   * Bitbucket Connect 설정을 생성하는 API
+   * @param data
+   * @returns {Generator<*, void, *>}
+   */
+  * postTeamsBitbucket(data) {
+    const params = {
+      botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-bitbucket.png',
+      botName: 'Bitbucket_OK',
+      defaultBotName: 'Bitbucket',
+      lang: 'ko',
+      webhookToken: data.data.bitbucket.teamsToken.webhookToken,
+      roomId: 20128232,
+    };
+    const result = yield call(postTeamsBitbucket, { teamId: 279, data: params });
+  },
+  /**
+   * Bitbucket Connect 설정을 수정하는 API
+   * @param data
+   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
+   */
+  * putTeamsBitbucketSetting(data) {
+    const params = {
+      connectId: data.data.connectId,
+      botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-bitbucket.png',
+      botName: 'Bitbucket',
+      defaultBotName: 'Bitbucket',
+      lang: 'ko',
+      roomId: '20128232',
+    };
+    const result = yield call(putTeamsBitbucketSetting, { teamId: 279, data: params });
+  },
+}))();
 
-function* watchPostTeamsBitbucket() {
-  yield takeLatest(POST_TEAMS_BITBUCKET, postTeamsBitbucketSaga);
-}
-export default function* bitbucketSaga() {
-  yield all([
-    fork(watchPostTeamsBitbucket),
-  ]);
-}
+export default function* bitbucketSaga() {}
