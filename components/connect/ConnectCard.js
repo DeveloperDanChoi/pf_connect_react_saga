@@ -33,7 +33,7 @@ const ConnectCard = () => {
             </div>
           </div>
           {/* 서비스 연결 세부 목록 */}
-          <TeamsConnectPlug parent={data} display={data.display} />
+          {/*<TeamsConnectPlug parent={data} display={data.display} />*/}
         </li>
     )) }
   </ul></>);

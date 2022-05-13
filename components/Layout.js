@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import ConnectList from './connect/ConnectCard';
 import { setBannerHide } from '../store/connect/connect';
 import { helpUrl, surveyUrl } from '../constants/path';
+import Header from './Header';
+import Left from './Left';
 
 const Layout = (props) => {
   const dispatch = useDispatch();
@@ -61,6 +63,10 @@ const Layout = (props) => {
 
   return (<>
     {props.children}
+    {/* 헤더 영역*/}
+    <Header />
+    {/* 메뉴 영역 */}
+    <Left />
     {/* 배너 영역 */}
     <article className={ connect.bannerHide } style={{ border: '1px solid' }}>
       <p>잔디 커넥트를 처음 사용하시나요? 이제 Google 캘린더, Trello, GitHub, JIRA 등을 연동하여 잔디에서 알림을 받아보세요.</p>
