@@ -22,6 +22,7 @@ import trelloSaga, { saga as trelloActions } from './connect/trello/trelloSaga';
 import { modules as trelloModules } from './connect/trello/trello';
 import teamSaga from './team/teamSaga';
 import userSaga from './user/userSaga';
+import modalSaga from './modal/modalSaga';
 import { config } from '../lib/config';
 import { util } from '../service/util';
 
@@ -62,8 +63,9 @@ export default function* rootSaga() {
     // fork(authSagas),
     // fork(memberManagementSaga),
     // fork(organizationSaga),
-    fork(userSaga),
     fork(teamSaga),
+    fork(userSaga),
+    fork(modalSaga),
     // fork(securitySagas),
     // fork(paymentSagas),
     // fork(downloadHistorySagas),

@@ -28,7 +28,8 @@ import {
   getAuthenticationGoogleCalendarCalendarList,
 } from '../../api/connect/Authentication/authentication';
 import {
-  getAccountV2,
+  getAccountMembersV2,
+  getAccountV3,
 } from '../../api/inner/account';
 import {
   getStartAccountV2,
@@ -56,53 +57,59 @@ function* authorize(action) {
       action.data === 'local' ? 'tosslab' : action.data,
     );
     if (result.status === 200 && result.data.valid) {
-      const { teamId } = result.data;
-      yield put(setTeamId(teamId));
+      // const result2 = yield call(
+      //     getAccountMembersV2,
+      // );
+      // console.log( result2 )
+      if (result.status === 200) {
+        const { teamId } = result.data;
+        yield put(setTeamId(teamId));
 
-      const apis = [
-        call(getConnect),
-        call(getTeamsConnect, teamId),
-        call(getAuthenticationList, teamId),
-        call(getStartAccountV2),
-        call(getAccountV2),
-      ];
+        const apis = [
+          call(getConnect),
+          call(getTeamsConnect, teamId),
+          call(getAuthenticationList, teamId),
+          call(getStartAccountV2),
+          call(getAccountV3),
+        ];
 
-      if (history.state.url === '/googleCalendar') {
-        apis.push(call(getAuthenticationGoogleCalendarCalendarList));
-      } else if (history.state.url !== '/') {
-        console.log(history.state);
+        if (history.state.url === '/googleCalendar') {
+          apis.push(call(getAuthenticationGoogleCalendarCalendarList));
+        } else if (history.state.url !== '/') {
+          console.log(history.state);
+        }
+
+        const results = yield all(apis);
+
+        if (results[0].status === 200) {
+          yield put(setConnects(((data) => {
+            for (const item of data) {
+              item.display = 'block';
+            }
+            return data;
+          })(results[0].data.connects)));
+        }
+
+        if (results[1].status === 200) {
+          yield put(setTeamsConnect(results[1].data));
+        }
+
+        yield put(setAuthentication(results[2].data));
+
+        if (results[3].status === 200) {
+          yield put(setTeam(_.filter(results[3].data.memberships, (d) => d.teamId === teamId)[0]));
+        }
+
+        if (results[4].status === 200) {
+          yield put(setUser(results[4].data));
+        }
+
+        if (history.state.url === '/googleCalendar') {
+          yield put(googleCalendarModules.creators.setAuthenticationGoogleCalendarCalendarList(results[results.length - 1].data));
+        }
+
+        isUnauthorized = false;
       }
-
-      const results = yield all(apis);
-
-      if (results[0].status === 200) {
-        yield put(setConnects(((data) => {
-          for (const item of data) {
-            item.display = 'block';
-          }
-          return data;
-        })(results[0].data.connects)));
-      }
-
-      if (results[1].status === 200) {
-        yield put(setTeamsConnect(results[1].data));
-      }
-
-      yield put(setAuthentication(results[2].data));
-
-      if (results[3].status === 200) {
-        yield put(setTeam(_.filter(results[3].data.memberships, (d) => d.teamId === teamId)[0]));
-      }
-
-      if (results[4].status === 200) {
-        yield put(setUser(results[4].data));
-      }
-
-      if (history.state.url === '/googleCalendar') {
-        yield put(googleCalendarModules.creators.setAuthenticationGoogleCalendarCalendarList(results[results.length - 1].data));
-      }
-
-      isUnauthorized = false;
     }
   } catch (e) {
     console.error(e);

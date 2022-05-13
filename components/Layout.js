@@ -28,7 +28,7 @@ const Layout = (props) => {
       Router.events.off('routeChangeComplete', routeChangeComplete);
       Router.events.off('routeChangeError', routeChangeError);
     };
-  });
+  }, []);
 
   /**
    * 배너

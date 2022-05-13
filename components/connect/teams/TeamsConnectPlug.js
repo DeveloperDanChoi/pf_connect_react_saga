@@ -9,7 +9,7 @@ import { setConnectId } from '../../../store/connect/github/github';
 const TeamsConnectPlug = (props) => {
   const dispatch = useDispatch();
   const { connect } = useSelector((state) => {
-    console.log(state);
+    // console.log(state);
     return state;
   });
 
