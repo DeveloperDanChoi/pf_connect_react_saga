@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { withRouter } from 'next/router';
+import { useRouter, withRouter } from 'next/router';
 
 const Header = (props) => {
-  const { team } = useSelector((state) => state.team);
+  const router = useRouter();
+
+  const handleBack = () => {
+    if (router.asPath !== '/') {
+      router.back();
+    }
+  };
 
   return (<>
-    <button>뒤로가기</button>
+    <button onClick={handleBack}>뒤로가기</button>
     <span>잔디 커넥트</span>
     <button>X</button>
   </>);
