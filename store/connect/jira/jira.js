@@ -51,9 +51,26 @@ export const initialModules = [
     data: true,
     api: putTeamsJiraSetting,
   },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_JIRA',
+    data: true,
+  },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_JIRA_VALUE',
+    data: true,
+  },
 ];
 export const modules = (() => util.createModule(initialModules, 'jira'))();
 export const initialState = {
+  input: {},
 };
 
 const { types } = modules;
@@ -62,6 +79,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case types.SET_TEAMS_TOKEN:
     case types.SET_TEAMS_JIRA:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
+      break;
+    case types.SET_INPUT_JIRA_VALUE:
+      draft.input[action.data.data.key] = action.data.data.value;
       break;
     default:
       break;

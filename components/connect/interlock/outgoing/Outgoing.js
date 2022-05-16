@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { modules } from '../../../../store/connect/outgoing/outgoing';
 import { template1 } from '../../../../service/connect';
+import Thumbnail from "../../../ui/Thumbnail/Thumbnail";
 
 const Outgoing = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const Outgoing = () => {
       list: creators.getTeamsToken,
       load: creators.getTeamsOutgoing,
       connect: [creators.postTeamsOutgoing, creators.putTeamsOutgoingSetting],
+      set: creators.setInputOutgoing,
     });
   }, []);
 
@@ -49,7 +51,7 @@ const Outgoing = () => {
       {/* ********** 프로필 영역 !! ************* */}
       <div>연동 서비스 프로필 설정</div>
       <div>팀 내에서 이 커넥트 항목이 메시지를 보낼 때의 프로필 이미지와 이름을 지정하실 수 있습니다.</div>
-      <div>이미지</div>
+      <Thumbnail state={outgoing} parent={template1} />
       <input />
       <div>언어 설정</div>
       <div>수신할 메시지의 언어를 선택합니다.</div>

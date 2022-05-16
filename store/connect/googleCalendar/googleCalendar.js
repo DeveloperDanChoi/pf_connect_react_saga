@@ -64,12 +64,29 @@ export const initialModules = [
     data: true,
     api: deleteAuthentications,
   },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_GOOGLE_CALENDAR',
+    data: true,
+  },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_GOOGLE_CALENDAR_VALUE',
+    data: true,
+  },
 ];
 export const modules = (() => util.createModule(initialModules, 'googleCalendar'))();
 export const initialState = {
   connects: [],
   teamsConnect: [],
   authentication: [],
+  input: {},
 };
 
 const { types } = modules;
@@ -80,6 +97,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case types.SET_TEAMS_GOOGLE_CALENDAR:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
+      break;
+    case types.SET_INPUT_GOOGLE_CALENDAR_VALUE:
+      draft.input[action.data.data.key] = action.data.data.value;
       break;
     default:
       break;

@@ -40,14 +40,34 @@ export const initialModules = [
     data: true,
     api: putTeamsRssSetting,
   },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_RSS',
+    data: true,
+  },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_RSS_VALUE',
+    data: true,
+  },
 ];
 export const modules = (() => util.createModule(initialModules, 'bitbucket'))();
 export const initialState = {
+  input: {},
 };
 
 const { types } = modules;
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
+    case types.SET_INPUT_RSS_VALUE:
+      draft.input[action.data.data.key] = action.data.data.value;
+      break;
     default:
       break;
   }

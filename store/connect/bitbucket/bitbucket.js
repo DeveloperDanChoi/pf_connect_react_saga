@@ -51,9 +51,26 @@ export const initialModules = [
     data: true,
     api: putTeamsBitbucketSetting,
   },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_BITBUCKET',
+    data: true,
+  },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_BITBUCKET_VALUE',
+    data: true,
+  },
 ];
 export const modules = (() => util.createModule(initialModules, 'bitbucket'))();
 export const initialState = {
+  input: {},
 };
 
 const { types } = modules;
@@ -62,6 +79,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case types.SET_TEAMS_TOKEN:
     case types.SET_TEAMS_BITBUCKET:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
+      break;
+    case types.SET_INPUT_BITBUCKET_VALUE:
+      draft.input[action.data.data.key] = action.data.data.value;
       break;
     default:
       break;

@@ -63,12 +63,29 @@ export const initialModules = [
     data: true,
     api: deleteAuthentications,
   },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_GITHUB',
+    data: true,
+  },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_GITHUB_VALUE',
+    data: true,
+  },
 ];
 export const modules = (() => util.createModule(initialModules, 'github'))();
 export const initialState = {
   authenticationGithubReposList: {
     authenticationId: '',
   },
+  input: {},
 };
 
 const { types } = modules;
@@ -77,6 +94,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case types.SET_TEAMS_GITHUB:
     case types.SET_AUTHENTICATION_GITHUB_REPOS_LIST:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
+      break;
+    case types.SET_INPUT_GITHUB_VALUE:
+      draft.input[action.data.data.key] = action.data.data.value;
       break;
     default:
       break;

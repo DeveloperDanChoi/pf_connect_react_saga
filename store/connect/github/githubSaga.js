@@ -86,6 +86,20 @@ export const saga = (() => ({
     const { authenticationId } = data.data;
     const result = yield call(deleteAuthentications, { authenticationId });
   },
+  /**
+   * 사용자 정의 데이터
+   * @param data
+   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
+   */
+  * setInputGithub(data) {
+    yield put(creators.setInputGithubValue(data));
+  },
+  /**
+   * 사용자 정의 데이터
+   * @param data
+   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
+   */
+  * setInputGithubValue() {},
 }))();
 
 export default function* githubSaga() {}

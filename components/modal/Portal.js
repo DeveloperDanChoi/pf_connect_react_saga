@@ -19,11 +19,12 @@ const modalWarapper = ({ content, mainClassName, overlayBg }) => {
 
   const handleClose = (e) => {
     dispatch(close());
-  }
+  };
 
   return (<>
     <div id="modalWrapper" onClick={() => dispatch(close())}>
       <div>
+        <div><button onClick={handleClose}>X</button></div>
         <div className="modal-content" onClick={e => e.stopPropagation()}>
           <div className={mainClassName}>
             {content}

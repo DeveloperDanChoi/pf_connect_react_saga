@@ -64,6 +64,20 @@ export const saga = (() => ({
     };
     const result = yield call(putTeamsOutgoingSetting, { teamId: 279, data: params });
   },
+  /**
+   * 사용자 정의 데이터
+   * @param data
+   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
+   */
+  * setInputOutgoing(data) {
+    yield put(creators.setInputOutgoingValue(data));
+  },
+  /**
+   * 사용자 정의 데이터
+   * @param data
+   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
+   */
+  * setInputOutgoingValue() {},
 }))();
 
 export default function* outgoingSaga() {}

@@ -65,6 +65,14 @@ export const template1 = (() => {
     // that.dispatch(action.call(null, data));
   }
 
+  /**
+   * 해당 서비스에서 접근 가능한 연동 리스트<br>
+   * @param data
+   */
+  function set(key, value) {
+    that.dispatch(that.set.call(null, { key, value }));
+  }
+
   function initialize(data, isList = true) {
     for (const item in data) {
       that[item] = data[item];
@@ -87,6 +95,7 @@ export const template1 = (() => {
     disconnect,
     authorize,
     connect,
+    set,
   };
 })();
 

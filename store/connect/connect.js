@@ -45,6 +45,7 @@ export const initialState = {
   teamsToken: {
     webhookToken: '',
   },
+  input: {},
 };
 
 const tempText = () => {
@@ -89,6 +90,7 @@ const tempText = () => {
 };
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
+  console.log(action.type)
   switch (action.type) {
     case SET_CONNECTS:
       action.data = ((data) => {
@@ -119,6 +121,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         }
         return draft.connects;
       })();
+      break;
+    case 'connect/github/SET_INPUT_GITHUB_VALUE':
+      draft.input[action.data.data.key] = action.data.data.value;
       break;
     default:
       break;

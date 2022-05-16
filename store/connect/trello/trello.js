@@ -62,10 +62,27 @@ export const initialModules = [
     data: true,
     api: deleteAuthentications,
   },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_TRELLO',
+    data: true,
+  },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_TRELLO_VALUE',
+    data: true,
+  },
 ];
 export const modules = (() => util.createModule(initialModules, 'trello'))();
 export const initialState = {
   authenticationTrelloBoardsList: {},
+  input: {},
 };
 
 const { types } = modules;
@@ -73,6 +90,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
     case types.SET_AUTHENTICATION_TRELLO_BOARDS_LIST:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
+      break;
+    case types.SET_INPUT_TRELLO_VALUE:
+      draft.input[action.data.data.key] = action.data.data.value;
       break;
     default:
       break;

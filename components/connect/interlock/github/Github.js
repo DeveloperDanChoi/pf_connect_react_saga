@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { modules } from '../../../../store/connect/github/github';
 import { template1 } from '../../../../service/connect';
-import { Portal } from '../../../modal/Portal';
-import ModalContent from '../../../modal/ModalContent';
-import PcAddOnComponent from '../../../PcAddOnComponent';
+import Thumbnail from '../../../ui/Thumbnail/Thumbnail';
 
 const Github = () => {
   const dispatch = useDispatch();
@@ -16,16 +14,6 @@ const Github = () => {
     return state;
   });
   const { creators } = modules;
-
-  const handleClick = () => {
-    dispatch(
-      Portal.open({
-        content: <ModalContent />,
-        mainClassName: '',
-        overlayBg: true,
-      })
-    );
-  };
 
   useEffect(() => {
     template1.initialize({
@@ -37,6 +25,7 @@ const Github = () => {
       load: creators.getTeamsGithub,
       connect: [creators.postTeamsGithub, creators.putTeamsGithubSetting],
       disconnect: creators.deleteAuthentications,
+      set: creators.setInputGithub,
     });
   }, []);
 
@@ -45,7 +34,6 @@ const Github = () => {
       width: '100%',
     }}>
       {/* ********** 인증 영역 !! ************* */}
-      <PcAddOnComponent />
       <div>dan의 Github</div>
       <div>인증된 계정</div>
       <ul>
@@ -79,7 +67,7 @@ const Github = () => {
             <li key={i}>{data.name}</li>))
         }
       </ul>
-      <button onClick={handleClick}>토픽 생성하기</button>
+      <button>토픽 생성하기</button>
       {/* ********** 설정 영역 !! ************* */}
       <div>메시지 발생 이벤트 선택</div>
       <div>Commits</div>
@@ -93,7 +81,7 @@ const Github = () => {
       {/* ********** 프로필 영역 !! ************* */}
       <div>연동 서비스 프로필 설정</div>
       <div>팀 내에서 이 커넥트 항목이 메시지를 보낼 때의 프로필 이미지와 이름을 지정하실 수 있습니다.</div>
-      <div>이미지</div>
+      <Thumbnail state={github} parent={template1} />
       <input />
       <div>언어 설정</div>
       <div>수신할 메시지의 언어를 선택합니다.</div>

@@ -68,6 +68,63 @@ const call = (target, method, uri, headersInfo, data = null) => {
     }
   }
 };
+const callL10N = (target, method, uri, headersInfo, data = null) => {
+  const setUrl = () => {
+    const url = config.getConfig().L10N_URL;
+    return `${url}${uri}`;
+  };
+
+  const setHeaders = () => {
+    const { version, req } = headersInfo;
+    const accessToken = req ? getAccessTokenFromServer(req) : getAccessToken();
+
+    const accept = `application/vnd.tosslab.jandi-v${version}+json`;
+    const authorization = `bearer ${accessToken}`;
+
+    return {
+      'content-type': target !== 'upload' ? 'application/json;charset=UTF-8' : 'multipart/form-data;',
+      accept,
+      authorization,
+    };
+  };
+
+  const url = setUrl();
+  const headers = setHeaders();
+
+  if (headersInfo?.responseType === 'arraybuffer') {
+    return axios.get(url, {
+      headers,
+      responseType: headersInfo.responseType
+    });
+  }
+
+  switch (method) {
+    case 'get': {
+      return axios.get(url, {
+        headers,
+      }).catch((err) => console.error(err));
+    }
+    case 'post': {
+      return axios.post(url, data, {
+        headers,
+      }).catch((err) => console.error(err));
+    }
+    case 'put': {
+      return axios.put(url, data, {
+        headers,
+      }).catch((err) => console.error(err));
+    }
+    case 'delete': {
+      return axios.delete(url, {
+        data,
+        headers,
+      }).catch((err) => console.error(err));
+    }
+    default: {
+      console.error('error');
+    }
+  }
+};
 
 export const api = {
   get: (uri, headersInfo) => call('api', 'get', uri, headersInfo),
@@ -83,6 +140,10 @@ export const web = {
 
 export const upload = {
   put: (uri, data, headersInfo) => call('upload', 'put', uri, headersInfo, data),
+};
+
+export const l10n = {
+  get: (uri, headersInfo) => callL10N('api', 'get', uri, headersInfo),
 };
 
 export default {};

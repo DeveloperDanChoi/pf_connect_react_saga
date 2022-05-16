@@ -32,6 +32,7 @@ import {
   getAccountV3,
 } from '../../api/inner/account';
 import {
+  getL10N,
   getStartAccountV2,
 } from '../../api/start/start';
 import {
@@ -90,7 +91,8 @@ function* authorize(action) {
           })(results[0].data.connects)));
         }
 
-        if (results[1].status === 200) {
+        // TODO: MFA
+        if (results[1] && results[1].status === 200) {
           yield put(setTeamsConnect(results[1].data));
         }
 
@@ -107,6 +109,12 @@ function* authorize(action) {
         if (history.state.url === '/googleCalendar') {
           yield put(googleCalendarModules.creators.setAuthenticationGoogleCalendarCalendarList(results[results.length - 1].data));
         }
+
+        const resultL10N = yield call(
+            getL10N,
+        );
+        console.log( resultL10N )
+
 
         isUnauthorized = false;
       }

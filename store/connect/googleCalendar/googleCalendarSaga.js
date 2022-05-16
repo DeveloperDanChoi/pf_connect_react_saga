@@ -102,6 +102,20 @@ export const saga = (() => ({
     const { authenticationId } = data.data;
     const result = yield call(deleteAuthentications, { authenticationId });
   },
+  /**
+   * 사용자 정의 데이터
+   * @param data
+   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
+   */
+  * setInputGoogleCalendar(data) {
+    yield put(creators.setInputGoogleCalendarValue(data));
+  },
+  /**
+   * 사용자 정의 데이터
+   * @param data
+   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
+   */
+  * setInputGoogleCalendarValue() {},
 }))();
 
 export default function* googleCalendarSaga() {}

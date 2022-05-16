@@ -51,12 +51,29 @@ export const initialModules = [
     data: true,
     api: putTeamsOutgoingSetting,
   },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_OUTGOING',
+    data: true,
+  },
+  /**
+   * 사용자 정의 데이터
+   */
+  {
+    type: 'set',
+    name: 'INPUT_OUTGOING_VALUE',
+    data: true,
+  },
 ];
 export const modules = (() => util.createModule(initialModules, 'outgoing'))();
 export const initialState = {
   teamsToken: {
     webhookToken: '',
   },
+  input: {},
 };
 
 const { types } = modules;
@@ -64,6 +81,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
     case types.SET_TEAMS_TOKEN:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
+      break;
+    case types.SET_INPUT_OUTGOING_VALUE:
+      draft.input[action.data.data.key] = action.data.data.value;
       break;
     default:
       break;
