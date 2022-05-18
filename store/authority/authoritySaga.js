@@ -15,7 +15,7 @@ import {
   setAuthentication,
 } from '../connect/connect';
 import {
-  setUser,
+  modules,
 } from '../user/user';
 import { modules as googleCalendarModules } from '../connect/googleCalendar/googleCalendar';
 
@@ -41,7 +41,7 @@ import {
 import { getCookie, hasAccessToken } from '../../lib/cookie';
 
 /**
- * 인증에 문제가 있을 경우 로그인화면으로 이동
+ * 인증에 문제가 있을 경우 로그인화면으로 이동<br>
  * @param action
  * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): *)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): *)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): *)|* extends ((...args: any[]) => infer RT) ? RT : never))>>|SimpleEffect<"PUT", PutEffectDescriptor<{data: *, type: string}>>|SimpleEffect<"CALL", CallEffectDescriptor<(function(): *)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(): *)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(): *)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
  */
@@ -80,41 +80,44 @@ function* authorize(action) {
           console.log(history.state);
         }
 
-        const results = yield all(apis);
+        // const results = yield all(apis);
+        const [ connect, teamsConnect, authentication, teamsAccount, account, svc ] = yield all(apis);
 
-        if (results[0].status === 200) {
+        if (connect.status === 200) {
           yield put(setConnects(((data) => {
             for (const item of data) {
               item.display = 'block';
             }
             return data;
-          })(results[0].data.connects)));
+          })(connect.data.connects)));
         }
 
         // TODO: MFA
-        if (results[1] && results[1].status === 200) {
-          yield put(setTeamsConnect(results[1].data));
+        if (teamsConnect && teamsConnect.status === 200) {
+          yield put(setTeamsConnect(teamsConnect.data));
         }
 
-        yield put(setAuthentication(results[2].data));
+        yield put(setAuthentication(authentication.data));
 
-        if (results[3].status === 200) {
-          yield put(setTeam(_.filter(results[3].data.memberships, (d) => d.teamId === teamId)[0]));
+        if (teamsAccount.status === 200) {
+          yield put(setTeam(_.filter(teamsAccount.data.memberships, (d) => d.teamId === teamId)[0]));
         }
 
-        if (results[4].status === 200) {
-          yield put(setUser(results[4].data));
+        if (account.status === 200) {
+          yield put(modules.creators.setUser(account.data));
         }
 
         if (history.state.url === '/googleCalendar') {
-          yield put(googleCalendarModules.creators.setAuthenticationGoogleCalendarCalendarList(results[results.length - 1].data));
+          yield put(googleCalendarModules.creators.setAuthenticationGoogleCalendarCalendarList(svc.data));
         }
 
+
+        // TODO: DEV
         const resultL10N = yield call(
             getL10N,
         );
-        console.log( resultL10N )
 
+        yield put(modules.creators.setL10n(resultL10N.data));
 
         isUnauthorized = false;
       }

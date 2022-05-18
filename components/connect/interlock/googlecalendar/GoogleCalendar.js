@@ -9,7 +9,7 @@ import Thumbnail from "../../../ui/Thumbnail/Thumbnail";
 const GoogleCalendar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { team, googleCalendar } = useSelector((state) => {
+  const { team, googleCalendar, user } = useSelector((state) => {
     // console.log('GoogleCalendar state !!', state);
     return state;
   });
@@ -26,6 +26,7 @@ const GoogleCalendar = () => {
       connect: [creators.postTeamsGoogleCalendar, creators.putTeamsGoogleCalendarSetting],
       disconnect: creators.deleteAuthentications,
       set: creators.setInputGoogleCalendar,
+      elements: googleCalendar.input,
     });
   }, []);
 
@@ -37,7 +38,7 @@ const GoogleCalendar = () => {
       <div>dan의 Google 캘린더</div>
       <div>인증된 계정</div>
       <ul>
-        <li>계정 추가하기</li>
+        <li>{user.l10n['@503-unavailable-msg']}계정 추가하기</li>
         { googleCalendar.calendarList && googleCalendar.calendarList.length === 0 && <button onClick={template1.authorize}>구글 캘린더 계정 인증하기</button> }
         { googleCalendar.calendarList && googleCalendar.calendarList.map((data, i) => (
             <div key={i}><li>{data.authenticationName}</li><button onClick={(e) => {
@@ -65,8 +66,11 @@ const GoogleCalendar = () => {
       {/* ********** 설정 영역 !! ************* */}
       <div>알림 설정</div>
       <ul>
-        <li>정시</li>
-        <li>15분전</li>
+        {
+          googleCalendar.getMinuteList.map((data, i) => (
+            <li key={i}>{user.l10n[data.text]}</li>
+          ))
+        }
       </ul>
       <div>에 일정에 대한 알림 메시지 수신 (UTC+09:00)</div>
       <div>종일 일정의 경우</div>
@@ -105,7 +109,9 @@ const GoogleCalendar = () => {
       <div>연동 서비스 프로필 설정</div>
       <div>팀 내에서 이 커넥트 항목이 메시지를 보낼 때의 프로필 이미지와 이름을 지정하실 수 있습니다.</div>
       <Thumbnail state={googleCalendar} parent={template1} />
-      <input />
+      <input onChange={(e) => {
+        template1.set('botName', e.target.value);
+      }} />
       <div>언어 설정</div>
       <div>수신할 메시지의 언어를 선택합니다.</div>
       <ul>

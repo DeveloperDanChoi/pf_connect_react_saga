@@ -85,7 +85,19 @@ export const initialState = {
   authenticationGithubReposList: {
     authenticationId: '',
   },
-  input: {},
+  input: {
+    mode: '', // check !!
+    roomId: '',
+    botName: '',
+    botThumbnailFile: '',
+    lang: '',
+    authenticationId: '',
+    hookRepoId: '',
+    hookRepoName: '',
+    hookEvent: '',
+    hookBranch: '',
+    webhookToken: '',
+  },
 };
 
 const { types } = modules;

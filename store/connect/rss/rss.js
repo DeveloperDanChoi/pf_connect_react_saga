@@ -59,7 +59,13 @@ export const initialModules = [
 ];
 export const modules = (() => util.createModule(initialModules, 'bitbucket'))();
 export const initialState = {
-  input: {},
+  input: {
+    roomId: '',
+    feedUrl: '',
+    botName: '',
+    botThumbnailFile: '',
+    lang: '',
+  },
 };
 
 const { types } = modules;

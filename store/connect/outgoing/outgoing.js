@@ -73,7 +73,15 @@ export const initialState = {
   teamsToken: {
     webhookToken: '',
   },
-  input: {},
+  input: {
+    roomId: '',
+    webhookToken: '',
+    webhookUrl: '',
+    keyword: '',
+    lang: '',
+    botName: '',
+    botThumbnailFile: '',
+  },
 };
 
 const { types } = modules;

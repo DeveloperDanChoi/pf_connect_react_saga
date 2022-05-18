@@ -70,7 +70,12 @@ export const initialModules = [
 ];
 export const modules = (() => util.createModule(initialModules, 'incoming'))();
 export const initialState = {
-  input: {},
+  input: {
+    roomId: '',
+    webhookToken: '',
+    botName: '',
+    botThumbnailFile: '',
+  },
 };
 
 const { types } = modules;

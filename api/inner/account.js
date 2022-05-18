@@ -6,8 +6,8 @@ import { api } from '../_call';
  */
 export const getAccountV3 = () => api.get('/inner-api/account', { version: 3 });
 
-export const getAccountMembersV2 = () => api.get('/inner-api/account/members/20128231', { version: 2 });
-// export const getAccountMembersV2 = () => api.get('/inner-api/teams/279/members/20128231', { version: 3 });
+// export const getAccountMembersV2 = () => api.get('/inner-api/account/members/20128231', { version: 2 });
+export const getAccountMembersV2 = () => api.get('/inner-api/teams/279/members/20128231', { version: 3 });
 /**
  * API List > Inner API > account
  */

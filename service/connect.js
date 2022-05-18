@@ -77,7 +77,8 @@ export const template1 = (() => {
     for (const item in data) {
       that[item] = data[item];
     }
-    console.log(that);
+
+    // addEventListeners();
 
     // TODO: 다른 체크 방법 검토
     // if (!that.router.components['/']) {
@@ -86,6 +87,28 @@ export const template1 = (() => {
 
     if (that.router.query.id && that.router.query.id !== '') {
       load(that.load, that.router.query.id);
+    }
+  }
+
+  /**
+   * TODO: HOLD
+   * 마크업에 불필요한 정보 노출 문제
+   */
+  function addEventListeners() {
+    const doc = document;
+
+    const root = doc.getElementById('googleCalendarWrapper');
+    console.log( root )
+    for (const elementId in that.elements) {
+      const el = doc.getElementById(that.connectType + '-' + elementId);
+      if (el) {
+        el.dataset.key = elementId;
+        console.log( el )
+        el.addEventListener('change', (e) => {
+          // console.log('changed !!' ,  e);
+          template1.set(el.dataset.key, e.target.value);
+        });
+      }
     }
   }
   return {
