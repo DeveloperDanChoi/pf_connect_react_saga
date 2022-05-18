@@ -5,12 +5,13 @@ import Link from 'next/Link';
 import TeamsConnectPlug from './teams/TeamsConnectPlug';
 import { getPublicAssetPath } from '../../lib/assetHelper';
 import styles from './ConnectCard.module.scss';
+import Router, {useRouter} from "next/router";
 
 const ConnectCard = () => {
   const { connect } = useSelector((state) => state);
 
-  const handleDropdown = () => {
-    // dispatch(updateConnects(data));
+  const handleClick = (data) => {
+    Router.push(`/${data.name}`, `/${data.name}`);
   };
 
   return (<>
@@ -128,18 +129,18 @@ const ConnectCard = () => {
           </div>
         </div>
       </div>
-      {/* <div className={`${styles.connect_card_wrap} ${styles.type_list}`}>
+      {/*<div className={`${styles.connect_card_wrap} ${styles.type_list}`}>
         { connect.connects && connect.connects.map((data, i) => (
             <div className={styles.connect_card} key={i} >
               <div className={styles.inner}>
                 <img src={data.botThumbnail} className={styles.img}></img>
                 <strong>{data.label}</strong>
                 <p>{data.text}</p>
-                <button>연동하기</button>
+                <button className={`${styles.btn} ${styles.gray} ${styles.small}`} onClick={() => handleClick(data)}>연동하기</button>
               </div>
             </div>
         )) }
-      </div> */}
+      </div>*/}
     </div>
   </>);
 };
