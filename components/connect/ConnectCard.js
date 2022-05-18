@@ -6,9 +6,10 @@ import TeamsConnectPlug from './teams/TeamsConnectPlug';
 import { getPublicAssetPath } from '../../lib/assetHelper';
 import styles from './ConnectCard.module.scss';
 import Router, {useRouter} from "next/router";
+import { banner } from '../../service/banner';
 
 const ConnectCard = () => {
-  const { connect } = useSelector((state) => state);
+  const { connect, user } = useSelector((state) => state);
 
   const handleClick = (data) => {
     Router.push(`/${data.name}`, `/${data.name}`);
@@ -23,7 +24,7 @@ const ConnectCard = () => {
           <p>잔디 커넥트를 처음 사용하시나요? 이제 Google 캘린더, Trello, GitHub, JIRA 등을 연동하여 잔디에서 알림을 받아보세요.</p>
           <span>이제 Google 캘린더, Trello, GitHub, JIRA 등을 연동하여 잔디에서 알림을 받아보세요.</span>
         </div>
-        <button className={`${styles.btn} ${styles.green}`}>더 알아보기</button>
+        <button className={`${styles.btn} ${styles.green}`} onClick={() => banner.help(user)}>더 알아보기</button>
       </div>
       
       {/* 신규 서비스 */}

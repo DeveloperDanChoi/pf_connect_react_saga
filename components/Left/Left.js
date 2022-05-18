@@ -3,10 +3,11 @@ import { useSelector } from 'react-redux';
 import { withRouter } from 'next/router';
 import Link from 'next/link';
 import styles from './Left.module.scss';
+import { banner } from '../../service/banner';
 
 
 const Left = (props) => {
-  const { team } = useSelector((state) => state.team);
+  const { team, user } = useSelector((state) => state);
   const myConnectURL = '/connect/detail';
   const adminConnectURL = '/connect/admin';
 
@@ -24,8 +25,8 @@ const Left = (props) => {
       </li>
     </ul>
     <div className={styles.notice}>
-      <p>잔디 커넥트에 더 추가를 원하시는 서비스가 있으신가요?</p>
-      <button className={`${styles.btn} ${styles.green} ${styles.full}`}>서비스 연동 요청하기</button>
+      <p>찾으시는 서비스가 없으신가요?</p>
+      <button className={`${styles.btn} ${styles.green} ${styles.full}`} onClick={() => banner.survey(user)}>서비스 추가 요청하기</button>
     </div>
   </div>
 

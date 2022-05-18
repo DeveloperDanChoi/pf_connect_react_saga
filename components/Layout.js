@@ -32,35 +32,6 @@ const Layout = (props) => {
     };
   }, []);
 
-  /**
-   * 배너
-   * @type {{link: link, close: close}}
-   */
-  const banner = (({ lang }) => {
-    /**
-     * 배너 닫기
-     */
-    const close = () => {
-      dispatch(setBannerHide('none'));
-    };
-    /**
-     * 더 알아보기<br>
-     */
-    const help = () => {
-      window.open(helpUrl[lang]);
-    };
-    /**
-     * 서비스 연동 요청하기<br>
-     */
-    const survey = () => {
-      // window.open(surveyUrl.ko + '?email=' + primary.email);
-      window.open(surveyUrl[lang]);
-    };
-    return {
-      close, help, survey,
-    };
-  })(user.user);
-
   return (<>
   <div className='jdConnect-wrap'>
     {props.children}
@@ -74,8 +45,6 @@ const Layout = (props) => {
       {/* 서비스 목록 */}
       <ConnectList {...props}/>
     </div>
-    {/* 배너 영역 */}
- 
   </div>
   </>);
 };
