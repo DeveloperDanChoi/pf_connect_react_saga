@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Router, { withRouter } from 'next/router';
+import Router, {useRouter, withRouter} from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import ConnectList from './connect/ConnectCard';
 import { setBannerHide } from '../store/connect/connect';
@@ -9,6 +9,7 @@ import Left from './Left';
 
 const Layout = (props) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { connect, user } = useSelector((state) => state);
   const routeChangeStart = (url) => {
     console.log('routeChangeStart', url);
@@ -34,16 +35,14 @@ const Layout = (props) => {
 
   return (<>
   <div className='jdConnect-wrap'>
-    {props.children}
     {/* 헤더 영역*/}
     <Header />
     {/* 메뉴 영역 */}
     <div className='jdConnect-container'>
       <Left />
-      {/* 배너 영역 */}
-     
       {/* 서비스 목록 */}
-      <ConnectList {...props}/>
+      { router.pathname === '/' && <ConnectList {...props}/> }
+      { router.pathname !== '/' && <main>{props.children}</main> }
     </div>
   </div>
   </>);
