@@ -15,7 +15,7 @@ import {
 import {
   authorize,
 } from '../store/authority/authority';
-import '../styles/globals.css';
+import '../styles/globals.scss';
 // eslint-disable-next-line import/order
 import _ from 'lodash';
 import FixedMeta from '../components/FixedMeta';

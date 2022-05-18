@@ -9,7 +9,7 @@ class MyDocument extends Document {
     return (
       <Html lang="ko-KR">
         <Head />
-        <body id="jndApp" className="color-scheme-green mac">
+        <body id="jndApp" className="color-scheme-green mac dark">
           <Main />
           <NextScript />
         </body>

@@ -1,0 +1,40 @@
+/*
+    체크ㅏㄱ스
+*/
+
+.modalOpened {
+    overflow: hidden;
+  }
+  
+.blind {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip: rect(0 0 0 0);
+    margin: -1px;
+    overflow: hidden;
+}
+
+.clearFix:after {
+    content: ' ';
+    clear: both;
+    float: none;
+    display: block;
+    }
+
+.en,
+.ko {
+    word-break: keep-all;
+    word-wrap: break-word;
+    }
+.vi {
+    word-break: keep-all;
+    word-wrap: break-word;
+    letter-spacing: -0.5px;
+    }
+
+.ja .zh-cn,
+.zh-tw {
+    word-break: break-all;
+    word-wrap: break-word;
+    }

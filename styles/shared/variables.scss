@@ -1,0 +1,75 @@
+// theme default
+$light-gray-01: #E5E5E5;
+$light-gray-02: #F2F4F8; //BG/상세페이지 BG 및 버튼
+$light-gray-03: #E0E3E8; //BG/상세페이지 BG 및 버튼 hover
+$light-black-text-01:#333; //typo
+$light-black-text-02:#A2A2A2; //sub
+$light-green-01:#00C473; //잔디 메인
+$light-green-02:#F2FCF8; //background green
+$light-green-03:#00A25F; //hover
+$light-red-01:#FF5C48;//하이라티트
+$light-white-01: #FFF;
+$light-white-01: #FFF;
+$light-black-01: #000;
+
+$gray-01: #E5E5E5;
+$gray-02: #F2F4F8; //BG/상세페이지 BG 및 버튼
+$gray-03: #E0E3E8; //BG/상세페이지 BG 및 버튼 hover
+$black-text-01:#333; //typo
+$black-text-02:#A2A2A2; //sub
+$green-01:#00C473; //잔디 메인
+$green-02:#F2FCF8; //background green
+$green-03:#00A25F; //hover
+$red-01:#FF5C48;//하이라티트
+$white-01: #FFF;
+$white-01: #FFF;
+$black-01: #000;
+
+// theme dark
+$dark-gray-01: #212226;
+$dark-gray-02: #F2F4F8; //BG/상세페이지 BG 및 버튼
+$dark-gray-03: #E0E3E8; //BG/상세페이지 BG 및 버튼 hover
+
+$dark-black-text-01:#333; //typo
+$dark-black-text-02:#A2A2A2; //sub
+$dark-green-01:#00C473; //잔디 메인
+$dark-green-02:#F2FCF8; //background green
+$dark-green-03:#00A25F; //hover
+$dark-red-01:#FF5C48;//하이라티트
+$dark-white-01: #FFF;
+$dark-black-01: #000; 
+
+/*
+  사이즈 기준
+*/
+$jnd-pc-min-width: 1024px;
+$jnd-tablet-min-width: 768px;
+$jnd-tablet-max-width: 1023px;
+$iphone5: 320px;
+
+$colors:(
+  light: (
+    bg-color:#fff,
+    text-color:#323232,
+  ),
+  dark: (
+    bg-color:#323232,
+    text-color:#fff,
+  )
+);
+@mixin get-color($property,$color){
+  body {
+      #{$property}: get-color($color, light);
+  }
+  body.dark  {
+      #{$property}: get-color($color, dark);
+  }
+}
+@function get-color($key, $type: 'light'){
+  @each $name, $color in map-get($colors, $type){
+    @if($key == $name){
+      @return $color
+    }
+  }
+}
+

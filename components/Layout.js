@@ -62,24 +62,21 @@ const Layout = (props) => {
   })(user.user);
 
   return (<>
+  <div className='jdConnect-wrap'>
     {props.children}
     {/* 헤더 영역*/}
     <Header />
     {/* 메뉴 영역 */}
-    <Left />
+    <div className='jdConnect-container'>
+      <Left />
+      {/* 배너 영역 */}
+     
+      {/* 서비스 목록 */}
+      <ConnectList {...props}/>
+    </div>
     {/* 배너 영역 */}
-    <article className={ connect.bannerHide } style={{ border: '1px solid' }}>
-      <p>잔디 커넥트를 처음 사용하시나요? 이제 Google 캘린더, Trello, GitHub, JIRA 등을 연동하여 잔디에서 알림을 받아보세요.</p>
-      <button onClick={banner.close}>X</button>
-      <button onClick={banner.help}>더 알아보기</button>
-    </article>
-    {/* 서비스 목록 */}
-    <ConnectList {...props}/>
-    {/* 배너 영역 */}
-    <article style={{ border: '1px solid' }}>
-      <p>잔디 커넥트에 더 추가를 원하시는 서비스가 있으신가요?</p>
-      <button onClick={banner.survey}>서비스 연동 요청하기</button>
-    </article>
+ 
+  </div>
   </>);
 };
 

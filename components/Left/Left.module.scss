@@ -1,0 +1,36 @@
+@import 'styles/shared/variables.scss';
+@import 'styles/shared/mixins/common.scss';
+
+/*******aide******/
+.aside{
+    position: relative;
+    width: 18vw;
+    padding: 0 12px;
+}
+.wrap{
+    li{
+        padding: 11px 15px;
+        @include rounded(4px);
+        &:first-child{
+            margin: 11px 0;
+        }
+        &.active{
+            a{color: $green-01;}
+            background: $green-02;
+        }
+    }
+}
+.notice{
+    position: absolute;
+    bottom: 35px;
+    margin: 0 12px;
+    padding-top: 15px;
+    text-align: center;
+    border-top: 1px solid $gray-01;
+    p{
+        color: $black-text-02;
+    }
+    button{
+
+    }
+}

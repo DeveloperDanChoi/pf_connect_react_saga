@@ -1,0 +1,96 @@
+@import 'styles/shared/variables.scss';
+@import 'styles/shared/mixins/common.scss';
+
+.container{
+    width: 100%;
+    padding: 30px 47px;
+    @include get-color(background-color, bg-color);
+}
+.banner{
+    position: relative;
+    padding: 18px;
+    @include rounded(6px);
+    .txt_wrap{
+        display: inline-block;
+        p{
+            padding-bottom: 10px;
+        }
+        span{
+            font-size: 13px;
+            color: $black-text-02;
+        }
+    }
+    .btn{
+        position: absolute;
+        right: 18px;
+    }
+}
+.connect_card_wrap{
+    @include flex(stretch, start);
+    flex-wrap: wrap;
+    &.type_list {
+        .connect_card{
+            padding-top: 0;
+            .inner{
+                padding: 22px;
+            }
+            button {
+                position: absolute;
+                top: 22px;
+                right: 22px;
+              }
+        }
+    }
+    &.type_list_new {
+        .inner{
+            padding: 18px 16px;
+        }
+        .imgBox{
+            position: relative;
+            padding: 30px 0;
+            padding-top: 34%;
+            text-align: center;
+            background: #333;
+            box-shadow: 0px 4px 13px rgba(214, 220, 231, 0.35);
+            border-radius: 8px 8px 0 0;
+            &.asana{background: #F06A6A;}
+            img{
+                @include position(50%,50%)
+            }
+        }
+        button{
+            margin-top: 16px;
+            font-size: 13px;
+            // @include btn-white-gray(100%)
+          }
+    }
+    .connect_card{
+        // &:nth-child(5n-5){margin-right:0}
+        // &:nth-child(-n+5){margin-top: 0;}
+        position: relative;
+        width: calc(20% - 14px);
+        min-width: 270px;
+        margin: 7px;
+        min-height: 164px;
+        background: $white-01;
+        box-shadow: 0px 4px 13px rgba(214, 220, 231, 0.35);
+        @include rounded(8px);
+        
+        strong{
+            display: block;
+            margin: 10px 0 7px;
+            font-weight: 700;
+            @include ellipsis;
+        }
+        p{
+            color: $black-text-02;
+            font-size: 13px;
+            line-height: 1.2;
+            @include ellipsis($line: 2,$lineHeight: 1.2em);
+        }        
+        .img{
+            width: 54px;
+            height: 54px;
+        }
+    }
+}

@@ -1,0 +1,173 @@
+@import './buttons.scss';
+
+.inputDefault {
+  border: solid 1px gray-02;
+  padding: 15px 12px;
+  border-radius: 4px;
+}
+
+@mixin input-basic {
+  @extend .inputDefault;
+  &::placeholder {
+    // color: gray-162;
+    font-size: 16px;
+  }
+}
+
+@mixin select-basic {
+  @extend .inputDefault;
+//   color: gray-162;
+}
+
+@mixin box-shadow() {
+   
+    box-shadow: 0px 4px 13px rgba(214, 220, 231, 0.35);
+
+}
+@mixin bg($bgUrl, $bgColor: $white) {
+  background: url($bgUrl) no-repeat;
+  background-position: center bottom;
+  background-color: $bgColor;
+}
+@mixin title($emColor: $jnd-third-base-color) {
+  font-weight: 500;
+  margin: 0 auto;
+  font-size: 41.5px;
+  line-height: 49.5px;
+  span {
+    color: $emColor;
+  }
+}
+@mixin banner-title($emColor: $jnd-third-base-color) {
+  @include position(50%, 50%);
+  @include title($emColor);
+  max-width: 80%;
+  text-align: center;
+}
+
+@mixin jndLetter($basicColor, $strong: $jnd-base-color, $bold: normal) {
+  color: $basicColor;
+  font-weight: $bold;
+  span {
+    color: $strong;
+  }
+}
+
+@mixin icon($bgUrl, $size) {
+  &:before {
+    content: '';
+    display: inline-block;
+    width: $size;
+    height: $size;
+    background: url($bgUrl) no-repeat center;
+    background-size: contain;
+  }
+}
+
+@mixin bigLetter() {
+  margin-right: auto;
+  margin-left: auto;
+  line-height: 1.5;
+  font-weight: 300;
+  @media (min-width: $jnd-tablet-min-width) {
+    font-size: 28.5px;
+  }
+  @media (max-width: $jnd-tablet-min-width) {
+    font-size: 21px;
+  }
+}
+@mixin clear {
+  &:after {
+    content: '';
+    display: block;
+    float: none;
+    clear: both;
+  }
+}
+
+@mixin position($x, $y) {
+  position: absolute;
+  left: $x;
+  top: $y;
+  @if $x == 50% and $y == 50% {
+    transform: translate(-50%, -50%);
+  } @else if $y == 50% {
+    transform: translateY(-50%);
+  } @else if $x == 50% {
+    transform: translateX(-50%);
+  }
+}
+
+@mixin pseudoDefault($w, $h) {
+  position: absolute;
+  content: '';
+  width: $w;
+  height: $h;
+}
+
+@mixin imageRendering {
+  backface-visibility: hidden;
+      transform: translateZ(0);
+      image-rendering: -moz-crisp-edges; /* Firefox */
+      image-rendering: -o-crisp-edges; /* Opera */
+      image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+      image-rendering: crisp-edges;
+      -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
+}
+
+@mixin flex($item, $content) {
+  @each $prefix in -ms-, -webkit-, '' {
+    #{$prefix}align-items: $item;
+    #{$prefix}justify-content: $content;
+  }
+  display: flex;
+}
+
+@mixin rounded($radius: 8px) {
+  @each $prefix in -moz-, -o-, -webkit-, '' {
+    #{$prefix}border-radius: $radius;
+  }
+}
+
+@mixin transition($time...) {
+  @each $prefix in -moz-, -o-, -webkit-, '' {
+    #{$prefix}transition: $time;
+  }
+}
+
+@mixin transform($property...) {
+  @each $prefix in -ms-, -webkit-, -o-, -moz-, '' {
+    #{$prefix}transform: $property;
+  }
+}
+
+@mixin opacity($value) {
+  @each $prefix in -ms-, -webkit-, -o-, -moz-, '' {
+    #{$prefix}opacity: $value;
+  }
+}
+
+@mixin ellipsis($line: 1, $lineHeight: 1.2em) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap;
+  @if $line > 1 {
+    display: -webkit-box;
+    -webkit-line-clamp: $line; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+    white-space:unset;
+  }
+  line-height: $lineHeight;
+  height: calc(#{$line} * #{$lineHeight});
+
+  
+}
+
+@mixin essential() {
+  &:after {
+    content: '*';
+    padding-left: 3px;
+    color: $jnd-red-color;
+  }
+}
