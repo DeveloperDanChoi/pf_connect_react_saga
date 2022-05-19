@@ -15,8 +15,7 @@ const ConnectCard = () => {
   };
 
   return (<>
-    <div className='connect-card-container'>
-
+    <div className='connect-container'>
       {/* 배너 영역 */}
       <div className='connect-card-banner'>
         <div className='txt-wrap'>
@@ -72,7 +71,39 @@ const ConnectCard = () => {
             <button>연동하기</button>
           </div>
         </div>
+        <div className='connect-card'>
+          <div className='inner'>
+            <img src="" className='img'></img>
+            <strong>Notion</strong>
+            <p>Asana의 변동 사항을 잔디에서 확인하 수 있습니다.Asana의 변동 사항을 잔디에서 확인하 수 있습니다.</p>
+            <button>연동하기</button>
+          </div>
         </div>
+        <div className='connect-card'>
+          <div className='inner'>
+            <img src="" className='img'></img>
+            <strong>Notion</strong>
+            <p>Asana의 변동 사항을 잔디에서 확인하 수 있습니다.Asana의 변동 사항을 잔디에서 확인하 수 있습니다.</p>
+            <button>연동하기</button>
+          </div>
+        </div>
+        <div className='connect-card'>
+          <div className='inner'>
+            <img src="" className='img'></img>
+            <strong>Notion</strong>
+            <p>Asana의 변동 사항을 잔디에서 확인하 수 있습니다.Asana의 변동 사항을 잔디에서 확인하 수 있습니다.</p>
+            <button>연동하기</button>
+          </div>
+        </div>
+        <div className='connect-card'>
+          <div className='inner'>
+            <img src="" className='img'></img>
+            <strong>Notion</strong>
+            <p>Asana의 변동 사항을 잔디에서 확인하 수 있습니다.Asana의 변동 사항을 잔디에서 확인하 수 있습니다.</p>
+            <button>연동하기</button>
+          </div>
+        </div>
+      </div>
     </div>
   </>);
 };

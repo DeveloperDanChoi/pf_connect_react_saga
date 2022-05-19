@@ -3,6 +3,8 @@ $colors:(
     bg-gray-01-color:#F2F4F8,
     bg-gray-02-color: #E5E5E5,
     bg-gray-03-color: #E0E3E8, 
+    text:#F2F4F8,
+    card-bg: #E5E5E5,
     bg-white-01-color: #FFF, 
     black-text-01:#333, 
     black-text-02:#A2A2A2, 
@@ -14,27 +16,36 @@ $colors:(
     black-01: #000,
     btn-gray:#F2F4F8,
     btn-gray-hover:#E0E3E8,
+    menu-hover:#E0E3E8,
+    border-gray:1px solid #E5E5E5,
+    border-gray-02:1px solid #DDD,
     box-shadow:0px 4px 13px rgba(214, 220, 231, 0.35),
   ),
   light: (
     bg-gray-01-color:#18191A,
     bg-gray-02-color: #E5E5E5,
     bg-gray-03-color: #2C3035, 
+    text:#F2F4F8,
+    card-bg: #E5E5E5,
     bg-white-01-color: #212226, 
     black-text-01:#E8E9ED, 
     black-text-02:#656565, 
     green-01:#00C473, 
-    green-02:#F2FCF8, 
+    green-02:#20322E, 
     green-03:#00A25F, 
     red-01:#FF5C48,
     white-01: #212226,
     black-01: #FFF,
     btn-gray: #2C3035,
     btn-gray-hover: #3C4147,
+    menu-hover: #222831,
+    border-gray:1px solid #3A3C45,
+    border-gray-02:1px solid #0D0F15 ,
     box-shadow:0px 4px 13px rgba(0,10,12,0.35),
   )
 );
-
+$card-bg: 'card-bg';
+$text: 'text';
 
 @function get-color($key, $type: 'light'){
   @each $name, $color in map-get($colors, $type){
@@ -51,7 +62,23 @@ $colors:(
   }
 }
 
+@mixin themed() {
+  @each $theme, $map in $colors {
+    @at-root .#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($colors, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
 
+@function t($key) {
+  @return map-get($theme-map, $key);
+}
 // theme default
 $light-gray-01: #E5E5E5;
 $light-gray-02: #F2F4F8; //BG/상세페이지 BG 및 버튼

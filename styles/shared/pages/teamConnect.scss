@@ -1,12 +1,14 @@
-
-.container{
-    width: 100%;
-    padding: 30px 47px;
-}
-
 /*나의 잔디커넥트*/
-.tableWrap{
-    border: 1px solid red;
+.table-wrap{
+    @include get-color(background-color, bg-white-01-color);
+    @include rounded(8px);
+
+    @include themed() {
+      color: t($text);
+      background: t($card-bg);
+      border: t($card-bg);
+    }
+    
     table{
         width: 100%;
         table-layout: fixed;
@@ -38,7 +40,7 @@
         span{
             vertical-align: middle;
         }
-        .imgBox{
+        .img-box{
             display: inline-block;
             width:26px;
             height: 26px;
@@ -49,26 +51,32 @@
             }
         }
     }
+    .table_botttom{
+      padding: 0 20px 20px;
+    }
     button{
         @include btn(large,gray,100%);
     }
 }
 
-.connectInfoWrap{
+.connect-info-wrap{
     position: relative;
+    display: flex;
     width: 100%;
     padding: 18px;
-    border: 1px solid red;
-    @include clear;
-    .imgBox{
+    .img-box{
         display: inline-block; 
+        margin-right: 15px;
         img{
-            width: 100%;
-            height: 100%;
+          width: 100%;
+          height: 100%;
         }
-    }
-    .info{
-        border: 1px solid salmon;
+      }
+      .info{
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        padding: 5px 0;
         strong{
             font-weight: 700;
             font-size: 14px;

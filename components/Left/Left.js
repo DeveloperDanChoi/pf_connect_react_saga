@@ -11,9 +11,9 @@ const Left = (props) => {
   const adminConnectURL = '/connect/admin';
 
   return (<>
-  <div className='aside'>
-    <ul className='wrap'>
-      <li className='active'>
+  <div className='menu-wrap'>
+    <ul>
+      <li className='on'>
         <Link href={myConnectURL} data-route={myConnectURL}>커넥트 목록</Link>
       </li>
       <li>
@@ -23,7 +23,7 @@ const Left = (props) => {
         <Link href={adminConnectURL} data-route={adminConnectURL}>잔디 커넥트 관리자</Link>
       </li>
     </ul>
-    <div className='notice'>
+    <div className='notice-box'>
       <p>찾으시는 서비스가 없으신가요?</p>
       <button onClick={() => banner.survey(user)}>서비스 추가 요청하기</button>
     </div>
