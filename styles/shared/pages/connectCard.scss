@@ -1,40 +1,42 @@
-@import 'styles/shared/variables.scss';
-@import 'styles/shared/mixins/common.scss';
-
-.container{
+.connect-card-container{
     width: 100%;
     padding: 30px 47px;
-    @include get-color(background-color, bg-color);
+    @include get-color(background-color, bg-gray-01-color);
 }
-.banner{
+.connect-card-banner{
     position: relative;
     padding: 18px;
     @include rounded(6px);
-    .txt_wrap{
+    @include get-color(background-color, bg-white-01-color);
+    .txt-wrap{
         display: inline-block;
         p{
             padding-bottom: 10px;
+            @include get-color(color, black-text-01);
         }
         span{
             font-size: 13px;
-            color: $black-text-02;
+            @include get-color(color, black-text-02);
         }
     }
-    .btn{
+    button{
         position: absolute;
         right: 18px;
+        @include get-color(color, black-text-02);
+        @include btn(medium,green);
     }
 }
-.connect_card_wrap{
+.connect-card-wrap{
     @include flex(stretch, start);
     flex-wrap: wrap;
     &.type_list {
-        .connect_card{
+        .connect-card{
             padding-top: 0;
             .inner{
                 padding: 22px;
             }
             button {
+                @include btn(small,gray);
                 position: absolute;
                 top: 22px;
                 right: 22px;
@@ -45,13 +47,12 @@
         .inner{
             padding: 18px 16px;
         }
-        .imgBox{
+        .img-box{
             position: relative;
             padding: 30px 0;
             padding-top: 34%;
             text-align: center;
             background: #333;
-            box-shadow: 0px 4px 13px rgba(214, 220, 231, 0.35);
             border-radius: 8px 8px 0 0;
             &.asana{background: #F06A6A;}
             img{
@@ -61,10 +62,10 @@
         button{
             margin-top: 16px;
             font-size: 13px;
-            // @include btn-white-gray(100%)
+            @include btn(medium,gray,100%);
           }
     }
-    .connect_card{
+    .connect-card{
         // &:nth-child(5n-5){margin-right:0}
         // &:nth-child(-n+5){margin-top: 0;}
         position: relative;
@@ -72,14 +73,15 @@
         min-width: 270px;
         margin: 7px;
         min-height: 164px;
-        background: $white-01;
-        box-shadow: 0px 4px 13px rgba(214, 220, 231, 0.35);
+        @include get-color(background-color, white-01);
+        @include get-color(box-shadow,box-shadow);
         @include rounded(8px);
         
         strong{
             display: block;
             margin: 10px 0 7px;
             font-weight: 700;
+            @include get-color(color, black-01);
             @include ellipsis;
         }
         p{

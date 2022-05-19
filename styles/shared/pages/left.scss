@@ -1,11 +1,9 @@
-@import 'styles/shared/variables.scss';
-@import 'styles/shared/mixins/common.scss';
 
-/*******aide******/
 .aside{
     position: relative;
     width: 18vw;
     padding: 0 12px;
+    // @include get-color(background-color, text-color);
 }
 .wrap{
     li{
@@ -15,8 +13,12 @@
             margin: 11px 0;
         }
         &.active{
-            a{color: $green-01;}
             background: $green-02;
+            a{color: $green-01;}
+        }
+        &:hover{
+            background: $gray-02;
+            a{color: $black-01;}
         }
     }
 }
@@ -31,6 +33,6 @@
         color: $black-text-02;
     }
     button{
-
+        @include btn(medium,green,100%);
     }
 }

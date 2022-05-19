@@ -10,8 +10,10 @@
 
 # next.js
 /.next/
+/_next/
 /out/
 
+.gitignore
 # production
 /build
 

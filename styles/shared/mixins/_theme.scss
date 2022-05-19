@@ -1,7 +1,64 @@
+$colors:(
+  dark: (
+    bg-gray-01-color:#F2F4F8,
+    bg-gray-02-color: #E5E5E5,
+    bg-gray-03-color: #E0E3E8, 
+    bg-white-01-color: #FFF, 
+    black-text-01:#333, 
+    black-text-02:#A2A2A2, 
+    green-01:#00C473, 
+    green-02:#F2FCF8, 
+    green-03:#00A25F, 
+    red-01:#FF5C48,
+    white-01: #FFF,
+    black-01: #000,
+    btn-gray:#F2F4F8,
+    btn-gray-hover:#E0E3E8,
+    box-shadow:0px 4px 13px rgba(214, 220, 231, 0.35),
+  ),
+  light: (
+    bg-gray-01-color:#18191A,
+    bg-gray-02-color: #E5E5E5,
+    bg-gray-03-color: #2C3035, 
+    bg-white-01-color: #212226, 
+    black-text-01:#E8E9ED, 
+    black-text-02:#656565, 
+    green-01:#00C473, 
+    green-02:#F2FCF8, 
+    green-03:#00A25F, 
+    red-01:#FF5C48,
+    white-01: #212226,
+    black-01: #FFF,
+    btn-gray: #2C3035,
+    btn-gray-hover: #3C4147,
+    box-shadow:0px 4px 13px rgba(0,10,12,0.35),
+  )
+);
+
+
+@function get-color($key, $type: 'light'){
+  @each $name, $color in map-get($colors, $type){
+    @if($key == $name){
+      @return $color
+    }
+  }
+}
+
+@mixin get-color($property,$color){
+  #{$property}: get-color($color);
+  @at-root .light & {
+    #{$property}: get-color($color, dark);
+  }
+}
+
+
 // theme default
 $light-gray-01: #E5E5E5;
 $light-gray-02: #F2F4F8; //BG/상세페이지 BG 및 버튼
 $light-gray-03: #E0E3E8; //BG/상세페이지 BG 및 버튼 hover
+$light-gray-04: #F7F7F7; //TABLE HEADER
+$light-gray-05: #DDD; //TABLE HEADER
+$light-gray-06:#C2C2C2; //sub
 $light-black-text-01:#333; //typo
 $light-black-text-02:#A2A2A2; //sub
 $light-green-01:#00C473; //잔디 메인
@@ -10,8 +67,7 @@ $light-green-03:#00A25F; //hover
 $light-red-01:#FF5C48;//하이라티트
 $light-white-01: #FFF;
 $light-white-01: #FFF;
-$light-black-01: #000;
-
+ 
 $gray-01: #E5E5E5;
 $gray-02: #F2F4F8; //BG/상세페이지 BG 및 버튼
 $gray-03: #E0E3E8; //BG/상세페이지 BG 및 버튼 hover
@@ -39,6 +95,7 @@ $dark-red-01:#FF5C48;//하이라티트
 $dark-white-01: #FFF;
 $dark-black-01: #000; 
 
+
 /*
   사이즈 기준
 */
@@ -46,30 +103,4 @@ $jnd-pc-min-width: 1024px;
 $jnd-tablet-min-width: 768px;
 $jnd-tablet-max-width: 1023px;
 $iphone5: 320px;
-
-$colors:(
-  light: (
-    bg-color:#fff,
-    text-color:#323232,
-  ),
-  dark: (
-    bg-color:#323232,
-    text-color:#fff,
-  )
-);
-@mixin get-color($property,$color){
-  body {
-      #{$property}: get-color($color, light);
-  }
-  body.dark  {
-      #{$property}: get-color($color, dark);
-  }
-}
-@function get-color($key, $type: 'light'){
-  @each $name, $color in map-get($colors, $type){
-    @if($key == $name){
-      @return $color
-    }
-  }
-}
 

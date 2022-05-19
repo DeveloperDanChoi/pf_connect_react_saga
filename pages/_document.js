@@ -3,12 +3,14 @@ import Document, {
   Html, Head, Main, NextScript,
 } from 'next/document';
 
+
 class MyDocument extends Document {
   // eslint-disable-next-line class-methods-use-this
   render() {
     return (
       <Html lang="ko-KR">
         <Head />
+        {/* dark light */}
         <body id="jndApp" className="color-scheme-green mac dark">
           <Main />
           <NextScript />

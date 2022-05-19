@@ -1,0 +1,50 @@
+@mixin btn($size,$color, $width: auto,) {
+  border: getThemeInfo($color, border);
+  border-radius: 4px;
+  width: $width;
+
+  @if $size == small{
+    @include small-btn;
+  }
+  @else if $size == medium{
+    @include medium-btn;
+  }
+  @else if $size == large{
+    @include large-btn($width);
+  }
+  @if $color == green{
+    @include green-btn;
+  }
+  @else if $color == gray{
+    @include gray-btn;
+  }
+}
+
+@mixin small-btn {
+  padding: 9px 20px 7px;
+  font-size: 13px;
+}
+@mixin medium-btn {
+  padding: 12px 26px 11px;
+  font-size: 13px;
+}
+@mixin large-btn($width) {
+  padding: 13px 12px;
+  font-size: 14px;
+}
+
+@mixin green-btn {
+  @include get-color(background-color,  green-01);
+  @include get-color(color, white-01);
+  &:hover{
+    @include get-color(background-color,  green-03);
+  }
+}
+@mixin gray-btn {
+  @include get-color(background-color, btn-gray);
+  @include get-color(color, black-01);
+  &:hover{
+    @include get-color(background-color, btn-gray-hover);
+  }
+}
+
