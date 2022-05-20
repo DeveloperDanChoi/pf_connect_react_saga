@@ -34,17 +34,18 @@ const Layout = (props) => {
   }, []);
 
   return (<>
-  <div className='jdConnect-wrap'>
-    {/* 헤더 영역*/}
-    <Header />
-    {/* 메뉴 영역 */}
-    <div className='jdConnect-container'>
-      <Left />
-      {/* 서비스 목록 */}
-      { router.pathname === '/' && <ConnectList {...props}/> }
-      { router.pathname !== '/' && <main>{props.children}</main> }
+    {/* theme dark light */}
+    <div id="jndApp" className={`jdConnect-wrap ${user.theme}`}>
+      {/* 헤더 영역*/}
+      <Header />
+      {/* 메뉴 영역 */}
+      <div className='jdConnect-container'>
+        <Left />
+        {/* 서비스 목록 */}
+        { router.pathname === '/' && <ConnectList {...props}/> }
+        { router.pathname !== '/' && <main>{props.children}</main> }
+      </div>
     </div>
-  </div>
   </>);
 };
 

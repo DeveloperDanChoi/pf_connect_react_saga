@@ -10,8 +10,7 @@ class MyDocument extends Document {
     return (
       <Html lang="ko-KR">
         <Head />
-        {/* dark light */}
-        <body id="jndApp" className="color-scheme-green mac light">
+        <body>
           <Main />
           <NextScript />
         </body>

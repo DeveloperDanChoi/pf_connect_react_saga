@@ -7,6 +7,7 @@ import { banner } from '../../service/banner';
 
 const Left = (props) => {
   const { team, user } = useSelector((state) => state);
+  const mainURL = '/';
   const myConnectURL = '/connect/detail';
   const adminConnectURL = '/connect/admin';
 
@@ -14,7 +15,7 @@ const Left = (props) => {
   <div className='menu-wrap'>
     <ul>
       <li className='on'>
-        <Link href={myConnectURL} data-route={myConnectURL}>커넥트 목록</Link>
+        <Link href={mainURL} data-route={mainURL}>커넥트 목록</Link>
       </li>
       <li>
         <Link href={myConnectURL} data-route={myConnectURL}>나의 잔디 커넥트</Link>

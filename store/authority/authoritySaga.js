@@ -105,6 +105,8 @@ function* authorize(action) {
 
         if (account.status === 200) {
           yield put(modules.creators.setUser(account.data));
+          // TODO: api 나오면 실제 적용할 것
+          yield put(modules.creators.setTheme('light'));
         }
 
         if (history.state.url === '/googleCalendar') {
