@@ -23,6 +23,7 @@ import { modules as trelloModules } from './connect/trello/trello';
 import teamSaga from './team/teamSaga';
 import userSaga from './user/userSaga';
 import modalSaga from './modal/modalSaga';
+import themeSaga from './theme/themeSaga';
 import { config } from '../lib/config';
 import { util } from '../service/util';
 
@@ -66,6 +67,7 @@ export default function* rootSaga() {
     fork(teamSaga),
     fork(userSaga),
     fork(modalSaga),
+    fork(themeSaga),
     // fork(securitySagas),
     // fork(paymentSagas),
     // fork(downloadHistorySagas),

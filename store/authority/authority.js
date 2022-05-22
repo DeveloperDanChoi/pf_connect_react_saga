@@ -1,4 +1,5 @@
 import produce from '../../lib/produce';
+import { HYDRATE } from 'next-redux-wrapper';
 
 export const AUTHORIZE = 'authority/AUTHORIZE';
 export const DOMAIN_CHECK_ERROR = 'authority/DOMAIN_CHECK_ERROR';
@@ -17,6 +18,8 @@ const initialState = {
 // eslint-disable-next-line default-param-last
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
+    case HYDRATE:
+      return { ...action.payload }
     case DOMAIN_CHECK_ERROR:
       // eslint-disable-next-line no-param-reassign
       draft.isTeamDomainValid = false;

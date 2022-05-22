@@ -10,7 +10,6 @@ import Left from './Left';
 const Layout = (props) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { connect, user } = useSelector((state) => state);
   const routeChangeStart = (url) => {
     console.log('routeChangeStart', url);
   };
@@ -35,7 +34,8 @@ const Layout = (props) => {
 
   return (<>
     {/* theme dark light */}
-    <div id="jndApp" className={`jdConnect-wrap ${user.theme}`}>
+    {/*<div id="jndApp" className={`jdConnect-wrap ${theme.theme}`}>*/}
+    <div id="jndApp" className={`jdConnect-wrap ${props.theme}`}>
       {/* 헤더 영역*/}
       <Header />
       {/* 메뉴 영역 */}

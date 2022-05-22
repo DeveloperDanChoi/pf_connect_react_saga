@@ -10,7 +10,7 @@ const Github = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { team, github } = useSelector((state) => {
-    console.log('Github state !!', state);
+    // console.log('Github state !!', state);
     return state;
   });
   const { creators } = modules;

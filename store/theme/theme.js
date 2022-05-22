@@ -4,29 +4,21 @@ import { util } from '../../service/util';
 
 export const initialModules = [
   /**
-   * User Info
+   * Temp Theme
    */
-  { type: 'get', name: 'USER', data: false },
-  { type: 'set', name: 'USER', data: true },
-  /**
-   * L10N
-   */
-  { type: 'set', name: 'L10N', data: true },
+  { type: 'get', name: 'THEME', data: false },
+  { type: 'set', name: 'THEME', data: true },
 ];
-export const modules = (() => util.createModule(initialModules, 'user'))();
+export const modules = (() => util.createModule(initialModules, 'theme'))();
 
 const initialState = {
-  user: {
-    lang: 'ko',
-  },
-  l10n: {},
+  theme: 'light',
 };
 
 const { types } = modules;
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
-    case types.SET_USER:
-    case types.SET_L10N:
+    case types.SET_THEME:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
       break;
     default:

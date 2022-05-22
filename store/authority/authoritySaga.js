@@ -14,9 +14,7 @@ import {
   setTeamsConnect,
   setAuthentication,
 } from '../connect/connect';
-import {
-  modules,
-} from '../user/user';
+import { modules as userModules } from '../user/user';
 import { modules as googleCalendarModules } from '../connect/googleCalendar/googleCalendar';
 
 import {
@@ -104,9 +102,10 @@ function* authorize(action) {
         }
 
         if (account.status === 200) {
-          yield put(modules.creators.setUser(account.data));
+          yield put(userModules.creators.setUser(account.data));
           // TODO: api 나오면 실제 적용할 것
-          yield put(modules.creators.setTheme('light'));
+          // yield put(modules.creators.setTheme('light'));
+          // yield put(themeModules.creators.setTheme('dark'));
         }
 
         if (history.state.url === '/googleCalendar') {
@@ -119,7 +118,7 @@ function* authorize(action) {
             getL10N,
         );
 
-        yield put(modules.creators.setL10n(resultL10N.data));
+        yield put(userModules.creators.setL10n(resultL10N.data));
 
         isUnauthorized = false;
       }

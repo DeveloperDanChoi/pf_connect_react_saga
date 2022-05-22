@@ -14,6 +14,7 @@ import googleCalendar from './connect/googleCalendar/googleCalendar';
 import team from './team/team';
 import user from './user/user';
 import modal from './modal/modal';
+import theme from './theme/theme';
 
 const persistConfig = {
   key: 'root',
@@ -37,6 +38,7 @@ const combinedReducer = combineReducers({
   team,
   user,
   modal,
+  theme,
 });
 
 export default persistReducer(persistConfig, combinedReducer);
