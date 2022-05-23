@@ -4,28 +4,20 @@ import {util} from "../../service/util";
 
 export const GET_CONNECTS = 'connect/GET_CONNECTS';
 export const SET_CONNECTS = 'connect/SET_CONNECTS';
-export const GET_TEAMS_CONNECT = 'connect/GET_TEAMS_CONNECT';
 export const SET_TEAMS_CONNECT = 'connect/SET_TEAMS_CONNECT';
-export const GET_MY_CONNECT = 'connect/GET_MY_CONNECT';
-export const SET_MY_CONNECT = 'connect/SET_MY_CONNECT';
 export const SET_AUTHENTICATION = 'connect/SET_AUTHENTICATION';
 export const SET_CONNECTS_OPEN = 'connect/SET_CONNECTS_OPEN';
 export const SET_BANNER_HIDE = 'connect/SET_BANNER_HIDE';
 export const UPDATE_CONNECTS = 'connect/UPDATE_CONNECTS';
 export const UPDATE_STATUS = 'connect/UPDATE_STATUS';
 export const DELETE_CONNECT = 'connect/DELETE_CONNECT';
-export const SET_VALUES = 'connect/SET_VALUES';
 
 export const getConnects = () => ({ type: GET_CONNECTS });
 export const setConnects = (data) => ({ type: SET_CONNECTS, data });
 export const updateConnects = (data) => ({ type: UPDATE_CONNECTS, data });
-export const getTeamsConnect = (data) => ({ type: GET_TEAMS_CONNECT, data });
 export const setTeamsConnect = (data) => ({ type: SET_TEAMS_CONNECT, data });
-export const getMyConnect = (data) => ({ type: GET_MY_CONNECT, data });
-export const setMyConnect = (data) => ({ type: SET_MY_CONNECT, data });
 export const setAuthentication = (data) => ({ type: SET_AUTHENTICATION, data });
 export const setConnectsOpen = (data) => ({ type: SET_CONNECTS_OPEN, data });
-export const setValues = (data) => ({ type: SET_VALUES, data });
 /**
  * 연결 상태 변경<br>
  * enabled/disabled<br>
@@ -48,14 +40,12 @@ export const setBannerHide = (data) => ({ type: SET_BANNER_HIDE, data });
 export const initialState = {
   bannerHide: '',
   connects: [],
-  myConnect: [],
   teamsConnect: [],
   authentication: [],
   teamsToken: {
     webhookToken: '',
   },
   input: {},
-  myConnectCount: '',
 };
 
 const tempText = () => {
@@ -113,9 +103,6 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case SET_TEAMS_CONNECT:
       draft.teamsConnect = action.data;
       break;
-    case SET_MY_CONNECT:
-      draft.myConnect = action.data;
-      break;
     case SET_AUTHENTICATION:
       draft.authentication = action.data;
       break;
@@ -134,9 +121,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         return draft.connects;
       })();
       break;
-    case SET_VALUES:
-      draft[action.data.key] = action.data.value;
-      break;
+    // case 'connect/github/SET_INPUT_GITHUB_VALUE':
+    //   draft.input[action.data.data.key] = action.data.data.value;
+    //   break;
     default:
       break;
   }
