@@ -3,22 +3,21 @@
     position: relative;
     padding: 18px;
     @include rounded(6px);
-    @include get-color(background-color, bg-white-01-color);
+    @include themed() {background: t($bg-white-01-color);}
     .txt-wrap{
         display: inline-block;
         p{
             padding-bottom: 10px;
-            @include get-color(color, black-text-01);
+            @include themed() {color: t($txt-black-01);}
         }
         span{
             font-size: 13px;
-            @include get-color(color, black-text-02);
+            @include themed() {color: t($gray-01);}
         }
     }
     button{
         position: absolute;
         right: 18px;
-        @include get-color(color, black-text-02);
         @include btn(medium,green);
     }
 }
@@ -69,19 +68,19 @@
         min-width: 270px;
         margin: 7px;
         min-height: 164px;
-        @include get-color(background-color, white-01);
-        @include get-color(box-shadow,box-shadow);
-        @include rounded(8px);
-        
+       @include cardBox;
+        @include themed() {
+            background-color: t($bg-white-01-color);
+        }
         strong{
             display: block;
             margin: 10px 0 7px;
             font-weight: 700;
-            @include get-color(color, black-01);
+            @include themed() {color: t($black-01);}
             @include ellipsis;
         }
         p{
-            color: $black-text-02;
+            color: $light-txt-black-02;
             font-size: 13px;
             line-height: 1.2;
             @include ellipsis($line: 2,$lineHeight: 1.2em);

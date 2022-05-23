@@ -1,5 +1,5 @@
 .container{
-    display: flex;
+    @include flex;
     width: 100%;
     height: calc(100% - 56px);
 }

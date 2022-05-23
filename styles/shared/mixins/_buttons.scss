@@ -1,5 +1,4 @@
 @mixin btn($size,$color, $width: auto,) {
-  border: getThemeInfo($color, border);
   border-radius: 4px;
   width: $width;
 
@@ -34,17 +33,26 @@
 }
 
 @mixin green-btn {
-  @include get-color(background-color,  green-01);
-  @include get-color(color, white-01);
+  background: $light-green-01;
+  @include themed() {
+    color: t($white-01);
+  }
+ 
   &:hover{
-    @include get-color(background-color,  green-03);
+    @include themed() {
+      background: t($light-green-03);
+    }
   }
 }
 @mixin gray-btn {
-  @include get-color(background-color, btn-gray);
-  @include get-color(color, black-01);
+  @include themed() {
+    background: t($btn-gray);
+    color: t($black-01);
+  }
   &:hover{
-    @include get-color(background-color, btn-gray-hover);
+    @include themed() {
+      background: t($btn-gray-hover);
+    }
   }
 }
 

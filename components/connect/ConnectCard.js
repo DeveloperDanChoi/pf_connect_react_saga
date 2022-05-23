@@ -15,6 +15,7 @@ const ConnectCard = () => {
   };
 
   return (<>
+  <div className='container'>
     <div className='connect-container'>
       {/* 배너 영역 */}
       <div className='connect-card-banner'>
@@ -26,7 +27,10 @@ const ConnectCard = () => {
       </div>
       
       {/* 신규 서비스 */}
-      <h2 className='title'>신규 서비스</h2>
+      <div className='title_wrap type02'>
+        <h2>신규 서비스</h2>
+        <span className='badge'>NEW</span>
+      </div>
       <div className='connect-card-wrap type_list_new'>
         <div className='connect-card'>
           <div className='img-box'>
@@ -61,7 +65,9 @@ const ConnectCard = () => {
       </div>
 
       {/* 커넥트 목록 */}
-      <h2 className='title'>신규 서비스</h2>
+      <div className='title_wrap type02'>
+        <h2>커넥트 목록</h2>
+      </div>
       <div className='connect-card-wrap type_list'>
         <div className='connect-card'>
           <div className='inner'>
@@ -105,6 +111,7 @@ const ConnectCard = () => {
         </div>
       </div>
     </div>
+  </div>
   </>);
 };
 export default ConnectCard;

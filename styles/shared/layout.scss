@@ -3,12 +3,14 @@
     position: relative;
     width: 18vw;
     padding: 0 12px;
-    @include get-color(border-right, border-gray-02);
-    @include get-color(background-color, bg-white-01-color);
+    @include themed() {
+        border-right: 1px solid t($border-gray-02);
+        background-color: t($bg-white-01-color);
+    }
     ul{
         li{
             &:first-child{
-                @include get-color(border-bottom, border-gray);
+                @include themed() {border-bottom: 1px solid t($border-gray);}
                 padding-bottom: 10px;
                 margin: 12px 0;
             }
@@ -17,51 +19,54 @@
                 width: 100%;
                 height: 100%;
                 padding: 11px 15px;
-                @include get-color(color, black-01);
+                @include themed() {color: t($black-01);}
                 &:hover{
-                    @include get-color(background-color, btn-gray-hover);
+                    @include themed() {background-color: t($btn-gray-hover);}
                     @include rounded(4px);
                 }
             }
             &.on a{
-                @include get-color(background-color, green-02);
-                color: $green-01; 
+                @include themed() {background-color: t($green-02);}
+                color: $light-green-01; 
             }
         }
     }
 }
 .notice-box{
     position: absolute;
-    bottom: 20px;
+    bottom: 0;
     width: calc(100% - 24px);
     padding: 20px 10px 35px;
     text-align: center;
-    @include get-color(border-top, border-gray);
+    @include themed() {border-top: 1px solid t($border-gray);}
     p{
         padding-bottom: 18px;
-        @include get-color(color, black-text-02);
+        @include themed() {
+            color: t($txt-black-02);
+        }
     }
     button{
         @include btn(medium,green,100%);
     }
 }
 /*header*/
-header.header{
+.header{
     position: relative;
     display: flex;
     padding: 17px 0;
     font-size: 14px;
     z-index: 9;
     font-weight: 100;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    @include get-color(color, black-01);
-    @include get-color(background-color, bg-white-01-color);
-    @include get-color(box-shadow, box-shadow);
+    @include themed() {
+        color: t($black-01);
+        background-color: t($bg-white-01-color);
+        box-shadow:0px 4px 13px t($box-shadow);
+    }
 }
-
 .connect-container{
+    position: relative;
     width: 100%;
-    padding: 30px 47px;
     height: 100%;
-    @include get-color(background-color, bg-gray-01-color);
+    padding: 30px 47px;
+    @include themed() {background-color: t($bg-gray-01-color);}
 }

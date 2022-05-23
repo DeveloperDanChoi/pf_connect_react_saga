@@ -1,50 +1,52 @@
-/*나의 잔디커넥트*/
-.table-wrap{
-    @include get-color(background-color, bg-white-01-color);
-    @include rounded(8px);
-
-    @include themed() {
-      color: t($text);
-      background: t($card-bg);
-      border: t($card-bg);
-    }
-    
+ /*나의 잔디커넥트*/
+.connect-table-wrap{
+    @include cardBox;
     table{
         width: 100%;
         table-layout: fixed;
         font-size: 13px;
-        thead{
-            background: $light-gray-04;
-            color: $light-gray-06;
-            font-size: 12px;
+        thead th{
+          padding :16px 18px 11px;
+          font-size: 12px;
+          text-align: left;
+          @include themed() {
+            color: t($gray-01); 
+            background: t($bg-gray-04-color);}
+          }
+        tbody th,td{
+          padding: 11px 18px 9px;
+          font-weight: 700;
+          vertical-align: middle;
+          @include ellipsis;
         }
-        thead,tbody{
-            text-align: left;
-            border-bottom: 1px solid $light-gray-05;
-        }
-        th,td{
-            padding: 15px;
-            font-weight: 700;
-            @include ellipsis;
-            vertical-align: middle;
-            border-bottom: 1px solid $light-gray-05;
+        tr{
+          @include themed() {
+            border-bottom: 1px solid t($border-gray);
+            color: t($txt-black-01);}
+            &.disabled{@include opacity(0.35);}
         }
         thead tr th:first-child,
         tbody tr td:first-child{
-            padding-left: 30px;
+            padding-left: 33px;
         }
         thead tr th:last-child,
         tbody tr td:last-child{
-            padding-right: 30px;
+            padding-right: 33px;
+        }
+        tbody tr:last-child{
+            border-bottom: none;
         }
         span{
             vertical-align: middle;
         }
         .img-box{
+            position: relative;
             display: inline-block;
             width:26px;
             height: 26px;
             margin-right: 16px;
+            @include themed() {border: 1px solid t($border-gray-02);}
+            @include rounded(50%);
             img{
                 width: 100%;
                 height: auto;
@@ -52,20 +54,37 @@
         }
     }
     .table_botttom{
-      padding: 0 20px 20px;
+      padding: 20px;
+      @include themed() {border-top: 1px solid t($border-gray-02);}
+      button{
+          @include btn(large,gray,100%);
+          @include themed() {background-color: t($btn-gray-02);}
+          color:$light-txt-black-02;
+          &:hover{
+            @include themed() {background-color: t($btn-gray-02-hover);}
+          }
+      }
     }
-    button{
-        @include btn(large,gray,100%);
+    ~ .connect-table-wrap{
+      margin-top: 14px;
+    }
+    .status-wrap{
+      .btn-icon{
+        background: none;
+      }
     }
 }
 
-.connect-info-wrap{
+
+.connect-info-box{
     position: relative;
-    display: flex;
+    @include flex(start,start);
     width: 100%;
     padding: 18px;
     .img-box{
         display: inline-block; 
+        width: 52px;
+        height: 52px;
         margin-right: 15px;
         img{
           width: 100%;
@@ -73,31 +92,150 @@
         }
       }
       .info{
-        display: flex;
-        justify-content: space-around;
+        @include flex(start,center);
         flex-direction: column;
         padding: 5px 0;
         strong{
             font-weight: 700;
             font-size: 14px;
+            @include themed() {color: t($black-01);}
         }
         p{
             padding-top: 8px;
-            color: $light-black-text-02;
+            @include themed() {color: t($txt-black-02);}
         }
     }
-    span{
+    & > span{
         position: absolute;
         top: 20px;
         right: 20px;
         display: inline-block;
         padding: 4px 10px;
-        background: $light-gray-02;
-        color: $light-green-01;
+        @include themed() {
+          color: t($green-01);
+          background: t($bg-gray-04-color);
+        }
         @include rounded(28px);
     }
 }
 
+//잔디커넥트 관리자
+.connect-admin-wrap{
+  @include flex;
+  width: 100%;
+  .connect-info-box{
+    width: calc(50% - 14px);
+    min-height:108px ;
+    margin: 7px;
+    @include cardBox;
+  }
+}
+//프로필 아이콘
+.profile-box{
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+    li{
+      overflow: hidden;
+      position: relative;
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      margin-left: -6px;
+      @include rounded(50%);
+      border: 2px solid #fff;
+      img{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      &:nth-child(1){z-index:4}
+      &:nth-child(2){z-index:3}
+      &:nth-child(3){z-index:2}
+      &:nth-child(4){z-index:1}
+    }
+    .etc-profile{
+      width: 26px;
+      height: 26px;
+      background: #DADADA;
+      span{
+        @include position(7px,11px);
+        display: inline-block;
+        width: 2px;
+        height: 2px;
+        background: #A2A2A2;
+        @include rounded(50%);
+
+        &::before,&::after{
+          display: inline-block;
+          left: 8px;
+          @include rounded(50%);
+          @include pseudoDefault(2px,2px);
+          background: #A2A2A2;
+        }
+        &::after{left: 4px;}
+      }
+    }
+  .tootip{
+    @include position(0,-32px);
+    width: auto;
+    height: 32px;
+    padding: 0 8px;
+    z-index: 9;
+    border: none;
+    background: #191919;
+    white-space: nowrap;
+    line-height: 32px;
+    font-size: 11px;
+    color: #fff;
+    @include rounded(4px);
+    &::after{
+      bottom: 0;
+      left: 0;
+      @include pseudoDefault(2px,2px);
+      display: inline-block;
+      background: #191919;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+// 토글버튼
+.switch{
+  position: relative;
+  input{display: none;}
+  .slider{
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    margin: 0 20px 0 8px;
+    height: 21px;
+    transition: all .2s;
+    vertical-align: bottom;
+    @include themed() {background-color: t($bg-gray-02-color);}
+    @include rounded(20px);
+    &:before{
+      content: '';
+      display: inline-block;
+      @include position(3px,4px);
+      width: 15px;
+      height: 14px;
+      transition: all .2s;
+      @include themed() {background-color: t($white-01);}
+      @include rounded(50%);
+    }
+  }
+  &.on{
+    color: $light-green-01;
+    .slider{
+      background-color: $light-green-01;
+      &:before{
+        left: 22px;
+      }
+    }
+  }
+}
 
 /*로딩바*/
 /* :not(:required) hides this rule from IE9 and below */
@@ -108,7 +246,7 @@
     display: block;
     width: 18px;
     height: 18px;
-    margin: 28px auto;
+    margin: 8px auto 28px;
     -moz-animation: three-quarters-loader 1250ms infinite linear;
     -webkit-animation: three-quarters-loader 1250ms infinite linear;
     animation: three-quarters-loader 1250ms infinite linear;
