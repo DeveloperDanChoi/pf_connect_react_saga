@@ -1,11 +1,35 @@
 /* eslint-disable max-len */
-import { useDispatch } from 'react-redux';
-import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import React, {useEffect} from 'react';
 import { getPublicAssetPath } from '../../../lib/assetHelper';
 import { Input } from 'antd';
+import {getTeamsConnect} from "../../../store/connect/connect";
+import {template1} from "../../../service/connect";
 
 const MyConnectPlug = (props) => {
   const dispatch = useDispatch();
+  const { connect, team, user } = useSelector((state) => {
+    console.log('state !!', state);
+    return state;
+  });
+
+  // filter my connect
+
+  useEffect(() => {
+    if (team.teamId === 0) return;
+    dispatch(getTeamsConnect(team.teamId));
+  }, [user.user.memberships]);
+
+  useEffect(() => {
+    const { myConnect } = connect;
+    console.log( myConnect )
+    // for (const item of teamsConnect) {
+    //   console.log( item )
+    // }
+  }, [connect.myConnect]);
+
+
+  //getTeamsConnect
  
   const onToggle = (e) => {
     e.target.closest('.switch').classList.toggle('on');
@@ -13,10 +37,11 @@ const MyConnectPlug = (props) => {
   };
   return (
   <>
+    { connect.myConnectCount !== '' &&
     <div className='connect-container'>
       <div className='title_wrap'>
         <h2>나의 잔디 커넥트</h2>
-        <span className='sub_tit'>총 <b>9</b>개 연동 중</span>
+        <span className='sub_tit'>총 <b>{connect.myConnectCount}</b>개 연동 중</span>
       </div>
       <div className='connect-table-wrap'>
         <div className='connect-info-box'>
@@ -254,6 +279,7 @@ const MyConnectPlug = (props) => {
       </div>
       {/* connect-info-wrap */}
     </div>
+    }
   </>);
 };
 export default MyConnectPlug;

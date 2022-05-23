@@ -26,7 +26,6 @@ import {
   getAuthenticationGoogleCalendarCalendarList,
 } from '../../api/connect/Authentication/authentication';
 import {
-  getAccountMembersV2,
   getAccountV3,
 } from '../../api/inner/account';
 import {
@@ -66,9 +65,9 @@ function* authorize(action) {
 
         const apis = [
           call(getConnect),
-          call(getTeamsConnect, teamId),
+          // call(getTeamsConnect, teamId),
           call(getAuthenticationList, teamId),
-          call(getStartAccountV2),
+          call(getStartAccountV2, teamId),
           call(getAccountV3),
         ];
 
@@ -79,7 +78,7 @@ function* authorize(action) {
         }
 
         // const results = yield all(apis);
-        const [ connect, teamsConnect, authentication, teamsAccount, account, svc ] = yield all(apis);
+        const [ connect, /*teamsConnect, */authentication, teamsAccount, account, svc ] = yield all(apis);
 
         if (connect.status === 200) {
           yield put(setConnects(((data) => {
@@ -91,9 +90,9 @@ function* authorize(action) {
         }
 
         // TODO: MFA
-        if (teamsConnect && teamsConnect.status === 200) {
-          yield put(setTeamsConnect(teamsConnect.data));
-        }
+        // if (teamsConnect && teamsConnect.status === 200) {
+        //   yield put(setTeamsConnect(teamsConnect.data));
+        // }
 
         yield put(setAuthentication(authentication.data));
 
