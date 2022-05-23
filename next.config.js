@@ -11,7 +11,8 @@ const isAlpha = process.env.NODE_ENV === 'alpha';
 const isDev = process.env.NODE_ENV === 'development';
 const isLocal = process.env.ISLOCAL === 'true';
 const isGcp = process.env.NODE_ENV === 'oprs';
-const basePath = '';
+// const basePath = '/connect/app';
+const basePath = '/connect';
 const getAddress = (data) => data[process.env.NODE_ENV];
 const getAddress2 = (data) => data[isLocal ? 'local' : process.env.NODE_ENV];
 const publicRuntimeConfig = {
@@ -91,6 +92,16 @@ const nextConfig = {
   images: {
     disableStaticImages: true,
   },
+  // reactStrictMode: true,
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: "/connect",
+  //       destination: "/app",
+  //       permanent: false,
+  //     },
+  //   ];
+  // },
 
   webpack: (config) => {
     // Link dotenv to webpack

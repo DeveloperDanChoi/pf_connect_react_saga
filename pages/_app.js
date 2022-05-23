@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   useDispatch,
 } from 'react-redux';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import {
   redirectToLoginAndList,
 } from '../lib/helpers/routeHelper';
@@ -18,8 +18,8 @@ import {
 import '../styles/globals.scss';
 // eslint-disable-next-line import/order
 import _ from 'lodash';
-import FixedMeta from '../components/FixedMeta';
-import Layout from '../components/Layout';
+import FixedMeta from '../components/FixedMeta/FixedMeta';
+import Layout from '../components/Layout/Layout';
 import PcAddOnComponent from '../components/PcAddOnComponent';
 
 const App = ({ Component, pageProps }) => {
@@ -31,7 +31,29 @@ const App = ({ Component, pageProps }) => {
     pathname,
   } = router;
 
-  /**
+  const routeChangeStart = (url) => {
+    console.log('routeChangeStart', url);
+  };
+  const routeChangeComplete = (url) => {
+    console.log('routeChangeComplete', url);
+  };
+  const routeChangeError = (url) => {
+    console.log('routeChangeError', url);
+  };
+
+  useEffect(() => {
+    Router.events.on('routeChangeStart', routeChangeStart);
+    Router.events.on('routeChangeComplete', routeChangeComplete);
+    Router.events.on('routeChangeError', routeChangeError);
+
+    return () => {
+      Router.events.off('routeChangeStart', routeChangeStart);
+      Router.events.off('routeChangeComplete', routeChangeComplete);
+      Router.events.off('routeChangeError', routeChangeError);
+    };
+  }, []);
+
+    /**
    * 토큰 확인 후에 도메인을 확인
    */
   useEffect(() => {
