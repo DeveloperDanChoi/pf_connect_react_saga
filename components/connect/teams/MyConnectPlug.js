@@ -25,7 +25,7 @@ const MyConnectPlug = (props) => {
             <strong>JIRA</strong>
             <p>이슈 추적, 프로젝트 관리</p>
           </div>
-          <span>7개 연동중</span>
+          <div className='connect-etc-box'><span>7개 연동중</span></div>
         </div>
         {/* //connect-info-box */}
         <table>

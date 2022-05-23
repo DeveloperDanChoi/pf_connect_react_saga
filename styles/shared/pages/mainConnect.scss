@@ -1,6 +1,7 @@
 
 .connect-card-banner{
     position: relative;
+    margin-bottom: 40px;
     padding: 18px;
     @include rounded(6px);
     @include themed() {background: t($bg-white-01-color);}

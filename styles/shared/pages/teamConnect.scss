@@ -75,128 +75,147 @@
     }
 }
 
-
+/*공통*/
 .connect-info-box{
+  @include flex(center,space-between);
     position: relative;
-    @include flex(start,start);
     width: 100%;
+    margin: 7px;
     padding: 18px;
+    min-height:108px ;
     .img-box{
-        display: inline-block; 
         width: 52px;
         height: 52px;
-        margin-right: 15px;
         img{
           width: 100%;
           height: 100%;
         }
       }
       .info{
-        @include flex(start,center);
-        flex-direction: column;
-        padding: 5px 0;
+        width: calc(100% - 180px);
+        padding: 5px 0 5px 10px;
         strong{
+            display: block;
             font-weight: 700;
             font-size: 14px;
             @include themed() {color: t($black-01);}
+            @include ellipsis;
         }
         p{
             padding-top: 8px;
             @include themed() {color: t($txt-black-02);}
+            @include ellipsis(2,1.2);
         }
     }
-    & > span{
+    .connect-etc-box{
+      width: 120px;
+      height: 100%;
+      right: 0;
+      &>span{
         position: absolute;
         top: 20px;
         right: 20px;
         display: inline-block;
-        padding: 4px 10px;
-        @include themed() {
-          color: t($green-01);
-          background: t($bg-gray-04-color);
-        }
+        padding: 6px 10px 4px;
+        color: $light-green-01;
+        @include themed{background-color: t($bg-gray-01-color);}
         @include rounded(28px);
+      }
     }
 }
 
 //잔디커넥트 관리자
 .connect-admin-wrap{
-  @include flex;
+  @include flex(center,flex-start);
   width: 100%;
   .connect-info-box{
-    width: calc(50% - 14px);
-    min-height:108px ;
-    margin: 7px;
+    min-width: 400px;
+    width: calc(33% - 10px);
     @include cardBox;
+    &:hover{
+      @include themed{background-color: t($bg-gray-03-color) !important;}
+      & .item{
+        @include themed{border: 2px solid t($bg-gray-03-color);}
+      }
+    }
   }
 }
+
 //프로필 아이콘
 .profile-box{
   position: absolute;
   bottom: 16px;
   right: 16px;
-    li{
-      overflow: hidden;
-      position: relative;
-      display: inline-block;
-      width: 28px;
-      height: 28px;
-      margin-left: -6px;
-      @include rounded(50%);
-      border: 2px solid #fff;
-      img{
-        position: absolute;
-        width: 100%;
-        height: 100%;
-      }
-      &:nth-child(1){z-index:4}
-      &:nth-child(2){z-index:3}
-      &:nth-child(3){z-index:2}
-      &:nth-child(4){z-index:1}
+  &:hover .tooltip{ display: block; }
+  &:hover .item:before{
+    @include pseudoDefault(100%,100%);
+    z-index: 9;
+    background: #000;
+    @include opacity(0.4);
+  }
+  .item{
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    margin-left: -6px;
+    @include rounded(50%);
+    @include themed{border: 2px solid t($bg-white-01-color);}
+    cursor: pointer;
+    img{
+      position: absolute;
+      width: 100%;
+      height: 100%;
     }
+    &:nth-child(1){z-index:4}
+    &:nth-child(2){z-index:3}
+    &:nth-child(3){z-index:2}
+    &:nth-child(4){z-index:1}
     .etc-profile{
       width: 26px;
       height: 26px;
-      background: #DADADA;
+      @include themed{background-color: t($btn-gray-02);}
       span{
         @include position(7px,11px);
         display: inline-block;
         width: 2px;
         height: 2px;
-        background: #A2A2A2;
+        background: $light-txt-black-02;
         @include rounded(50%);
-
         &::before,&::after{
           display: inline-block;
           left: 8px;
           @include rounded(50%);
           @include pseudoDefault(2px,2px);
-          background: #A2A2A2;
+          background: $light-txt-black-02;
         }
         &::after{left: 4px;}
       }
     }
-  .tootip{
-    @include position(0,-32px);
+  }
+
+  // 컴포넌트
+  .tooltip{
+    display: none;
+    @include position(auto,-42px);
+    right: 0;
     width: auto;
-    height: 32px;
     padding: 0 8px;
-    z-index: 9;
-    border: none;
-    background: #191919;
-    white-space: nowrap;
+    height: 32px;
     line-height: 32px;
+    z-index: 9;
+    background: $light-txt-black-03;
+    color: $light-white-01;
+    white-space: nowrap;
     font-size: 11px;
-    color: #fff;
     @include rounded(4px);
     &::after{
-      bottom: 0;
-      left: 0;
-      @include pseudoDefault(2px,2px);
-      display: inline-block;
-      background: #191919;
-      width: 14px;
-      height: 14px;
+      @include pseudoDefault(14px,14px);
+      right: 7px;
+      bottom: -5px;
+      transform: rotate(45deg);
+      background: $light-txt-black-03;
     }
   }
 }
