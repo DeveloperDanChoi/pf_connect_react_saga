@@ -92,3 +92,15 @@
         }
     }
 }
+
+
+
+
+@media all and (max-width: $jnd-tablet-min-width) {
+
+    .connect-card-wrap .connect-card{
+        width: calc(50% - 14px);
+    }
+
+  }
+  

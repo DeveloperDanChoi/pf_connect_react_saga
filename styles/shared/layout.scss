@@ -26,11 +26,14 @@
                 }
             }
             &.on a{
-                @include themed() {background-color: t($green-02);}
+                @include themed() {background-color: t($bg-green-01-color);}
                 color: $light-green-01; 
             }
         }
     }
+}
+.tablet-menu{
+    display: none;
 }
 .notice-box{
     position: absolute;
@@ -70,3 +73,24 @@
     padding: 30px 47px;
     @include themed() {background-color: t($bg-gray-01-color);}
 }
+
+
+
+
+/* 768 */
+@media all and (min-width: $jnd-pc-min-width) {
+    .tablet-menu{
+        display: none;
+    }
+  }
+  
+/* 768 */
+@media all and (max-width: $jnd-tablet-min-width) {
+    .tablet-menu{
+        display: block;
+    }
+    .menu-wrap{
+        display: none;
+    }
+  }
+  

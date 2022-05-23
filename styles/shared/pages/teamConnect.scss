@@ -317,3 +317,21 @@
       transform: rotate(360deg);
     }
   }
+
+
+
+
+
+  @media all and (max-width: $jnd-tablet-min-width) {
+
+    .connect-admin-wrap{
+
+        width:100%;
+        min-width: auto;
+        .connect-info-box{
+          width:100%;
+        }
+    }
+
+  }
+  
