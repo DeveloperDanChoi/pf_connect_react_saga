@@ -1,0 +1,77 @@
+/*상세페이지 scss*/
+.detail-container{
+    @include themed(){ background-color: t($bg-white-02-color);}
+    .inner{
+        width: 1054px;
+        margin: 0 auto;
+    }
+    .detail-header{
+        padding: 16px 0;
+        @include themed(){ background-color: t($bg-gray-11-color);}
+    }
+    .detail-wrapper{
+        overflow: hidden;
+        position: relative;
+        width: 1132px;
+        margin: 23px auto 0;
+        height: 699px;
+        @include themed(){ border: 1px solid t($border-gray);}
+        @include rounded(5px);
+        tbody tr{
+            height: 47px;
+            &:last-child{
+                @include themed(){ border-bottom: 1px solid t($border-gray);}
+            }
+        }
+    }
+    .connect-info-box{ justify-content: flex-start;}
+}
+.pagination-wrap{
+    @include flex(center,center);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 47px;
+    @include themed(){ border-top: 1px solid t($border-gray);}
+    .page-num{
+        padding: 0 7px;
+        font-size: 14px;
+        vertical-align: baseline;
+        & > *{
+            padding: 0 8px;
+            font-weight: bold;
+            vertical-align: text-bottom;
+        }
+        a{@include themed(){ color:t($txt-black-01);}}
+        strong{color: $light-green-01;}
+    }
+    .btn-paging{
+        @include font-set;
+        margin: 0 8px;
+        font-size: 16px;
+        @include themed(){ color:t($txt-black-01);}
+        &:hover{ color: $light-green-01;}
+        &:disabled{  @include themed(){ color:t($gray-02);}}
+    }
+}
+/* board_search_bar */
+.board_search_bar {
+    position: absolute;
+    right: 0;
+    button{
+        margin-left: 5px;
+        @include btn(medium,green);
+        &:disabled{
+            @include themed(){ 
+                background-color: t($bg-white-02-color);
+                color: t($gray-01);
+            }
+        }
+    }
+}
+.noresult-wrap{
+    @include flex(center,center);
+    height: 590px;
+    @include themed(){ color:t($txt-black-02);}
+    font-weight: normal;
+}

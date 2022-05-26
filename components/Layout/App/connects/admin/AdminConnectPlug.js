@@ -16,7 +16,10 @@ const AdminConnectPlug = (props) => {
      <div className='connect-container'>
       <div className='title_wrap type02'>
         <h2>잔디 커넥트 관리자</h2>
-        <span className='sub_tit'>총 <b>47</b>개 연동 중</span>
+        <p className='sub_tit'>
+          <strong><i className='icon-ic-company'></i>TossLab,Inc.</strong> <span>총 <strong>47</strong>개 연동 중</span>
+        </p>
+
       </div>
 
       <div className='connect-admin-wrap'>
@@ -28,12 +31,12 @@ const AdminConnectPlug = (props) => {
           </div>
 
           <div className='connect-etc-box'>
-            <span onClick={() => handleClick()}>7개 연동중</span>
+            <span onClick={() => handleClick()}><i className='icon-ic-plug'></i>7개 연동중</span>
             <div className='profile-box'>
                 <div className='item'><img src={getPublicAssetPath('static/dummy3.png')} alt="dummy"></img></div>
                 <div className='item'><img src={getPublicAssetPath('static/dummy3.png')} alt="dummy"></img></div>
                 <div className='item'><img src={getPublicAssetPath('static/dummy3.png')} alt="dummy"></img></div>{/* [D]: 프로필(item) 최대 3개 노출 */}
-                <div className='item'><div className='etc-profile'><span></span></div></div>{/* [D]: 프로필 최대 3개 이상일 경우 etc-profile 노출 */}
+                <div className='item'><div className='etc-profile'><i className='icon-ic-more'></i></div></div>{/* [D]: 프로필 최대 3개 이상일 경우 etc-profile 노출 */}
                 <div className='tooltip'><span>Andy, 박한솔, hosi 외 200인</span></div>
             </div>
           </div>
@@ -46,7 +49,7 @@ const AdminConnectPlug = (props) => {
             <p>생산성, 커스터마이징</p>
           </div>
           <div className='connect-etc-box'>
-            <span onClick={() => handleClick()}>7000개 연동중</span>
+            <span onClick={() => handleClick()}><i className='icon-ic-plug'></i>7000개 연동중</span>
             <div className='profile-box'>
               <div className='item'><img src={getPublicAssetPath('static/dummy3.png')} alt="dummy"></img></div>
               <div className='tooltip'><span>유, 박</span></div>
@@ -61,12 +64,12 @@ const AdminConnectPlug = (props) => {
             <p>생산성, 커스터마이징생산성, 커스터마이징생산성, 커스터마이징생산성, 커스터마이징생산성, 커스터마이징생산성, 커스터마이징생산성, 커스터마이징생산성, 커스터마이징생산성, 커스터마이징</p>
           </div>
           <div className='connect-etc-box'>
-            <span onClick={() => handleClick()}>700개 연동중</span>
+            <span onClick={() => handleClick()}><i className='icon-ic-plug'></i>700개 연동중</span>
             <div className='profile-box'>
               <div className='item'><img src={getPublicAssetPath('static/dummy3.png')} alt="dummy"></img></div>
               <div className='item'><img src={getPublicAssetPath('static/dummy3.png')} alt="dummy"></img></div>
               <div className='item'><img src={getPublicAssetPath('static/dummy3.png')} alt="dummy"></img></div>{/* [D]: 프로필(item) 최대 3개 노출 */}
-              <div className='item'><div className='etc-profile'><span></span></div></div>{/* [D]: 프로필 최대 3개 이상일 경우 etc-profile 노출 */}
+              <div className='item'><div className='etc-profile'><i className='icon-ic-more'></i></div></div>{/* [D]: 프로필 최대 3개 이상일 경우 etc-profile 노출 */}
               <div className='tooltip'><span>frankie, buuuuu, Andreson 외 5000인</span></div>
             </div>
           </div>
@@ -79,7 +82,7 @@ const AdminConnectPlug = (props) => {
             <p>콘텐츠, 미디어 및 뉴스</p>
           </div>
           <div className='connect-etc-box'>
-            <span onClick={() => handleClick()}>7개 연동중</span>
+            <span onClick={() => handleClick()}><i className='icon-ic-plug'></i>7개 연동중</span>
             <div className='profile-box'>
               <div className='item'><img src={getPublicAssetPath('static/dummy3.png')} alt="dummy"></img></div>
               <div className='item'><img src={getPublicAssetPath('static/dummy3.png')} alt="dummy"></img></div>
@@ -95,7 +98,7 @@ const AdminConnectPlug = (props) => {
             <p>이슈 추적, 프로젝트 관리</p>
           </div>
           <div className='connect-etc-box'>
-            <span onClick={() => handleClick()}>7개 연동중</span>
+            <span onClick={() => handleClick()}><i className='icon-ic-plug'></i>7개 연동중</span>
             <div className='profile-box'>
               <div className='item'><img src={getPublicAssetPath('static/dummy3.png')} alt="dummy"></img></div>
               <div className='tooltip'><span>jio</span></div>

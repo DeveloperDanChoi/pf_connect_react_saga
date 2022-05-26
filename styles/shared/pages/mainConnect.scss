@@ -1,14 +1,28 @@
 
 .connect-card-banner{
+    display: flex;
+    align-items: center;
     position: relative;
     margin-bottom: 40px;
     padding: 18px;
     @include rounded(6px);
     @include themed() {background: t($bg-white-01-color);}
+    .bg_type.icon-ic-plug{
+        display: inline-block;
+        width: 46px;
+        height: 46px;
+        margin-right: 20px;
+        line-height: 45px;
+        font-size: 26px;
+        text-align: center;
+        color: #fff;
+        background:$light-green-01;
+        @include rounded(50%);
+    }
     .txt-wrap{
         display: inline-block;
         p{
-            padding-bottom: 10px;
+            padding-bottom: 5px;
             @include themed() {color: t($txt-black-01);}
         }
         span{
@@ -25,6 +39,7 @@
 .connect-card-wrap{
     @include flex(stretch, start);
     flex-wrap: wrap;
+    & ~ .title_wrap{margin-top: 40px;}
     &.type_list {
         .connect-card{
             padding-top: 0;
@@ -37,8 +52,8 @@
                 top: 22px;
                 right: 22px;
               }
+            }
         }
-    }
     &.type_list_new {
         .inner{
             padding: 18px 16px;

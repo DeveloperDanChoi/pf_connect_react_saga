@@ -39,55 +39,208 @@
     word-wrap: break-word;
     }
 
-    /*공통*/
-  .wrap,.jdConnect-wrap{
-    width: 100%;
-    height: 100%;
-  }
-  .jdConnect-container{
-    display: flex;
-    width: 100%;
-    min-height: calc(100% - 48px);
-  }
-  h2.title{
-    display: inline-block;
-    margin: 40px 0 14px;
+/*공통*/
+.wrap,.jdConnect-wrap{
+  width: 100%;
+  height: 100%;
+}
+.jdConnect-container{
+  display: flex;
+  width: 100%;
+  min-height: calc(100% - 48px);
+}
+h2.title{
+  display: inline-block;
+  margin: 40px 0 14px;
+  padding-left: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  @include themed() {color: t($black-01);}
+}
+main,.container{
+  width: 100%;
+  @include themed() {background-color: t($bg-gray-01-color);}
+}
+.title_wrap{
+  margin-bottom: 14px;
+  &.type02{
+    margin: 0px 0 6px;
     padding-left: 8px;
+  }
+  h2{
+    display: inline-block;
     font-size: 18px;
     font-weight: bold;
+    padding-right: 8px;
+    vertical-align: middle;
     @include themed() {color: t($black-01);}
   }
-  main,.container{
-    width: 100%;
+  .sub_tit{
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    @include themed() {color: t($txt-black-02);}
+    strong{color: $light-green-01;}
   }
-  .title_wrap{
-    margin-bottom: 14px;
-    &.type02{
-      margin: 0px 0 6px;
-      padding-left: 8px;
-    }
-    h2{
-      display: inline-block;
-      font-size: 18px;
-      font-weight: bold;
-      padding-right: 8px;
-      vertical-align: middle;
-      @include themed() {color: t($black-01);}
-    }
-    .sub_tit{
+  .badge{
+    display: inline-block;
+    padding: 0 9px;
+    height: 18px;
+    line-height: 20px;
+    background: $light-red-01;
+    color: #fff;
+    font-size: 12px;
+    @include rounded(36px);
+  }
+}
+
+// selectbox,input
+.select_box {
+  display: inline-block;
+  position: relative;
+  width: 170px;
+  height: 36px;
+  @include rounded(3px 0 0 3px);
+
+  vertical-align: top;
+  z-index: 2;
+  @include themed() {
+    color: t($txt-black-01);
+    background:t($bg-white-02-color);
+    border: 1px solid t($border-gray);
+  }
+   .select_value {
+      display: block;
+      position: relative;
+      height: 100%;
+      padding: 0 22px 0 17px;
       font-size: 14px;
-      font-weight: 700;
-      @include themed() {color: t($txt-black-02);}
-      b{color: $light-green-01;}
-    }
-    .badge{
-      display: inline-block;
-      padding: 0 9px;
-      height: 18px;
-      line-height: 20px;
-      background: $light-red-01;
-      color: #fff;
-      font-size: 12px;
-      @include rounded(36px);
-    }
+      line-height: 36px;
+      box-sizing: border-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space:nowrap;
+      @include themed(){color: t($txt-black-01);}
+      &::after{
+          content: '';
+          display: block;
+          position: absolute;
+          top: 13px;
+          right: 14px;
+          @include pseudoDefault(5px,5px);
+          @include themed(){
+            border-top: 1px solid t($black-01);
+            border-left: 1px solid t($black-01);
+          }
+          @include transform(rotate(225deg));
+      }
+     
   }
+  .select_list {
+      display: none;
+      overflow-y: auto;
+      @include position(auto,39px);
+      @include rounded(3px);
+      @include themed() {
+        color: t($txt-black-01);
+        background:t($bg-white-02-color);
+        border: 1px solid t($border-gray);
+      }
+      white-space: nowrap;
+      z-index: 1;
+      a{
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 10px 16px;
+        box-sizing: border-box;
+        @include themed() {color: t($txt-black-01);}
+        @include font-set;
+          &.on{
+            color: $light-green-01;
+            &::after{
+              content: "\e96e";
+              padding-left: 2px;
+            }
+          }
+          &:hover{
+            @include themed() {background: t($bg-gray-04-color)}
+          }
+      }
+  }
+  &.on {
+      z-index: 3;
+      .select_value{
+        @include themed(){ background: t($bg-gray-03-color);}
+        &:after{
+          top: 15px;
+          @include transform(rotate(45deg));
+        }
+      }
+      .select_list {display: block;}
+  }
+}
+
+// input
+.search_input {
+  display: inline-block;
+  padding: 0 12px;
+  height: 36px;
+  @include rounded(0 3px 3px 0);
+  @include themed(){background: t($bg-white-02-color);}
+  box-sizing: border-box;
+  input {
+      width: 210px;
+      height: 100%;
+      border:none;
+      @include themed(){ color: t($txt-black-01);}
+  }
+}
+
+
+// input[type='text'],
+// input[type='password'],
+// input[type='email'],
+// input[type='tel'],
+// input[type='number'] {
+//     padding: 0 20px;
+//     height: 54px;
+//     border: 1px solid #ddd;
+//     background: #fff;
+//     font-size: 18px;
+//     color: #000;
+//     line-height: 54px;
+//     font-family: 'NotoR';
+// }
+// input[type='text']::-ms-clear,
+// input[type='password']::-ms-clear,
+// input[type='email']::-ms-clear,
+// input[type='tel']::-ms-clear,
+// input[type='number']::-ms-clear {
+//     display: none;
+// }
+// input::placeholder {
+//     color: #999;
+//     font-family: 'NotoR';
+//     opacity: 1;
+// }
+// input::-moz-placeholder {
+//     color: #999;
+//     font-family: 'NotoR';
+// }
+// input::-webkit-input-placeholder {
+//     color: #999;
+//     font-family: 'NotoR';
+// }
+// input:-ms-input-placeholder {
+//     color: #999;
+//     font-family: 'NotoR';
+// }
+// input[type='text']:disabled,
+// input[type='password']:disabled,
+// input[type='tel']:disabled,
+// input[type='text']:read-only,
+// input[type='password']:read-only,
+// input[type='tel']:read-only {
+//     background: #f4f4f4;
+// }

@@ -1,6 +1,10 @@
  /*나의 잔디커넥트*/
-.connect-table-wrap{
+.connect-container{
+  .connect-table-wrap{
     @include cardBox;
+  }
+ }
+.connect-table-wrap{
     table{
         width: 100%;
         table-layout: fixed;
@@ -63,14 +67,68 @@
           &:hover{
             @include themed() {background-color: t($btn-gray-02-hover);}
           }
+      .icon-ic-b-arrow-down{
+        padding-left: 8px;
+        color: #A2A2A2;
+        font-size: 12px;
+      }
       }
     }
     ~ .connect-table-wrap{
       margin-top: 14px;
     }
     .status-wrap{
+      .btn_wrap{
+        display: inline-block;
+        &.tablet{
+          position: relative;
+          display: none;
+          .tooltip_box{
+            position: absolute;
+            width: 130px;
+            height: 70px;
+            top: 8px;
+            right: 5px;
+            z-index: 9;
+            @include cardBox;
+            border: 1px solid #DDDDDD;
+            div{
+              position: relative;
+            }
+            .btn-icon{
+              display: block;
+              width: 100%;
+              height: 100%;
+              padding: 6px 0 7px 13px;
+              text-align: left;
+              font-size: 13px;
+              font-weight: normal;
+              &+.btn-icon{margin-left: 0px;color: #FF5C48;}
+            }
+          }
+        }
+      }
       .btn-icon{
-        background: none;
+        width: 26px;
+        height: 26px;
+        font-size: 17px;
+        border-radius: 2px;
+        &+.btn-icon{margin-left: 10px}
+        i{
+          display: inline-block;
+          padding: 4px;
+        }
+        .icon-ic-edit{
+          @include themed() {color:t($txt-black-01);}
+          &:hover{
+            background: #F2F4F8;
+          }
+        }
+        .icon-ic-delete{color:#FF5C48;
+          &:hover{
+            background: rgba(255, 92, 72, 0.08);
+          }
+        }
       }
     }
 }
@@ -111,6 +169,7 @@
       width: 120px;
       height: 100%;
       right: 0;
+      .icon-ic-plug{padding-right: 3px;}
       &>span{
         position: absolute;
         top: 20px;
@@ -176,21 +235,9 @@
       width: 26px;
       height: 26px;
       @include themed{background-color: t($btn-gray-02);}
-      span{
-        @include position(7px,11px);
-        display: inline-block;
-        width: 2px;
-        height: 2px;
-        background: $light-txt-black-02;
-        @include rounded(50%);
-        &::before,&::after{
-          display: inline-block;
-          left: 8px;
-          @include rounded(50%);
-          @include pseudoDefault(2px,2px);
-          background: $light-txt-black-02;
-        }
-        &::after{left: 4px;}
+      .icon-ic-more{
+        @include position(5px,5px);
+        color: $light-txt-black-02;
       }
     }
   }
@@ -209,7 +256,7 @@
     color: $light-white-01;
     white-space: nowrap;
     font-size: 11px;
-    @include rounded(4px);
+    @include rounded;
     &::after{
       @include pseudoDefault(14px,14px);
       right: 7px;
@@ -318,10 +365,6 @@
     }
   }
 
-
-
-
-
   @media all and (max-width: $jnd-tablet-min-width) {
 
     .connect-admin-wrap{
@@ -331,7 +374,11 @@
         .connect-info-box{
           width:100%;
         }
-    }
+      }
+      .connect-table-wrap{
+        .btn_wrap.pc{display: none;}
+        // .btn_wrap.tablet{display: inline-block !important;}
+      }
 
   }
   
