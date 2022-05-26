@@ -94,7 +94,7 @@ const MyConnectPlug = (props) => {
                           </div>
                           </div>
                           <div className='btn_wrap pc'>
-                            <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                            <button className='btn-icon' onClick={() => handleClick(data2)}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
                             <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
                           </div>
                         </div>
