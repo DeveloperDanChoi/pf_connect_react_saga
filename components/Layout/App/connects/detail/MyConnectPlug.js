@@ -155,7 +155,7 @@ const MyConnectPlug = (props) => {
                     <Input type="checkbox" id=""/>
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
-                  <button className='btn-icon' onClick={() => handleClick(data2)}><i className="icon icon-pencil"></i><span>편집</span></button>
+                  <button className='btn-icon' onClick={() => handleClick({type: 'jira'})}><i className="icon icon-pencil"></i><span>편집</span></button>
                   <button className='btn-icon'><i className="icon icon-delete"></i><span>삭제</span></button>
 
                   {/* <div className='btn_wrap tablet'>
