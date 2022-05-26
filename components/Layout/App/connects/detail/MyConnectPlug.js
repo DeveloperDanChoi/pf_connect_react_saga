@@ -155,7 +155,10 @@ const MyConnectPlug = (props) => {
                     <Input type="checkbox" id=""/>
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
-                  <div className='btn_wrap tablet'>
+                  <button className='btn-icon' onClick={() => handleClick(data2)}><i className="icon icon-pencil"></i><span>편집</span></button>
+                  <button className='btn-icon'><i className="icon icon-delete"></i><span>삭제</span></button>
+
+                  {/* <div className='btn_wrap tablet'>
                     <a href="#none" className='btn_more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                     <div className='tooltip_box'>
                       <div>
@@ -167,7 +170,7 @@ const MyConnectPlug = (props) => {
                   <div className='btn_wrap pc'>
                     <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
                     <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
-                  </div>
+                  </div> */}
                 </div>
               </td>
             </tr>
@@ -197,7 +200,7 @@ const MyConnectPlug = (props) => {
                   </div>
                   </div>
                   <div className='btn_wrap pc'>
-                    <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                    <button className='btn-icon'onClick={() => handleClick(data2)}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
                     <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
                   </div>
                 </div>
