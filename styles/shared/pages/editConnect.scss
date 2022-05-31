@@ -1,0 +1,122 @@
+/* 연동 앱 수정 페이지*/
+.detail-connect-wrapper{
+    @include responsive-innerbox(40px,200px);
+    &.disabled .connect-row-item{
+        &::after{
+            @include pseudoDefault(100%,100%);
+            background: #F2F4F8;
+            z-index: 99;
+            @include position(0,0);
+            @include rounded(6px);
+            @include opacity(0.5);
+        }
+        &.webhook{
+            &::after{
+                content: none;
+            }
+        }
+    }
+}
+.connect-right-box{
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    .switch .slider{margin: 0 8px;}
+}
+.connect-row-item{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    padding: 24px;
+    margin-bottom: 14px;
+    background: #F2F4F8;
+    @include rounded(6px);
+    .title{
+        width: 210px;
+        padding-right: 12px;
+        strong{
+            @include font(14px,700);
+            color: $light-green-01;
+        }
+    }
+    .content{width: calc(100% - 210px);}
+    .row{
+        @include flex(center,space-between);
+        margin-top: 40px;
+        &:first-child{margin: 0;}
+        & > dt{
+            width: 40%;
+            .tit{
+                margin-bottom: 6px;
+                @include themed{color: $black-01};
+                @include font(14px,700);
+            }
+            .info{
+                @include font(12px);
+                color: #A2A2A2;
+                line-height: 1.4;
+            }
+        }
+        & > dd{
+            width: 55%;
+            .input-row{
+                position: relative;
+                .btn-profile{
+                    overflow: hidden;
+                    position: relative;
+                    @include rounded(50%);
+                    @include box(56px,56px,inline-block);
+                    min-width: 56px;
+                    min-height: 56px;
+                    margin-right: 8px;
+                    span{
+                        @include position(0,auto);
+                        bottom: 0;
+                        @include box(56px,24px,inline-block);
+                        text-align: center;
+                        color: #fff;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        line-height: 24px;
+                        @include font(12px,700);
+                    }
+                }
+
+            }
+        }
+    }
+}
+.full-btn{
+    @include btn(big,green,100%);
+}
+
+/* setting-contents */
+.setting-contents{
+    width: 100%;
+    .setting-group{
+        p{
+            padding: 0 0 8px 7px;
+            color:#A2A2A2;
+            @include font(12px,700);
+        }
+    & ~ .setting-group{
+        margin-top: 36px;
+        }
+    }
+}
+.setting-item{
+    display: flex;
+    align-items: center;
+    strong{
+        padding-right: 8px;
+        @include font(12px,700);
+    }
+    .utc-txt{
+        padding-left: 8px;
+        @include font(12px,700);
+        color: #A2A2A2;
+    }
+    .select-box ~ .select-box {
+        margin-left: 8px;
+    }
+}

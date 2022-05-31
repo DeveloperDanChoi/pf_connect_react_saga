@@ -1,54 +1,30 @@
 /* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import { modules } from '../../../../../store/connect/trello/trello';
-import { template1 } from '../../../../../service/connect';
-import Thumbnail from "../../../../ui/Thumbnail/Thumbnail";
-import { getPublicAssetPath } from '../../../../../lib/assetHelper';
-import { Input } from 'antd';
 
-const Trello = () => {
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const { team, trello } = useSelector((state) => {
-    // console.log('Trello state !!', state);
-    return state;
-  });
-  const { creators } = modules;
-  const [searchVal, setSearchVal] = useState(''); /* [D] 임시.  댄이 작업에 맞게 수정해주심 됩니다. */
+
+const SelectBox = () => {
+
 
   /* custom check box value */
   const [checkboxs, setCheckboxs] = useState({
-    card_01: false,
-    card_02: false,
-    card_03: false,
-    card_04: false,
-    card_05: false,
-    card_06: false,
-    card_07: false,
-    card_08: false,
-    card_09: false,
-    card_10: false,
-    list_01: false,
-    list_02: false,
-    list_03: false,
-    list_04: false,
-    list_05: false,
-    list_06: false,
-    chklist_01: false,
-    chklist_02: false,
-    chklist_03: false,
+    service_01_01: false,
+    service_01_02: false,
+    service_02_01: false,
+    service_02_02: false,
+    service_03_01: false,
+    service_03_02: false,
+    service_03_03: false,
   });
   /* custom select box value */
-  const [selects, setSelects] = useState({
+  const [inputs, setInputs] = useState({
     langVal: '',
+    topicVal: '',
     accoutVal: '',
     repositoryVal: '',
   });
 
-  const { langVal, accoutVal ,repositoryVal,date_01_01, date_02_01, date_02_02 ,date_03_01, date_04_01 , date_04_02 } = selects;
-  const { card_01, card_02, card_03, card_04, card_05, card_06, card_07, card_08, card_09, card_10, list_01, list_02, list_03, list_04, list_05, list_06, chklist_01, chklist_02, chklist_03 } = checkboxs;
+  const { langVal, topicVal, accoutVal ,repositoryVal } = inputs;
+  const { service_01_01, service_01_02, service_02_01, service_02_02, service_03_01, service_03_02, service_03_03 } = checkboxs;
 
   /* custon checkbox */
   const onChangeCheckbox = (e) => {
@@ -74,8 +50,8 @@ const Trello = () => {
     const selectLists = target.closest('.select-list').querySelectorAll('li a');
     const { name } = target.closest('.select-box').firstChild;
 
-    setSelects({
-      ...selects,
+    setInputs({
+      ...inputs,
       [name]: target.innerText,
     });
     selectLists.forEach((list) => list.classList.remove('on'));
@@ -105,24 +81,25 @@ const Trello = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'trello',
+      connectType: 'googleCalendar',
       modules,
-      list: creators.getAuthenticationTrelloBoardsList,
-      load: creators.getTeamsTrello,
-      connect: [creators.postTeamsTrello, creators.putTeamsTrelloSetting],
+      list: creators.getAuthenticationGoogleCalendarCalendarList,
+      load: creators.getTeamsGoogleCalendar,
+      connect: [creators.postTeamsGoogleCalendar, creators.putTeamsGoogleCalendarSetting],
       disconnect: creators.deleteAuthentications,
-      set: creators.setInputTrello,
+      set: creators.setInputGoogleCalendar,
+      elements: googleCalendar.input,
     });
   }, []);
 
   return (<>
-      <div className='detail-container'>
+       <div className='detail-container'>
       <div className='detail-header'>
         <div className='inner'>
           <div className='connect-info-box'>
-            <p className='img-box'><img src={getPublicAssetPath('static/icon_trello.png')} alt="trello"></img></p>
+            <p className='img-box'><img src={getPublicAssetPath('static/icon_github.png')} alt="github"></img></p>
             <div className='info'>
-                <strong>김지영</strong><span>의 trello</span>
+                <strong>김지영</strong><span>의 Jira</span>
                 <p>2021-12-06에 생성됨</p>
             </div>
             <div className='connect-right-box'>
@@ -169,141 +146,143 @@ const Trello = () => {
           <div className='content'>
             <dl className='row flx-baseline'>
               <dt>
-                <p className='tit'>메시지 옵션 설정</p>
-                <p className='info'>해당 옵션대로 이벤트가 발생할 때마다 메시지가 수신됩니다.</p>
+                <p className='tit'>알림 설정</p>
+                <p className='info'>일정에 대한 알림을 보내드립니다.</p>
               </dt>
               <dd>
                 <div className='input-row'>
                   <div className='setting-contents'>
-                    <div className='setting-group'>
-                      <p>카드</p>
-                      <ul>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="card_01" checked={card_01} value="1" name="card_01"/>
-                            <label htmlFor="card_01"><span>카드가 생성되었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="card_02" checked={card_02} value="1" name="card_02"/>
-                            <label htmlFor="card_02"><span>카드가 옮겨졌을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="card_03" checked={card_03} value="1" name="card_03"/>
-                            <label htmlFor="card_03"><span>카드 이름이 변경되었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="card_04" checked={card_04} value="1" name="card_04"/>
-                            <label htmlFor="card_04"><span>코멘트가 카드에 추가되었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="card_05" checked={card_05} value="1" name="card_05"/>
-                            <label htmlFor="card_05"><span>첨부 파일이 카드에 추가되었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="card_06" checked={card_06} value="1" name="card_06"/>
-                            <label htmlFor="card_06"><span>설명(Description)이 변경되었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="card_07" checked={card_07} value="1" name="card_07"/>
-                            <label htmlFor="card_07"><span>마감일(Due date)이 변경되었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="card_08" checked={card_08} value="1" name="card_08"/>
-                            <label htmlFor="card_08"><span>라벨(Label)이 변경되었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="card_09" checked={card_09} value="1" name="card_09"/>
-                            <label htmlFor="card_09"><span>카드에 멤버가 추가되었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="card_10" checked={card_10} value="1" name="card_10"/>
-                            <label htmlFor="card_10"><span>카드가 archive 또는 unarchive되었을 때</span></label>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className='setting-group'>
-                      <p>리스트</p>
-                      <ul>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="list_01" checked={list_01} value="1" name="list_01"/>
-                            <label htmlFor="list_01"><span>리스트가 생성되었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="list_02" checked={list_02} value="1" name="list_02"/>
-                            <label htmlFor="list_02"><span>리스트 이름이 바뀌었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="list_03" checked={list_03} value="1" name="list_03"/>
-                            <label htmlFor="list_03"><span>리스트가 다른 보드로 옮겨졌을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="list_04" checked={list_04} value="1" name="list_04"/>
-                            <label htmlFor="list_04"><span>리스트가 archive 또는 unarchive되었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="list_05" checked={list_05} value="1" name="list_05"/>
-                            <label htmlFor="list_05"><span>보드 이름이 바뀌었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="list_06" checked={list_06} value="1" name="list_06"/>
-                            <label htmlFor="list_06"><span>보드에 멤버가 추가되었을 때</span></label>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className='setting-group'>
-                      <p>체크리스트</p>
-                      <ul>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="chklist_01" checked={chklist_01} value="1" name="chklist_01"/>
-                            <label htmlFor="chklist_01"><span>체크리스트가 카드에 추가되었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="chklist_02" checked={chklist_02} value="1" name="chklist_02"/>
-                            <label htmlFor="chklist_02"><span>체크리스트 아이템이 생성되었을 때</span></label>
-                          </div>
-                        </li>
-                        <li>
-                          <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                            <input type="checkbox" id="chklist_03" checked={chklist_03} value="1" name="chklist_03"/>
-                            <label htmlFor="chklist_03"><span>체크리스트 아이템이 완료(Complete)/미완료(Incomplete)로 될 때</span></label>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
+                    <ul>
+                      <li>
+                        <div className='custom-checkbox' onClick={onChangeCheckbox}>
+                          <input
+                            type="checkbox"
+                            id="service_01_01"
+                            checked={service_01_01}
+                            value="1"
+                            name="service_01_01"
+                          />
+                          <label htmlFor="service_01_01">
+                            <div className='setting-item'>
+                              <div className="select-box">
+                                <a href="#none" title="검색필드 선택" className="select-value" value={langVal} name="langVal" onClick={onSelect}><span>{langVal === '' ? '한국어' : langVal}</span></a>
+                                <div className="select-list">
+                                    <ul>
+                                      <li><a href="#none" onClick={onChangeSelect} className='on'><span>한국어</span></a></li>
+                                      <li><a href="#none" onClick={onChangeSelect}><span>English</span></a></li>
+                                      <li><a href="#none" onClick={onChangeSelect}><span>日本語</span></a></li>
+                                      <li><a href="#none" onClick={onChangeSelect}><span>简体中文</span></a></li>
+                                      <li><a href="#none" onClick={onChangeSelect}><span>繁體中文</span></a></li>
+                                      <li><a href="#none" onClick={onChangeSelect}><span>Tiếng Việt </span></a></li>
+                                    </ul>
+                                </div>
+                              </div>
+                              <span className='utc-txt'>(UTC+09:00)</span>
+                            </div>
+                          </label>
+                        </div>
+                      </li>
+                      <li>
+                        <div className='custom-checkbox' onClick={onChangeCheckbox}>
+                          <input
+                            type="checkbox"
+                            id="service_01_02"
+                            checked={service_01_02}
+                            value="1"
+                            name="service_01_02"
+                          />
+                          <label htmlFor="service_01_02"><span>Pull Requests Opened / Closed</span></label>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </dd>
+            </dl>
+            <dl className='row flx-baseline'>
+              <dt>
+                <p className='tit'>일정 요약</p>
+                <p className='info'>한주간 또는 하루의 일정을 요약해 알려드립니다.</p>
+              </dt>
+              <dd>
+                <div className='input-row'>
+                  <div className='setting-contents'>
+                    <ul>
+                      <li>
+                        <div className='custom-checkbox' onClick={onChangeCheckbox}>
+                          <input
+                            type="checkbox"
+                            id="service_02_01"
+                            checked={service_02_01}
+                            value="1"
+                            name="service_02_01"
+                          />
+                          <label htmlFor="service_02_01"><span>Commits</span></label>
+                        </div>
+                      </li>
+                      <li>
+                        <div className='custom-checkbox' onClick={onChangeCheckbox}>
+                          <input
+                            type="checkbox"
+                            id="service_02_02"
+                            checked={service_02_02}
+                            value="1"
+                            name="service_02_02"
+                          />
+                          <label htmlFor="service_02_02"><span>Pull Requests Opened / Closed</span></label>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </dd>
+            </dl>
+            <dl className='row flx-baseline'>
+              <dt>
+                <p className='tit'>캘린더 업데이트</p>
+                <p className='info'>캘린더 업데이트가 필요한 상황을 선택해주세요.</p>
+              </dt>
+              <dd>
+                <div className='input-row'>
+                  <div className='setting-contents'>
+                    <ul>
+                      <li>
+                        <div className='custom-checkbox' onClick={onChangeCheckbox}>
+                          <input
+                            type="checkbox"
+                            id="service_03_01"
+                            checked={service_03_01}
+                            value="1"
+                            name="service_03_01"
+                          />
+                          <label htmlFor="service_03_01"><span>일정이 새롭게 생성되었거나 일정에 초대되었을 때</span></label>
+                        </div>
+                      </li>
+                      <li>
+                        <div className='custom-checkbox' onClick={onChangeCheckbox}>
+                          <input
+                            type="checkbox"
+                            id="service_03_02"
+                            checked={service_03_02}
+                            value="1"
+                            name="service_03_02"
+                          />
+                          <label htmlFor="service_03_02"><span>일정의 제목이나 시각, 장소가 수정되었을 때</span></label>
+                        </div>
+                      </li>
+                      <li>
+                        <div className='custom-checkbox' onClick={onChangeCheckbox}>
+                          <input
+                            type="checkbox"
+                            id="service_03_03"
+                            checked={service_03_03}
+                            value="1"
+                            name="service_03_03"
+                          />
+                          <label htmlFor="service_03_03"><span>일정이 취소되거나 삭제되었을 때</span></label>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </dd>
@@ -321,7 +300,7 @@ const Trello = () => {
               <dd>
                 <div className='input-row'>
                   <a href='#none' className='btn-profile'>
-                    <img src={getPublicAssetPath('static/icon_trello.png')} alt="trello"></img>
+                    <img src={getPublicAssetPath('static/icon_github.png')} alt="github"></img>
                     <span>Edit</span>
                   </a>
                   <Input type="text" className='input-type'></Input>
@@ -366,7 +345,7 @@ const Trello = () => {
                                     <li><a href='#none' onClick={onChangeSelect}>그룹에 속한 대화방 12</a></li>
                                   </ul>
                                 </div>
-                                <div className=''>{/* [D]: 그룹 아닐 경우 */}
+                                <div className=''>
                                   <ul>
                                     <li><a href='#none' onClick={onChangeSelect}>구룹아냐</a></li>
                                     <li><a href='#none' onClick={onChangeSelect}>구룹아닌방</a></li>
@@ -455,4 +434,4 @@ const Trello = () => {
   </>);
 };
 
-export default Trello;
+export default SelectBox;

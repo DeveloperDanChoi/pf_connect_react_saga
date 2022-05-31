@@ -1,4 +1,4 @@
- /*나의 잔디커넥트*/
+ /*커넥트 서브 페이지 - 공통,테이블 */
 .connect-container{
   .connect-table-wrap{
     @include cardBox;
@@ -8,6 +8,7 @@
     table{
         width: 100%;
         table-layout: fixed;
+        border-collapse: collapse;
         font-size: 13px;
         thead th{
           padding :16px 18px 11px;
@@ -22,16 +23,23 @@
           font-weight: 700;
           vertical-align: middle;
           @include ellipsis;
+          @include tablet{ padding: 11px 7px 9px; }
         }
         tr{
           @include themed() {
             border-bottom: 1px solid t($border-gray);
             color: t($txt-black-01);}
-            &.disabled{@include opacity(0.35);}
-        }
-        thead tr th:first-child,
-        tbody tr td:first-child{
+            &.disabled{ 
+              @include opacity(0.35);
+              .btn-wrap.tablet .btn-more,.btn-icon{
+                pointer-events: none;
+              }
+            }
+          }
+          thead tr th:first-child,
+          tbody tr td:first-child{
             padding-left: 33px;
+            @include tablet{padding-left: 20px;}
         }
         thead tr th:last-child,
         tbody tr td:last-child{
@@ -45,9 +53,7 @@
         }
         .img-box{
             position: relative;
-            display: inline-block;
-            width:26px;
-            height: 26px;
+            @include box(26px,26px,inline-block);
             margin-right: 16px;
             @include themed() {border: 1px solid t($border-gray-02);}
             @include rounded(50%);
@@ -78,68 +84,71 @@
       margin-top: 14px;
     }
     .status-wrap{
-      .btn_wrap{
+      .btn-wrap{
         display: inline-block;
         &.tablet{
           position: relative;
           display: none;
-          .tooltip_box{
+          .tooltip-box{
+            display: none;
             position: absolute;
-            width: 130px;
-            height: 70px;
+            @include box(130px,70px);
             top: 8px;
             right: 5px;
             z-index: 9;
             @include cardBox;
             border: 1px solid #DDDDDD;
-            div{
-              position: relative;
-            }
+            div{ position: relative; }
             .btn-icon{
-              display: block;
-              width: 100%;
-              height: 100%;
+              @include box(100%,100%);
               padding: 6px 0 7px 13px;
               text-align: left;
-              font-size: 13px;
-              font-weight: normal;
+              @include font(13px,400);
               &+.btn-icon{margin-left: 0px;color: #FF5C48;}
+              &:hover{
+                @include themed() {background-color: t($btn-gray-02);}
+              }
             }
           }
-        }
-      }
-      .btn-icon{
-        width: 26px;
-        height: 26px;
-        font-size: 17px;
-        border-radius: 2px;
-        &+.btn-icon{margin-left: 10px}
-        i{
-          display: inline-block;
-          padding: 4px;
-        }
-        .icon-ic-edit{
-          @include themed() {color:t($txt-black-01);}
-          &:hover{
-            background: #F2F4F8;
+          &.on{
+            .tooltip-box{ display: block; }
           }
         }
-        .icon-ic-delete{color:#FF5C48;
-          &:hover{
-            background: rgba(255, 92, 72, 0.08);
-          }
+        @include tablet{
+          &.pc{display: none!important;}
+          &.tablet{display: inline-block!important;}
         }
       }
     }
+  }
+.btn-icon{
+  @include box(26px,26px,inline-block);
+  font-size: 17px;
+  border-radius: 2px;
+  &+.btn-icon{margin-left: 10px}
+  i{
+    display: inline-block;
+    padding: 4px;
+  }
+  .icon-ic-edit{
+    @include themed() {color:t($txt-black-01);}
+    &:hover{
+      background: #F2F4F8;
+    }
+  }
+  .icon-ic-delete{color:#FF5C48;
+    &:hover{
+      background: rgba(255, 92, 72, 0.08);
+    }
+  }
 }
-
 /*공통*/
 .connect-info-box{
   @include flex(center,space-between);
     position: relative;
     width: 100%;
-    margin: 7px;
-    padding: 18px;
+    margin: 7px 0;
+    padding: 0 16px;
     min-height:108px ;
     .img-box{
         width: 52px;
@@ -152,12 +161,16 @@
       .info{
         width: calc(100% - 180px);
         padding: 5px 0 5px 10px;
-        strong{
+        .info-tit{
             display: block;
             font-weight: 700;
             font-size: 14px;
             @include themed() {color: t($black-01);}
             @include ellipsis;
+          }
+          strong{
+            @include font(14px,700);
+            @include themed() {color: t($black-01);}
         }
         p{
             padding-top: 8px;
@@ -203,8 +216,8 @@
 //프로필 아이콘
 .profile-box{
   position: absolute;
-  bottom: 16px;
   right: 16px;
+  bottom: 16px;
   &:hover .tooltip{ display: block; }
   &:hover .item:before{
     @include pseudoDefault(100%,100%);
@@ -215,25 +228,20 @@
   .item{
     overflow: hidden;
     position: relative;
-    display: inline-block;
-    width: 28px;
-    height: 28px;
+    @include box(28px,28px,inline-block);
     margin-left: -6px;
     @include rounded(50%);
     @include themed{border: 2px solid t($bg-white-01-color);}
     cursor: pointer;
     img{
       position: absolute;
-      width: 100%;
-      height: 100%;
     }
     &:nth-child(1){z-index:4}
     &:nth-child(2){z-index:3}
     &:nth-child(3){z-index:2}
     &:nth-child(4){z-index:1}
     .etc-profile{
-      width: 26px;
-      height: 26px;
+      @include box(26px,26px,inline-block);
       @include themed{background-color: t($btn-gray-02);}
       .icon-ic-more{
         @include position(5px,5px);
@@ -270,30 +278,32 @@
 // 토글버튼
 .switch{
   position: relative;
+  @include vertical(top);
   input{display: none;}
+  & > .txt{
+    line-height: 19px;
+    font-weight: 700;
+    color: #A2A2A2;
+  }
   .slider{
     position: relative;
-    display: inline-block;
-    width: 40px;
+    @include vertical(bottom);
+    @include box(40px,21px,inline-block);
     margin: 0 20px 0 8px;
-    height: 21px;
     transition: all .2s;
-    vertical-align: bottom;
     @include themed() {background-color: t($bg-gray-02-color);}
     @include rounded(20px);
     &:before{
       content: '';
-      display: inline-block;
       @include position(3px,4px);
-      width: 15px;
-      height: 14px;
+      @include box(15px,14px,inline-block);
       transition: all .2s;
       @include themed() {background-color: t($white-01);}
       @include rounded(50%);
     }
   }
   &.on{
-    color: $light-green-01;
+    .txt{color: $light-green-01;}
     .slider{
       background-color: $light-green-01;
       &:before{
@@ -320,65 +330,47 @@
     border-right-color: transparent !important;
     border-radius: 9px;
     // border: 2px solid var(--jnd-base-hover-color); //#00abe6;
-  }
+}
+
+.three-quarters-loader.center:not(:required) {
+  position: absolute;
+  top: 50%;
+  margin-top: -16px;
+  left: 50%;
+  margin-left: -12px;
+}
   
-  .three-quarters-loader.center:not(:required) {
-    position: absolute;
-    top: 50%;
-    margin-top: -16px;
-    left: 50%;
-    margin-left: -12px;
+@-moz-keyframes three-quarters-loader {
+  0% {
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
-  
-  @-moz-keyframes three-quarters-loader {
-    0% {
-      -moz-transform: rotate(0deg);
-      transform: rotate(0deg);
-    }
-    100% {
-      -moz-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
+  100% {
+    -moz-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
-  @-webkit-keyframes three-quarters-loader {
-    0% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg);
-    }
-    100% {
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
+}
+@-webkit-keyframes three-quarters-loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
-  @keyframes three-quarters-loader {
-    0% {
-      -moz-transform: rotate(0deg);
-      -ms-transform: rotate(0deg);
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg);
-    }
-    100% {
-      -moz-transform: rotate(360deg);
-      -ms-transform: rotate(360deg);
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
-
-  @media all and (max-width: $jnd-tablet-min-width) {
-
-    .connect-admin-wrap{
-
-        width:100%;
-        min-width: auto;
-        .connect-info-box{
-          width:100%;
-        }
-      }
-      .connect-table-wrap{
-        .btn_wrap.pc{display: none;}
-        // .btn_wrap.tablet{display: inline-block !important;}
-      }
-
+}
+@keyframes three-quarters-loader {
+  0% {
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
-  
+  100% {
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

@@ -36,7 +36,7 @@
             @include font-set;
             font-size: 20px;
         }
-        li.main a:before {content: "\e99a";top: 10px;font-size: 15px;}
+        li.main a:before {content: "\e99a"; top: 10px;font-size: 15px; }
         li.my a:before {content: "\e937";}
         li.admin a:before {content: "\e973";}
     }
@@ -50,12 +50,11 @@
     width: calc(100% - 24px);
     padding: 20px 10px 35px;
     text-align: center;
-    @include themed() {border-top: 1px solid t($border-gray);}
+    @include themed() { border-top: 1px solid t($border-gray) }
     p{
         padding-bottom: 18px;
-        @include themed() {
-            color: t($txt-black-02);
-        }
+        @include spanIcon;
+        @include themed() { color: t($txt-black-02) }
     }
     button{
         @include btn(medium,green,100%);
@@ -64,17 +63,29 @@
 /*header*/
 .header{
     position: relative;
-    display: flex;
-    padding: 17px 0;
-    font-size: 14px;
+    padding: 17px 21px;
     z-index: 9;
-    font-weight: 100;
+    font-size: 14px;
     @include themed() {
         color: t($black-01);
-        background-color: t($bg-white-01-color);
-        box-shadow:0px 4px 13px t($box-shadow);
+        background-color: t($white-01);
+        box-shadow:0 2px 3px 0 t($box-shadow-02);
+    }
+    button{
+        vertical-align: middle;
+        font-size: 15px;
+        @include themed() { color: t($black-01) }
+    }
+    h1{
+        @include vertical(bottom);
+        padding-left:22px ;
+    }
+    .btn-close{
+        position: absolute;
+        right: 21px;
     }
 }
+// container
 .connect-container{
     position: relative;
     width: 100%;
@@ -83,23 +94,3 @@
     @include themed() {background-color: t($bg-gray-01-color);}
 }
 
-
-
-
-/* 768 */
-@media all and (min-width: $jnd-pc-min-width) {
-    .tablet-menu{
-        display: none;
-    }
-  }
-  
-/* 768 */
-@media all and (max-width: $jnd-tablet-min-width) {
-    .tablet-menu{
-        display: block;
-    }
-    .menu-wrap{
-        display: none;
-    }
-  }
-  

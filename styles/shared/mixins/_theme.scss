@@ -1,12 +1,12 @@
 $colors:(
   light: (
-    bg-gray-01-color: #F2F4F8,
-    bg-gray-11-color: #F2F4F8,
-    bg-gray-02-color: #DDD,
-    bg-gray-03-color: #E0E3E8, 
-    bg-gray-04-color: #F7F7F7, 
+    bg-gray-01-color: #F2F4F8, // 기본 BG
+    bg-gray-11-color: #F2F4F8, // 상세 헤더 BG
 
-    bg-green-01-color: #F2FCF8, 
+    bg-gray-02-color: #DDD, // 토글
+    bg-gray-03-color: #E0E3E8, // hover
+    bg-gray-04-color: #F7F7F7, // etc gray
+    bg-green-01-color: #F2FCF8, //menu green
 
     bg-white-01-color: #FFF, 
     bg-white-02-color: #FFF, 
@@ -31,17 +31,18 @@ $colors:(
     select-disable-color:#F4F4F4,
 
     box-shadow:rgba(214, 220, 231, 0.35),
+    box-shadow-02:rgb(0 0 0 / 10%),
   ),
   dark: (
     bg-gray-01-color: #18191A,
     bg-gray-11-color: #212226,
+
     bg-gray-02-color: #3A3C45,
     bg-gray-03-color: #2C3035, 
     bg-gray-04-color: #222831, 
-
     bg-green-01-color: #20322E, 
 
-    bg-white-01-color: #FFF, 
+    bg-white-01-color: #212226, 
     bg-white-02-color: #18191A, 
     txt-black-01:#E8E9ED, 
     txt-black-02:#656565, 
@@ -64,45 +65,39 @@ $colors:(
     select-disable-color:#F4F4F4,
 
     box-shadow:rgba(0,10,12,0.35),
+    box-shadow-02:rgb(0 0 0 / 100%),
   )
 );
 
+/**** shortcut *****/
 $bg-gray-01-color:'bg-gray-01-color';
 $bg-gray-11-color:'bg-gray-11-color';
 $bg-gray-02-color:'bg-gray-02-color';
 $bg-gray-03-color:'bg-gray-03-color';
 $bg-gray-04-color:'bg-gray-04-color';
-
 $bg-green-01-color:'bg-green-01-color';
-
 $bg-white-01-color:'bg-white-01-color';
 $bg-white-02-color:'bg-white-02-color';
-
 $txt-black-01:'txt-black-01';
 $txt-black-02:'txt-black-02';
-
 $green-01:'green-01';
 $green-02:'green-02';
 $green-03:'green-03';
-
 $red-01:'red-01';
 $white-01:'white-01';
 $black-01:'black-01';
 $gray-01:'gray-01';
 $gray-02:'gray-02';
-
 $btn-gray:'btn-gray';
 $btn-gray-hover:'btn-gray-hover';
-
 $btn-gray-02:'btn-gray-02';
 $btn-gray-02-hover:'btn-gray-02-hover';
-
 $menu-hover:'menu-hover';
 $border-gray:'border-gray';
 $border-gray-02:'border-gray-02';
-
 $box-shadow:'box-shadow';
-
+$box-shadow-02:'box-shadow-02';
+/**** //shortcut *****/
 
 @mixin themed() {
   @each $theme, $map in $colors {
@@ -121,6 +116,7 @@ $box-shadow:'box-shadow';
 @function t($key) {
   @return map-get($theme-map, $key);
 }
+
 // theme default
 $light-gray-01: #E5E5E5;
 $light-gray-02: #F2F4F8; //BG/상세페이지 BG 및 버튼
@@ -137,12 +133,3 @@ $light-green-03:#00A25F; //hover
 $light-red-01:#FF5C48;//하이라티트
 $light-white-01: #FFF;
  
-
-// /*
-//   사이즈 기준
-// */
-$jnd-pc-min-width: 1024px;
-$jnd-tablet-min-width: 768px;
-$jnd-tablet-max-width: 1023px;
-$iphone5: 320px;
-

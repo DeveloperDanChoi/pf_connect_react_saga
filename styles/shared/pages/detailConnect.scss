@@ -1,9 +1,9 @@
-/*상세페이지 scss*/
+/*커넥트 상세 페이지*/
 .detail-container{
+    height: 100%;
     @include themed(){ background-color: t($bg-white-02-color);}
     .inner{
-        width: 1054px;
-        margin: 0 auto;
+        @include responsive-innerbox;
     }
     .detail-header{
         padding: 16px 0;
@@ -11,9 +11,7 @@
     }
     .detail-wrapper{
         overflow: hidden;
-        position: relative;
-        width: 1132px;
-        margin: 23px auto 0;
+        @include responsive-innerbox(23px);
         height: 699px;
         @include themed(){ border: 1px solid t($border-gray);}
         @include rounded(5px);
@@ -23,6 +21,10 @@
                 @include themed(){ border-bottom: 1px solid t($border-gray);}
             }
         }
+        @include tablet{ 
+            width: calc(100% - 36px); 
+            margin:23px 18px 0 ;
+        }
     }
     .connect-info-box{ justify-content: flex-start;}
 }
@@ -30,8 +32,7 @@
     @include flex(center,center);
     position: absolute;
     bottom: 0;
-    width: 100%;
-    height: 47px;
+    @include box(100%,47px,flex);
     @include themed(){ border-top: 1px solid t($border-gray);}
     .page-num{
         padding: 0 7px;
@@ -54,10 +55,17 @@
         &:disabled{  @include themed(){ color:t($gray-02);}}
     }
 }
-/* board_search_bar */
-.board_search_bar {
+/* board-search-bar */
+.board-search-bar {
     position: absolute;
     right: 0;
+    .select-box {
+        min-width: 170px;
+        @include rounded(4px 0 0 4px);
+        @include themed() {
+          border: 1px solid t($border-gray);
+        }
+      }
     button{
         margin-left: 5px;
         @include btn(medium,green);
@@ -68,6 +76,18 @@
             }
         }
     }
+    input[type='text']{
+        display: inline-block;
+        padding: 0 12px;
+        width: 210px;
+        height: 36px;
+        @include rounded(0 3px 3px 0);
+        @include themed(){
+            background: t($bg-white-02-color);
+            color: t($txt-black-01);
+        }
+        box-sizing: border-box;
+      }
 }
 .noresult-wrap{
     @include flex(center,center);

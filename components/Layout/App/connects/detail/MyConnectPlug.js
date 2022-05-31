@@ -34,7 +34,7 @@ const MyConnectPlug = (props) => {
   <>
     { connect.myConnectCount !== '' &&
     <div className='connect-container'>
-      <div className='title_wrap'>
+      <div className='title-wrap'>
         <h2>나의 잔디 커넥트</h2>
         <span className='sub_tit'>총 <strong>{connect.myConnectCount}</strong>개 연동 중</span>
       </div>
@@ -84,16 +84,16 @@ const MyConnectPlug = (props) => {
                             <Input type="checkbox" id=""/>
                             <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                           </label>
-                          <div className='btn_wrap tablet'>
-                            <a href="#none" className='btn_more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
-                            <div className='tooltip_box'>
+                          <div className='btn-wrap tablet'>
+                            <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                            <div className='tooltip-box'>
                               <div>
                                 <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
                                 <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
                               </div>
                           </div>
                           </div>
-                          <div className='btn_wrap pc'>
+                          <div className='btn-wrap pc'>
                             <button className='btn-icon' onClick={() => handleClick(data2)}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
                             <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
                           </div>
@@ -116,7 +116,7 @@ const MyConnectPlug = (props) => {
         <div className='connect-info-box'>
           <p className='img-box'><img src={getPublicAssetPath('static/icon_jira.png')} alt="jira"></img></p>
           <div className='info'>
-            <strong>JIRA</strong>
+            <strong className="info-tit">JIRA</strong>
             <p>이슈 추적, 프로젝트 관리</p>
           </div>
           <div className='connect-etc-box'><span><i className='icon-ic-plug'></i>7개 연동중</span></div>
@@ -155,22 +155,19 @@ const MyConnectPlug = (props) => {
                     <Input type="checkbox" id=""/>
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
-                  <button className='btn-icon' onClick={() => handleClick({type: 'jira'})}><i className="icon icon-pencil"></i><span>편집</span></button>
-                  <button className='btn-icon'><i className="icon icon-delete"></i><span>삭제</span></button>
-
-                  {/* <div className='btn_wrap tablet'>
-                    <a href="#none" className='btn_more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
-                    <div className='tooltip_box'>
+                  <div className='btn-wrap tablet'>
+                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <div className='tooltip-box'>
                       <div>
-                        <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                        <button className='btn-icon' onClick={() => handleClick({type: 'jira'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
                         <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
                       </div>
                   </div>
                   </div>
-                  <div className='btn_wrap pc'>
-                    <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                  <div className='btn-wrap pc'>
+                    <button className='btn-icon'onClick={() => handleClick({type: 'jira'})}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
                     <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
-                  </div> */}
+                  </div>
                 </div>
               </td>
             </tr>
@@ -181,7 +178,7 @@ const MyConnectPlug = (props) => {
                   JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
                 </span>
               </td>
-              <td><span className='fc-green'>Mobile JIRA</span></td>
+              <td><span className='fc-green'>outgoing</span></td>
               <td><span className='fw-normal'>2021-12-06</span></td>
               <td className='of-visible'>
                 <div className='status-wrap'>
@@ -190,17 +187,177 @@ const MyConnectPlug = (props) => {
                     <Input type="checkbox" id=""/>
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
-                  <div className='btn_wrap tablet'>
-                    <a href="#none" className='btn_more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
-                    <div className='tooltip_box'>
+                  <div className='btn-wrap tablet'>
+                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <div className='tooltip-box'>
                       <div>
-                        <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                        <button className='btn-icon' onClick={() => handleClick({type: 'outgoing'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
                         <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
                       </div>
                   </div>
                   </div>
-                  <div className='btn_wrap pc'>
-                    <button className='btn-icon'onClick={() => handleClick(data2)}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                  <div className='btn-wrap pc'>
+                    <button className='btn-icon'onClick={() => handleClick({type: 'outgoing'})}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                    <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td> 
+                <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
+                <span>
+                  JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
+                </span>
+              </td>
+              <td><span className='fc-green'>rss</span></td>
+              <td><span className='fw-normal'>2021-12-06</span></td>
+              <td className='of-visible'>
+                <div className='status-wrap'>
+                  <label className="switch on" labefor="unit">
+                    <span className='txt'>작동중</span>
+                    <Input type="checkbox" id=""/>
+                    <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                  </label>
+                  <div className='btn-wrap tablet'>
+                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <div className='tooltip-box'>
+                      <div>
+                        <button className='btn-icon' onClick={() => handleClick({type: 'rss'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                        <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
+                      </div>
+                  </div>
+                  </div>
+                  <div className='btn-wrap pc'>
+                    <button className='btn-icon'onClick={() => handleClick({type: 'rss'})}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                    <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td> 
+                <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
+                <span>
+                  JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
+                </span>
+              </td>
+              <td><span className='fc-green'>github</span></td>
+              <td><span className='fw-normal'>2021-12-06</span></td>
+              <td className='of-visible'>
+                <div className='status-wrap'>
+                  <label className="switch on" labefor="unit">
+                    <span className='txt'>작동중</span>
+                    <Input type="checkbox" id=""/>
+                    <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                  </label>
+                  <div className='btn-wrap tablet'>
+                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <div className='tooltip-box'>
+                      <div>
+                        <button className='btn-icon' onClick={() => handleClick({type: 'github'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                        <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
+                      </div>
+                  </div>
+                  </div>
+                  <div className='btn-wrap pc'>
+                    <button className='btn-icon'onClick={() => handleClick({type: 'github'})}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                    <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td> 
+                <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
+                <span>
+                  JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
+                </span>
+              </td>
+              <td><span className='fc-green'>googleCalendar</span></td>
+              <td><span className='fw-normal'>2021-12-06</span></td>
+              <td className='of-visible'>
+                <div className='status-wrap'>
+                  <label className="switch on" labefor="unit">
+                    <span className='txt'>작동중</span>
+                    <Input type="checkbox" id=""/>
+                    <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                  </label>
+                  <div className='btn-wrap tablet'>
+                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <div className='tooltip-box'>
+                      <div>
+                        <button className='btn-icon' onClick={() => handleClick({type: 'googleCalendar'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                        <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
+                      </div>
+                  </div>
+                  </div>
+                  <div className='btn-wrap pc'>
+                    <button className='btn-icon'onClick={() => handleClick({type: 'googleCalendar'})}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                    <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td> 
+                <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
+                <span>
+                  JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
+                </span>
+              </td>
+              <td><span className='fc-green'>trello</span></td>
+              <td><span className='fw-normal'>2021-12-06</span></td>
+              <td className='of-visible'>
+                <div className='status-wrap'>
+                  <label className="switch on" labefor="unit">
+                    <span className='txt'>작동중</span>
+                    <Input type="checkbox" id=""/>
+                    <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                  </label>
+                  <div className='btn-wrap tablet'>
+                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <div className='tooltip-box'>
+                      <div>
+                        <button className='btn-icon' onClick={() => handleClick({type: 'trello'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                        <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
+                      </div>
+                  </div>
+                  </div>
+                  <div className='btn-wrap pc'>
+                    <button className='btn-icon'onClick={() => handleClick({type: 'trello'})}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                    <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td> 
+                <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
+                <span>
+                  JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
+                </span>
+              </td>
+              <td><span className='fc-green'>incoming</span></td>
+              <td><span className='fw-normal'>2021-12-06</span></td>
+              <td className='of-visible'>
+                <div className='status-wrap'>
+                  <label className="switch on" labefor="unit">
+                    <span className='txt'>작동중</span>
+                    <Input type="checkbox" id=""/>
+                    <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                  </label>
+                  <div className='btn-wrap tablet'>
+                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <div className='tooltip-box'>
+                      <div>
+                        <button className='btn-icon' onClick={() => handleClick({type: 'incoming'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                        <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
+                      </div>
+                  </div>
+                  </div>
+                  <div className='btn-wrap pc'>
+                    <button className='btn-icon'onClick={() => handleClick({type: 'incoming'})}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
                     <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
                   </div>
                 </div>
@@ -213,7 +370,7 @@ const MyConnectPlug = (props) => {
                   JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
                 </span>
               </td>
-              <td><span className='fc-green'>Mobile JIRA</span></td>
+              <td><span className='fc-green'>Mobile bitbucket</span></td>
               <td><span className='fw-normal'>2021-12-06</span></td>
               <td className='of-visible'>
                 <div className='status-wrap'>
@@ -222,17 +379,17 @@ const MyConnectPlug = (props) => {
                     <Input type="checkbox" id=""/>
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
-                  <div className='btn_wrap tablet'>
-                    <a href="#none" className='btn_more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
-                    <div className='tooltip_box'>
+                  <div className='btn-wrap tablet'>
+                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <div className='tooltip-box'>
                       <div>
-                        <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                        <button className='btn-icon' onClick={() => handleClick({type: 'bitbucket'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
                         <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
                       </div>
                   </div>
                   </div>
-                  <div className='btn_wrap pc'>
-                    <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                  <div className='btn-wrap pc'>
+                    <button className='btn-icon'onClick={() => handleClick({type: 'bitbucket'})}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
                     <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
                   </div>
                 </div>
@@ -247,7 +404,7 @@ const MyConnectPlug = (props) => {
         <div className='connect-info-box'>
           <p className='img-box'><img src={getPublicAssetPath('static/icon_jira.png')} alt="jira"></img></p>
           <div className='info'>
-            <strong>JIRA</strong>
+            <strong className="info-tit">JIRA</strong>
             <p>이슈 추적, 프로젝트 관리</p>
           </div>
           <div className='connect-etc-box'><span><i className='icon-ic-plug'></i>7개 연동중</span></div>
@@ -286,16 +443,16 @@ const MyConnectPlug = (props) => {
                     <Input type="checkbox" id=""/>
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
-                  <div className='btn_wrap tablet'>
-                    <a href="#none" className='btn_more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
-                    <div className='tooltip_box'>
+                  <div className='btn-wrap tablet'>
+                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <div className='tooltip-box'>
                       <div>
                         <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
                         <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
                       </div>
                   </div>
                   </div>
-                  <div className='btn_wrap pc'>
+                  <div className='btn-wrap pc'>
                     <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
                     <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
                   </div>

@@ -21,7 +21,7 @@ const ConnectCard = () => {
     <div className='connect-container'>
       {/* 배너 영역 */}
       <div className='connect-card-banner'>
-        <span className='bg_type icon-ic-plug'></span>
+        <span className='bg-type icon-ic-plug'></span>
         <div className='txt-wrap'>
           <p>잔디 커넥트를 처음 사용하시나요? 이제 Google 캘린더, Trello, GitHub, JIRA 등을 연동하여 잔디에서 알림을 받아보세요.</p>
           <span>이제 Google 캘린더, Trello, GitHub, JIRA 등을 연동하여 잔디에서 알림을 받아보세요.</span>
@@ -30,7 +30,7 @@ const ConnectCard = () => {
       </div>
       
       {/* 신규 서비스 */}
-      <div className='title_wrap type02'>
+      <div className='title-wrap type02'>
         <h2>신규 서비스</h2>
         <span className='badge'>NEW</span>
       </div>
@@ -68,7 +68,7 @@ const ConnectCard = () => {
       </div>
 
       {/* 커넥트 목록 */}
-      <div className='title_wrap type02'>
+      <div className='title-wrap type02'>
         <h2>커넥트 목록</h2>
       </div>
       <div className='connect-card-wrap type_list'>

@@ -14,10 +14,10 @@ const AdminConnectPlug = (props) => {
 
   return (<>
      <div className='connect-container'>
-      <div className='title_wrap type02'>
+      <div className='title-wrap type02'>
         <h2>잔디 커넥트 관리자</h2>
         <p className='sub_tit'>
-          <strong><i className='icon-ic-company'></i>TossLab,Inc.</strong> <span>총 <strong>47</strong>개 연동 중</span>
+          <strong className='icon-ic-company'>TossLab,Inc.</strong> <span>총 <strong>47</strong>개 연동 중</span>
         </p>
 
       </div>
@@ -94,7 +94,7 @@ const AdminConnectPlug = (props) => {
         <a href="#none" className='connect-info-box'>
           <p className='img-box'><img src={getPublicAssetPath('static/icon_jira.png')} alt="jira"></img></p>
           <div className='info'>
-            <strong>JIRA</strong>
+            <strong className="info-tit">JIRA</strong>
             <p>이슈 추적, 프로젝트 관리</p>
           </div>
           <div className='connect-etc-box'>

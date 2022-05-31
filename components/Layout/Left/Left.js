@@ -32,7 +32,7 @@ const Left = (props) => {
           </li>
         </ul>
         <div className='notice-box'>
-          <p><i className='icon-ic-question'></i> 찾으시는 서비스가 없으신가요?</p>
+          <p className='icon-ic-question'>찾으시는 서비스가 없으신가요?</p>
           <button onClick={() => banner.survey(user)}>서비스 추가 요청하기</button>
         </div>
       </div>
