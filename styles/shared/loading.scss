@@ -1,0 +1,75 @@
+.loading{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin-left: -17px;
+    padding-left: 12px;
+    pointer-events: none;
+    @include themed{
+        color: t($txt-black-01);
+        background:t($bg-white-02-color)
+    }
+    span{ font-weight: 700; }
+    .three_quarters_loader{
+        display: inline-block;
+        margin-left: 9px;
+    }
+}
+.table_botttom{
+    .three_quarters_loader{margin: 0 auto 18px;}
+}
+/*로딩바*/
+/* :not(:required) hides this rule from IE9 and below */
+.three_quarters_loader:not(:required) {
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    @include box(18px,18px);
+    -moz-animation: three-quarters-loader 1250ms infinite linear;
+    -webkit-animation: three-quarters-loader 1250ms infinite linear;
+    animation: three-quarters-loader 1250ms infinite linear;
+    border: 2px solid $default-green-01; /* fallback (IE) */
+    border-right-color: transparent !important;
+    @include rounded(9px);
+}
+
+.three-quarters-loader.center:not(:required) {
+//   @include position(50%,50%);
+}
+  
+@-moz-keyframes three-quarters-loader {
+  0% {
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes three-quarters-loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes three-quarters-loader {
+  0% {
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

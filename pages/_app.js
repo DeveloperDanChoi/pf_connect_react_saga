@@ -17,6 +17,10 @@ import {
 } from '../store/authority/authority';
 import '../styles/globals.scss';
 // eslint-disable-next-line import/order
+/* swiper */
+import 'swiper/swiper.scss';
+import 'swiper/components/navigation/navigation.scss';
+
 import _ from 'lodash';
 import FixedMeta from '../components/FixedMeta/FixedMeta';
 import Layout from '../components/Layout/Layout';
@@ -53,7 +57,7 @@ const App = ({ Component, pageProps }) => {
     };
   }, []);
 
-    /**
+  /**
    * 토큰 확인 후에 도메인을 확인
    */
   useEffect(() => {

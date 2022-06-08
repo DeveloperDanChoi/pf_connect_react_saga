@@ -1,47 +1,25 @@
-.modalOpened {
-    overflow: hidden;
-  }
-.en,
-.ko {
-    word-break: keep-all;
-    word-wrap: break-word;
-    }
-.vi {
-    word-break: keep-all;
-    word-wrap: break-word;
-    letter-spacing: -0.5px;
-    }
-
-.ja .zh-cn,
-.zh-tw {
-    word-break: break-all;
-    word-wrap: break-word;
-    }
-img{
-  width: 100%;
-  height: 100%;
-}
+/*visible*/
+.hidden{position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden}
+.of-visible{overflow: visible !important;}
+/* 정렬 */
+.flx-baseline{align-items: baseline !important;}
+/* font */
+.fc-green{color:$default-green-01 !important }
+.fc-gray{color:$default-txt-black-02 !important }
+.fc-blue{color:$default-blue-01 !important }
+.fw-normal{font-weight: normal !important }
+.fw-bold{font-weight: 700 !important }
+/* margin */
+.mgr8{margin-right: 8px !important }
+/*display*/
+.block{display: block !important;}
 
 /*공통*/
-.wrap,.jdConnect-wrap{
-  width: 100%;
+.jdConnect-wrap{
   height: 100%;
 }
 .jdConnect-container{
-  display: flex;
-  width: 100%;
-  min-height: calc(100% - 52px);
-}
-h2.title{
-  display: inline-block;
-  margin: 40px 0 14px;
-  padding-left: 8px;
-  font-size: 18px;
-  font-weight: bold;
-  @include themed() {color: t($black-01);}
-}
-main,.container{
-  width: 100%;
+  height: 100%;
   @include themed() {background-color: t($bg-gray-01-color);}
 }
 .title-wrap{
@@ -63,8 +41,7 @@ main,.container{
     font-weight: 700;
     @include themed() {color: t($txt-black-02);}
     strong{
-      color: $light-green-01;
-      font-weight: bold;
+      @include marking($default-green-01,700);
     }
   }
   .badge{
@@ -72,29 +49,14 @@ main,.container{
     padding: 0 9px;
     height: 18px;
     line-height: 20px;
-    background: $light-red-01;
+    background: $default-red-01;
     color: #fff;
     font-size: 12px;
     @include rounded(36px);
   }
 }
-.fc-green{color:$light-green-01;}
-.fw-normal{font-weight: normal;}
-.hidden{
-  position: absolute; 
-  width: 1px; 
-  height: 1px; 
-  margin: -1px; 
-  padding: 0; 
-  overflow: hidden
-}
-.of-visible{
-  overflow: visible !important;
-}
-.flx-baseline{
-  align-items: baseline !important;
-}
-// selectbox,input
+
+/* selectbox */
 .select-box {
   position: relative;
   @include box(auto,36px,inline-block);
@@ -104,22 +66,21 @@ main,.container{
   @include themed() {
     color: t($txt-black-01);
     background:t($bg-white-02-color);
-    &.repository{
+    &.list-type{
       min-width: 200px;
       .custom-select{ 
         width: 100%;
-        .custon-select-wrap > ul{
-          position: relative;
+        .custom-select-wrap > ul{
           &::after{
             @include pseudoDefault(calc(100% - 32px),1px);
-              left: 15px;
-              background: #DDD;
+            left: 15px;
+            @include themed() {background-color: t($bg-gray-01-color);}
           }
         }
         .option-wrap{
           margin-bottom: 10px;
+          a{ padding: 7px 16px}
           & + .option-wrap::before{ content: none }
-          a{ padding: 7px 16px;}
         }
       }
       .search-list-wrap{
@@ -133,19 +94,19 @@ main,.container{
           @include font(13px,700);
       }
       .select-list{
-          box-shadow:0px 16px 32px rgba(0, 0, 0, 0.08); 
-          border: 1px solid #ddd;
+        @include themed(){
+          background: t($bg-white-02-color);
+          border: 1px solid t($bg-gray-01-color);
+        }
+        box-shadow:0px 16px 32px rgba(0, 0, 0, 0.08); 
       }
     }
     &.type-full{
       width: 100%;
-      .select-list{
-          width: 100%;
-      }
+      .select-list{ width: 100% }
     }
   }
-  
-  &:hover{ @include themed(){background: t($bg-gray-03-color)}}
+  &:hover{ @include themed(){ background: t($btn-gray-03-hover)} }
   .select-value {
     display: block;
     position: relative;
@@ -163,12 +124,12 @@ main,.container{
         position: absolute;
         top: 13px;
         right: 12px;
+        @include transform(rotate(225deg));
         @include pseudoDefault(5px,5px);
         @include themed(){
           border-top: 1px solid t($black-01);
           border-left: 1px solid t($black-01);
         }
-        @include transform(rotate(225deg));
     }
   }
   .select-list {
@@ -184,7 +145,6 @@ main,.container{
         background:t($bg-white-02-color);
         border: 1px solid t($border-gray);
       }
-      // 계정 select type
       &.account-type{
         span{ @include spanIcon }
         a.on{
@@ -195,7 +155,6 @@ main,.container{
         }
       }
       z-index: 1;
-      li{ position: relative }
       a{
         @include box(100%,100%);
         padding: 10px 16px;
@@ -204,7 +163,7 @@ main,.container{
         @include font-set;
         white-space: initial;
           &.on{
-            color: $light-green-01 !important;
+            color: $default-green-01 !important;
             font-weight : 700;
             &::after{
               content: "\e96e";
@@ -221,19 +180,18 @@ main,.container{
             top: 12px;
             right: 18px;
             font-size: 12px;
-            color:#A2A2A2;
+            color:$default-txt-black-02;
         }
   }
   /* custom-select */
   .custom-select{
     overflow-y: hidden;
-     @include cardBox;
     .search-box{
       padding: 9px;
       @include themed() { box-shadow:0 2px 3px 0 t($box-shadow-02);}
       .search-input-box{
         padding: 0 14px;
-        background: #F2F4F8;
+        @include themed() { background:t($bg-gray-11-color);}
         @include rounded(32px);
         i{
           font-size: 17px;
@@ -249,27 +207,27 @@ main,.container{
     }
     .tit{
       padding: 0 6px 0 16px;
-      height: 36px;
+      max-height: 36px;
       line-height: 36px;
+      @include themed() {color: t($txt-black-02);}
     }
-    .custon-select-wrap{
+    .custom-select-wrap{
       overflow-x: hidden;
       overflow-y: auto;
-      height: 340px;
-      // padding-bottom: 9px;
-      font-size: 14px;
+      max-height: 340px;
       .option-wrap{
-        width: 100%;
         position: relative;
+        width: 100%;
         & + .option-wrap::before{
           @include pseudoDefault(calc(100% - 32px),1px);
-            left: 15px;
-            background: #DDD;
+          left: 15px;
+          @include themed{background-color:t($bg-gray-02-color);}
         }
         .folder-tit{
           margin-left: 25px;
           padding: 4px 0; 
-          color: #A2A2A2;
+          @include themed{color:t($txt-black-02);}
+          @include themed() {color: t($txt-black-02);}
           span{
             @include spanIcon(17px);
             -webkit-font-smoothing: auto;
@@ -292,7 +250,7 @@ main,.container{
       font-size: 14px;
       .no-result{
         padding-top: 5px;
-        color: #000;
+        @include themed{color:t($txt-black-01);}
       }
     }
   }
@@ -330,26 +288,35 @@ main,.container{
   display: flex;
   justify-content: space-between;
   align-items: center;
- 
+  &.single-type{
+    justify-content: end;
+    @include desktop{ justify-content: start;}
+  }
   input[type='text']{
       width: 100%;
-      height: 36px;
-      background: #fff;
-      @include rounded(4px);
-      border: 1px solid #ddd;
       padding: 9px 12px;
+      height: 36px;
+      @include themed(){
+        background: t($bg-white-02-color);
+        border: 1px solid t($bg-gray-02-color);
+        color: t(txt-black-01);
+      }
+      @include rounded(4px);
   }
   .input-copy-box{
     display: flex;
     align-items: center;
     width: 100%;
-    background: #fff;
     padding-left: 14px;
-    border: 1px solid #ddd;
+    @include themed(){
+      background: t($bg-white-02-color);
+      border: 1px solid t($bg-gray-02-color);
+    }
     @include rounded(4px);
     .icon-ic-contact{margin-right: 8px;color: #909090;}
     input[type=text]{
         padding-left: 0;
+        background: none;
         border: none;
         color: #909090;
         @include ellipsis;
@@ -370,64 +337,180 @@ main,.container{
     input[type='text']{background: none;}
     &:hover{@include themed() {background: t($bg-gray-03-color)}}
 }
-
-.mgr8{margin-right: 8px !important}
-.cl-green{color: $light-green-01 !important}
-
-input::placeholder {
-    color: #A2A2A2;
+input{
+  &::placeholder,
+  &::-moz-placeholder,
+  &::-webkit-input-placeholder,
+  &:-ms-input-placeholder{
+    @include themed() {color: t($gray-03)}
+  }
 }
-input::-moz-placeholder {
-    color: #A2A2A2;
-}
-input::-webkit-input-placeholder {
-     color: #A2A2A2;
-}
-input:-ms-input-placeholder {
-     color: #A2A2A2;
-}
-
 /* custom-checkbox */
 .custom-checkbox {
   width: 100%;
   padding: 8px;
   border-radius: 4px;
   &:not(.none-hover):hover{
-    background: #E0E3E8;
+    @include themed(){background: t($btn-gray-03-hover)}
   }
 }
-
 input[type=checkbox]{
     @extend .hidden;
     &+label {
       display: block;
       position: relative;
-      padding-left: 21px;
-      cursor: pointer;
+      padding-left: 25px;
       font-size: 12px;
-      color: #333;
-      & > span{
-        @include vertical(text-bottom);
-      }
+      cursor: pointer;
+      @include themed() {color: t($txt-black-01);}
+      & > span{@include vertical(text-bottom)}
       &:before{
         @include pseudoDefault(16px,16px);
         @include position(0,50%);
         @include rounded(50%);
-        border: 1px solid #ced1d7;
-        background-color: #fff;
+        @include themed() {
+          background: t($bg-white-02-color);
+          border:  1px solid t($bg-gray-01-color);
+        }
         -moz-box-sizing: border-box;
         box-sizing: border-box;
       }
     }
     &:checked+label:after{
+      content: "\e96e";
       @include position(0,50%);
       width: 16px;
       height: 16px;
-      content: "\e96e";
-      color: #fff;
-      background: $light-green-01;
+      @include themed() {color: t($bg-white-02-color);}
+      background: $default-green-01;
       font-size: 16px;
       font-family: "icomoon" !important;
       @include rounded(50%);
     }
+}
+
+/* tab */
+.tab-container{
+  position: relative;
+  .tab-menu{
+    @include responsive-innerbox(40px,0);
+    @include themed() {border-bottom: 1px solid t($border-gray);}
+    ul{
+      @include flex(center,flex-start);
+    }
+    a{
+      display: inline-block;
+      min-width: 130px;
+      padding: 10px 0;
+      @include font(14px,700);
+      @include themed() {color: t($txt-black-02);}
+      text-align: center;
+      &.on{
+        color: $default-green-01;
+        border-bottom: 3px solid $default-green-01 ;
+      }
+    }
+  }
+  .tab-cont{
+    display: none;
+    &.on{ display:block}
+  }
+}
+/* modal */
+.modal-container{
+  @include flex(center,center);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  &::before{
+    @include pseudoDefault(100%,100%);
+    @include opacity(0.5);
+    background: $default-black-01;
+    z-index: 9;
+  }
+  .modal-box{
+    width: 500px;
+    padding: 22px 30px 20px;
+    @include rounded(8px);
+    z-index: 9;
+    @include themed{
+      background: t($bg-white-01-color);
+      color: t($txt-black-01);
+      box-shadow: 0 3px 25px -5px t($box-shadow-03);
+    }
+    p{
+      margin-bottom: 15px;
+      font-size: 15px;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .btn-box{
+      text-align: center;
+      button{
+        min-width: 60px;
+        padding: 8px 14px 6px;
+        @include rounded(36px);
+        @include font(14px,500);
+      }
+      .btn-ok{ 
+        @include btn(small,green);
+        @include rounded(36px);
+      }
+      .btn-cancel{
+        color: $default-gray-01;
+        &:hover{
+          @include themed() {
+            background: t($btn-gray-02-hover);
+          }
+        }
+      }
+    }
+  }
+}
+/* toast */
+#toast-container.toast-top-center {
+  position: fixed;
+  top: 16px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  z-index: 999;
+  .toast {
+    position: relative;
+    width: 90%;
+    max-width: 670px;
+    min-width: 320px;
+    margin: 0 auto 10px;
+    padding: 10px 34px 10px 50px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .45);
+    opacity: 1;
+    color: #fff;
+    font-size: 15px;
+    overflow: hidden;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &.c-toast-success { background-color: rgba(0, 180, 116, 0.95) }
+    &.c-toast-warning { background-color: rgba(241, 165, 46, 0.95) }
+    &.c-toast-error { background-color: rgba(227, 79, 79, 0.95) }
+    &.c-toast-caution { background-color: rgba(236, 86, 31, 0.95) }
+  
+    & > .status-icon {
+      @include position(18px,11px);
+      font-size: 20px;
+    }
+  }
+  .toast-text {
+    font-weight: 600;
+    line-height: 22px;
+  }
+  .toast-close-button {
+    position: absolute;
+    top: 14px;
+    right: 13px;
+    font-size: 12px;
+  }
 }

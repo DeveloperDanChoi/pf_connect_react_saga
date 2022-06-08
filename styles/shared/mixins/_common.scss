@@ -1,48 +1,46 @@
 @import './buttons.scss';
 
-.inputDefault {
-  border: solid 1px gray-02;
-  padding: 15px 12px;
-  border-radius: 4px;
-}
-
-@mixin input-basic {
-  @extend .inputDefault;
-  &::placeholder {
-    // color: gray-162;
-    font-size: 16px;
-  }
-}
-
-@mixin select-basic {
-  @extend .inputDefault;
-//   color: gray-162;
-}
-
-@mixin responsive-innerbox($top:0,$bottom:$top) {
+@mixin responsive-innerbox($top:0,$bottom:$top,$type:default) {
   position: relative;
-  width: 1048px;
   min-height: auto;
   margin: $top auto $bottom;
+
+  @if $type == 'big-type'
+  {
+    width: 1112px;
+    @include desktop(){ 
+      margin: $top/2 auto $bottom;
+      width: calc(100% - 108px);
+    }
     @include tablet{ 
-      width: calc(100% - 36px); 
+      width: calc(100% - 28px); 
+    }
+  }@else {
+    width: 1048px;
+    @include desktop(){ 
+      margin: $top/2 auto $bottom;
+      width: calc(100% - 172px); // + 64
+    }
+    @include tablet{ 
+      width: calc(100% - 92px); // + 64
+    }
   }
 }
 
-@mixin title($emColor: $jnd-third-base-color) {
-  font-weight: 500;
-  margin: 0 auto;
-  font-size: 41.5px;
-  line-height: 49.5px;
-  span {
-    color: $emColor;
+@mixin infoBox($ellipsis:'not') {
+  strong{
+    font-weight: 700;
+    @include themed() {color: t($black-01);}
+    @if $ellipsis == ellipsis{
+      @include ellipsis;
+    }
   }
-}
-@mixin banner-title($emColor: $jnd-third-base-color) {
-  @include position(50%, 50%);
-  @include title($emColor);
-  max-width: 80%;
-  text-align: center;
+  p{
+    margin-top: 8px;
+    @if $ellipsis == ellipsis{
+      @include ellipsis($line: 2,$lineHeight: 1.2em);
+    }
+  }
 }
 
 @mixin clear {
@@ -77,6 +75,11 @@
   width: $w;
   height: $h;
 }
+@mixin marking($color,$weight,$space:unset) {
+  color: $color;
+  font-weight: $weight;
+  white-space: $space;
+}
 
 @mixin flex($item:center, $content:space-between) {
   @each $prefix in -ms-, -webkit-, '' {
@@ -92,7 +95,6 @@
   width: $width;
   height: $height;
 }
-
 @mixin font($size:13px, $weight : 400) {
   font-size:$size;
   font-weight: $weight;
@@ -123,7 +125,6 @@
     #{$prefix}opacity: $value;
   }
 }
-
 @mixin ellipsis($line: 1, $lineHeight: 1.2em) {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -140,7 +141,7 @@
 }
 
 @mixin cardBox() {
- @include rounded(8px);
+  @include rounded(8px);
   @include themed() {
     background: t($bg-white-01-color);
     box-shadow:0px 4px 13px t($box-shadow);
@@ -166,16 +167,16 @@ $jnd-pc-min-width: 1024px;
 $jnd-tablet-min-width: 768px;
 $jnd-tablet-max-width: 1023px;
 
-/*반응형, 브라우저 크기가 768이상, 1023px 이하일때*/
+/*반응형, 브라우저 크기가 768이상, 1023px 이하일때  최대 768*/
 @mixin tablet{
-  @media all and (max-width: $jnd-tablet-max-width){
+  @media (max-width: 768px){  
     @content;
   }
 }
 
-/*반응형, 브라우저 크기가 1024px 이상일때*/
+/*반응형, 브라우저 크기가 1024px 이상일때     최대 1024*/
 @mixin desktop{
-  @media (min-width: $jnd-pc-min-width){
+  @media (max-width: 1024px){
     @content;
   }
 }

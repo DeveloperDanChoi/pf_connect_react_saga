@@ -1,71 +1,75 @@
+// common theme default
+$default-gray-01: #BCBCBC;
+$default-gray-02: #F2F4F8;
+$default-gray-03: #DDD;
+$default-txt-black-01:#191919; //tooltip
+$default-txt-black-02:#A2A2A2; //sub
+$default-green-01:#00C473; //잔디 메인
+$default-green-02:#00A25F; //hover
+$default-red-01:#FF5C48; //하이라이트 01
+$default-white-01: #FFF;
+$default-blue-01: #438FFF; //하이라이트 02
+$default-black-01: #000;
+ 
+/* theme => light, dark */
 $colors:(
   light: (
-    bg-gray-01-color: #F2F4F8, // 기본 BG
-    bg-gray-11-color: #F2F4F8, // 상세 헤더 BG
-
-    bg-gray-02-color: #DDD, // 토글
-    bg-gray-03-color: #E0E3E8, // hover
-    bg-gray-04-color: #F7F7F7, // etc gray
-    bg-green-01-color: #F2FCF8, //menu green
-
+    bg-gray-01-color: #F2F4F8, 
+    bg-gray-11-color: #F2F4F8, 
+    bg-gray-02-color: #DDD, 
+    bg-gray-03-color: #E0E3E8, 
+    bg-gray-04-color: #F7F7F7, 
+    bg-green-01-color: #F2FCF8, 
     bg-white-01-color: #FFF, 
     bg-white-02-color: #FFF, 
     txt-black-01:#333, 
     txt-black-02:#A2A2A2, 
-
     white-01: #FFF,
     black-01: #000,
     gray-01:#C2C2C2,
     gray-02:#DDD,
-
+    gray-03:#A2A2A2,
     btn-gray:#F2F4F8,
     btn-gray-hover:#E0E3E8,
     btn-gray-02:#F2F2F2,
     btn-gray-02-hover :#EAEAEA,
-
-    menu-hover:#E0E3E8,
-
+    btn-gray-03-hover :#E8E9ED,
+    menu-hover:#F2F4F8,
     border-gray: #E5E5E5,
     border-gray-02: #DDD,
-
     select-disable-color:#F4F4F4,
-
     box-shadow:rgba(214, 220, 231, 0.35),
     box-shadow-02:rgb(0 0 0 / 10%),
+    box-shadow-03:rgb(0 0 0 / 35%),
   ),
   dark: (
     bg-gray-01-color: #18191A,
     bg-gray-11-color: #212226,
-
     bg-gray-02-color: #3A3C45,
     bg-gray-03-color: #2C3035, 
     bg-gray-04-color: #222831, 
     bg-green-01-color: #20322E, 
-
     bg-white-01-color: #212226, 
     bg-white-02-color: #18191A, 
     txt-black-01:#E8E9ED, 
     txt-black-02:#656565, 
-
     white-01: #212226,
     black-01: #FFF,
     gray-01:#656565,
     gray-02:#3F4448,
-
+    gray-03:#909090,
     btn-gray: #2C3035,
     btn-gray-hover: #3C4147,
     btn-gray-02:#2C2D33,
     btn-gray-02-hover :#393A40,
-
+    btn-gray-03-hover :#30363B,
     menu-hover: #222831,
-
     border-gray: #3A3C45,
     border-gray-02: #0D0F15,
-
     select-disable-color:#F4F4F4,
-
     box-shadow:rgba(0,10,12,0.35),
     box-shadow-02:rgb(0 0 0 / 100%),
+    box-shadow-03:rgb(0 0 0 / 100%),
   )
 );
 
@@ -88,15 +92,18 @@ $white-01:'white-01';
 $black-01:'black-01';
 $gray-01:'gray-01';
 $gray-02:'gray-02';
+$gray-03:'gray-03';
 $btn-gray:'btn-gray';
 $btn-gray-hover:'btn-gray-hover';
 $btn-gray-02:'btn-gray-02';
 $btn-gray-02-hover:'btn-gray-02-hover';
+$btn-gray-03-hover:'btn-gray-03-hover';
 $menu-hover:'menu-hover';
 $border-gray:'border-gray';
 $border-gray-02:'border-gray-02';
 $box-shadow:'box-shadow';
 $box-shadow-02:'box-shadow-02';
+$box-shadow-03:'box-shadow-03';
 /**** //shortcut *****/
 
 @mixin themed() {
@@ -117,19 +124,4 @@ $box-shadow-02:'box-shadow-02';
   @return map-get($theme-map, $key);
 }
 
-// theme default
-$light-gray-01: #E5E5E5;
-$light-gray-02: #F2F4F8; //BG/상세페이지 BG 및 버튼
-$light-gray-03: #E0E3E8; //BG/상세페이지 BG 및 버튼 hover
-$light-gray-04: #F7F7F7; //TABLE HEADER
-$light-gray-05: #DDD; //TABLE HEADER
-$light-gray-06:#C2C2C2; //sub
-$light-txt-black-01:#333; //typo
-$light-txt-black-02:#A2A2A2; //sub
-$light-txt-black-03:#191919; //tooltip
-$light-green-01:#00C473; //잔디 메인
-$light-green-02:#F2FCF8; //background green
-$light-green-03:#00A25F; //hover
-$light-red-01:#FF5C48;//하이라티트
-$light-white-01: #FFF;
- 
+

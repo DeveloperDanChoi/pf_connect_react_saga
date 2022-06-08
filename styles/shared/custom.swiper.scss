@@ -1,0 +1,27 @@
+.connect-swiper-container{
+    .swiper-button-prev,.swiper-button-next{
+        top: 22px;
+        left: 0;
+        width: 32px;
+        height: 400px;
+        @include rounded(6px);
+        &:after{
+            content: "\e90c";
+            @include font-set;
+            @include themed(){ color:t($txt-black-01);}
+            font-size: 12px;
+        }
+        &:hover{
+            @include themed(){ background:t($bg-gray-11-color);}
+        }
+    }
+    .swiper-button-next{
+        left: auto;
+        right: 0;
+        &:after{
+            content: "\e90d";
+        }
+    }
+   
+}
+

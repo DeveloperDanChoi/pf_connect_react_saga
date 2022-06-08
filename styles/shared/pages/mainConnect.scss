@@ -6,43 +6,46 @@
     padding: 18px;
     @include rounded(6px);
     @include themed() {background: t($bg-white-01-color);}
+    @include tablet{
+      padding-bottom: 70px;
+    }
     .bg-type.icon-ic-plug{
         @include box(46px,46px,inline-block);
         margin-right: 20px;
-        line-height: 45px;
+        line-height: 53px;
         font-size: 26px;
         text-align: center;
-        color: #fff;
-        background:$light-green-01;
+        background:$default-green-01;
+        @include themed() {color: t($white-01);}
         @include rounded(50%);
     }
     .txt-wrap{
         display: inline-block;
+        @include infoBox;
+        strong{@include themed() {color: t($txt-black-01)}}
         p{
-            padding-bottom: 5px;
-            @include themed() {color: t($txt-black-01);}
-        }
-        span{
             font-size: 13px;
-            @include themed() {color: t($gray-01);}
+            @include themed() {color: t($gray-01)}
         }
     }
     button{
         position: absolute;
         right: 18px;
         @include btn(medium,green);
+        @include tablet{
+            left: 85px;
+            right: auto;
+            bottom: 20px;
+         }
     }
 }
 .connect-card-wrap{
     @include flex(stretch, start);
-    flex-wrap: wrap;
     & ~ .title-wrap{margin-top: 40px;}
     &.type_list {
         .connect-card{
             padding-top: 0;
-            .inner{
-                padding: 22px;
-            }
+            .inner{padding: 22px}
             button {
                 @include btn(small,gray);
                 position: absolute;
@@ -52,21 +55,19 @@
             }
         }
     &.type_list_new {
-        .inner{
-            padding: 18px 16px;
-        }
+        .inner{ padding: 18px 16px }
         .img-box{
             position: relative;
             padding: 30px 0;
             padding-top: 34%;
             text-align: center;
             background: #333;
-            border-radius: 8px 8px 0 0;
+            @include rounded(8px 8px 0 0);
             &.asana{background: #F06A6A;}
             img{
                 @include position(50%,50%);
                 width: auto;
-                height: auto;
+                height: 65%;
             }
         }
         button{
@@ -79,24 +80,19 @@
         position: relative;
         width: calc(20% - 14px);
         min-width: 270px;
-        margin: 7px;
         min-height: 164px;
-       @include cardBox;
-        @include themed() {
-            background-color: t($bg-white-01-color);
-        }
+        margin: 7px;
+        @include cardBox;
+        @include themed() { background-color: t($bg-white-01-color)}
+        @include infoBox(ellipsis);
         strong{
             display: block;
-            margin: 10px 0 7px;
-            font-weight: 700;
-            @include themed() {color: t($black-01);}
+            margin-top: 10px;
             @include ellipsis;
         }
         p{
-            color: $light-txt-black-02;
+            color: $default-txt-black-02;
             font-size: 13px;
-            line-height: 1.2;
-            @include ellipsis($line: 2,$lineHeight: 1.2em);
         }        
         .img{
             @include box(54px,54px);

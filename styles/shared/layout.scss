@@ -1,34 +1,37 @@
 /*menu*/
-.menu-wrap{
+.menu-container{
     position: relative;
+}
+.menu-wrap{
+    position: fixed;
+    top: 51px;
     width: 18vw;
+    height: calc(100% - 51px);
     padding: 0 12px;
+    z-index: 4;
     @include themed() {
         border-right: 1px solid t($border-gray-02);
         background-color: t($bg-white-01-color);
     }
     ul{
+        padding-top: 12px;
         li{
-            position: relative;
             &:first-child{
-                padding-bottom: 10px;
-                margin: 12px 0;
+                padding-bottom: 11px;
                 @include themed() {border-bottom: 1px solid t($border-gray);}
             }
             a{
-                display: inline-block;
-                width: 100%;
-                height: 100%;
-                padding: 11px 15px 11px 40px;
+                @include box(100%,100%,inline-block);
+                padding: 11px 15px 11px 45px;
                 @include themed() {color: t($black-01);}
                 &:hover{
-                    @include themed() {background-color: t($btn-gray-hover);}
+                    @include themed() {background-color: t($menu-hover)}
                     @include rounded;
                 }
             }
             &.on a{
+                color: $default-green-01; 
                 @include themed() {background-color: t($bg-green-01-color);}
-                color: $light-green-01; 
             }
         }
         li a:before {
@@ -40,10 +43,13 @@
         li.my a:before {content: "\e937";}
         li.admin a:before {content: "\e973";}
     }
+    @include desktop{
+        display: none;
+        left: 56px;
+        width: 33vw;
+    }
 }
-.tablet-menu{
-    display: none;
-}
+.tablet-menu{ display: none }
 .notice-box{
     position: absolute;
     bottom: 0;
@@ -52,9 +58,11 @@
     text-align: center;
     @include themed() { border-top: 1px solid t($border-gray) }
     p{
+        display: inline-block;
         padding-bottom: 18px;
         @include spanIcon;
         @include themed() { color: t($txt-black-02) }
+        line-height: 1.2;
     }
     button{
         @include btn(medium,green,100%);
@@ -62,10 +70,10 @@
 }
 /*header*/
 .header{
-    position: relative;
+    position: fixed;
+    width: 100%;
     padding: 17px 21px;
     z-index: 9;
-    font-size: 14px;
     @include themed() {
         color: t($black-01);
         background-color: t($white-01);
@@ -77,20 +85,41 @@
         @include themed() { color: t($black-01) }
     }
     h1{
-        @include vertical(bottom);
         padding-left:22px ;
+        @include vertical(bottom);
     }
     .btn-close{
         position: absolute;
         right: 21px;
     }
 }
-// container
-.connect-container{
-    position: relative;
-    width: 100%;
-    height: 100%;
-    padding: 30px 47px;
-    @include themed() {background-color: t($bg-gray-01-color);}
-}
 
+/* tablet-menu GNB*/
+.tablet-menu{
+    display: none;
+    position: fixed;
+    width: 56px;
+    height: 100%;
+    padding: 66px 0 0 8px;
+    left: 0;
+    z-index: 5;
+    @include themed() {
+        border-right: 1px solid t($border-gray-02);
+        background-color: t($bg-white-01-color);
+    }
+    @include desktop{display: block;}
+    .btn-open{
+        position: relative;
+        @include box(40px,40px,inline-block);
+        @include rounded(40px);
+        font-size: 25px;
+        text-align: center;
+        @include themed() {background-color: t($bg-gray-01-color);}
+        &::before{ @include position(7px,6px);}
+        &.on{
+            width: 47px;
+            @include themed() {background-color: t($bg-green-01-color);}
+            @include rounded(40px 0 0 40px);
+        }
+    }
+}

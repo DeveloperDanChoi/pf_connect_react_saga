@@ -43,16 +43,18 @@
 }
 
 @mixin green-btn {
-  background: $light-green-01;
+  background: $default-green-01;
   @include themed() {
     color: t($white-01);
   }
   &:hover{
-    background: $light-green-03;
+    background: $default-green-02;
   }
   &:disabled{
-    background: #F2F4F8;
-    color:#C2C2C2;
+    @include themed() {
+      color: t($gray-01);
+      background: t($bg-gray-11-color);
+    }
   }
 }
 
@@ -70,7 +72,7 @@
 
 @mixin white-btn {
   @include themed() {
-    color: $light-green-01;
+    color: $default-green-01;
     background: t($bg-white-01-color);
     border: 1px solid t($border-gray);
   }

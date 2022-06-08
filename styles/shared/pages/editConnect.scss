@@ -1,18 +1,99 @@
 /* 연동 앱 수정 페이지*/
-.detail-connect-wrapper{
-    @include responsive-innerbox(40px,200px);
+.detail-content{
+    @include responsive-innerbox(40px,0);
     &.disabled .connect-row-item{
         &::after{
             @include pseudoDefault(100%,100%);
-            background: #F2F4F8;
+            @include themed() {background: t($bg-gray-11-color);}
             z-index: 99;
             @include position(0,0);
             @include rounded(6px);
             @include opacity(0.5);
         }
-        &.webhook{
-            &::after{
-                content: none;
+        &.webhook::after{content: none}
+    }
+    &.type-swiper{
+        @include responsive-innerbox(40px,0,big-type);
+        .inner-cont {
+            width: calc(100% - 64px);
+            margin: 0 auto;
+            .inner-cont-info{
+                display: table;
+                margin-top: 24px;
+                line-height: 1.4;
+                @include themed(){ color:t($txt-black-01);}
+                em{
+                    @include marking($default-green-01,700,nowrap);
+                }
+                .badge{
+                    @include box(21px,21px,inline-block);
+                    margin-right: 10px;
+                    @include font(14px,700);
+                    @include themed(){ background:t($bg-gray-11-color);}
+                    color: $default-green-01;
+                    text-align: center;
+                    line-height: 23px;
+                    @include rounded(50%);
+                }
+                .txt{
+                    display: table-cell;
+                }
+                .bullet{
+                    display: table-cell;
+                    position: relative;
+                    padding: 0 6px 0 12px;
+                    &::before{
+                        @include pseudoDefault(4px,4px);
+                        top: 7px;
+                        left: 0;
+                        @include rounded(50%);
+                        background: $default-green-01;
+                    }
+                }
+            }
+        }
+        .introduction-code-cont{
+            position: relative;
+            padding: 40px 37px;
+            height: 400px;
+            background: $default-gray-02;
+            border: 1px solid $default-gray-03;
+            @include rounded(6px);
+            .tit{
+                margin-bottom: 10px;
+                font-size: 16px;
+            }
+            .txt{
+                margin-bottom: 35px;
+                color: $default-txt-black-02;
+                line-height: 1.2;
+            }
+            .txt02{
+                margin: 60px 0 16px;
+                line-height: 1.2;
+            }
+            .introduction-code-view {
+                overflow-y: auto;
+                width: 100%;
+                padding: 24px;
+                max-height: 240px;
+                white-space: nowrap;
+                line-height: 20px;
+                @include rounded(5px);
+                border: 1px solid #CCC;
+                background: $default-white-01;
+                .dept1{padding-left: 48px;}
+                .dept2{padding-left: 72px;}
+                .comment{
+                    float: right;
+                    color: $default-txt-black-02;
+                }
+                .code-line{ @include clear }
+                &.simple-type{
+                    max-height: 100%;
+                    width: calc(100% - 72px);
+                    @include position(auto,50%);
+                }
             }
         }
     }
@@ -30,36 +111,47 @@
     position: relative;
     padding: 24px;
     margin-bottom: 14px;
-    background: #F2F4F8;
+    @include themed(){ background-color: t($bg-gray-11-color);}
     @include rounded(6px);
     .title{
         width: 210px;
         padding-right: 12px;
-        strong{
-            @include font(14px,700);
-            color: $light-green-01;
+        strong{ @include marking($default-green-01,700) }
+    }
+    @include desktop{
+        flex-direction: column;
+        width: 100%;
+        .title{ margin-bottom: 36px; }
+        .row{
+            flex-direction: column;
+            .info{margin-bottom: 16px;}
         }
     }
-    .content{width: calc(100% - 210px);}
+    .content{
+        width: calc(100% - 210px);
+        @include desktop{ width: 100%;}
+    }
     .row{
         @include flex(center,space-between);
         margin-top: 40px;
         &:first-child{margin: 0;}
         & > dt{
             width: 40%;
+            @include desktop{ width: 100%;}
             .tit{
                 margin-bottom: 6px;
-                @include themed{color: $black-01};
-                @include font(14px,700);
+                @include themed(){ color:t($txt-black-01);}
+                font-weight: 700;
             }
             .info{
                 @include font(12px);
-                color: #A2A2A2;
+                @include themed(){ color:t($txt-black-02);}
                 line-height: 1.4;
             }
         }
         & > dd{
             width: 55%;
+            @include desktop{ width: 100%;}
             .input-row{
                 position: relative;
                 .btn-profile{
@@ -75,7 +167,7 @@
                         bottom: 0;
                         @include box(56px,24px,inline-block);
                         text-align: center;
-                        color: #fff;
+                        color: $default-white-01;
                         background-color: rgba(0, 0, 0, 0.5);
                         line-height: 24px;
                         @include font(12px,700);

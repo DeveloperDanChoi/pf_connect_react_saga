@@ -1,9 +1,10 @@
 /*커넥트 상세 페이지*/
 .detail-container{
+    padding: 51px 0 200px;
     height: 100%;
     @include themed(){ background-color: t($bg-white-02-color);}
     .inner{
-        @include responsive-innerbox;
+        @include responsive-innerbox(0,0,big-type);
     }
     .detail-header{
         padding: 16px 0;
@@ -11,7 +12,7 @@
     }
     .detail-wrapper{
         overflow: hidden;
-        @include responsive-innerbox(23px);
+        @include responsive-innerbox(24px,0,big-type);
         height: 699px;
         @include themed(){ border: 1px solid t($border-gray);}
         @include rounded(5px);
@@ -21,12 +22,11 @@
                 @include themed(){ border-bottom: 1px solid t($border-gray);}
             }
         }
-        @include tablet{ 
-            width: calc(100% - 36px); 
-            margin:23px 18px 0 ;
-        }
     }
-    .connect-info-box{ justify-content: flex-start;}
+    .connect-info-box{ 
+        justify-content: flex-start;
+        .img-box{margin-right: 20px}
+    }
 }
 .pagination-wrap{
     @include flex(center,center);
@@ -36,22 +36,21 @@
     @include themed(){ border-top: 1px solid t($border-gray);}
     .page-num{
         padding: 0 7px;
-        font-size: 14px;
         vertical-align: baseline;
         & > *{
             padding: 0 8px;
             font-weight: bold;
             vertical-align: text-bottom;
         }
-        a{@include themed(){ color:t($txt-black-01);}}
-        strong{color: $light-green-01;}
+        a {@include themed(){ color:t($txt-black-01)} }
+        strong{color: $default-green-01;}
     }
     .btn-paging{
         @include font-set;
         margin: 0 8px;
         font-size: 16px;
         @include themed(){ color:t($txt-black-01);}
-        &:hover{ color: $light-green-01;}
+        &:hover{ color: $default-green-01;}
         &:disabled{  @include themed(){ color:t($gray-02);}}
     }
 }
@@ -59,6 +58,7 @@
 .board-search-bar {
     position: absolute;
     right: 0;
+    @include desktop{ bottom: -10px}
     .select-box {
         min-width: 170px;
         @include rounded(4px 0 0 4px);
@@ -78,9 +78,9 @@
     }
     input[type='text']{
         display: inline-block;
-        padding: 0 12px;
         width: 210px;
         height: 36px;
+        padding: 0 12px;
         @include rounded(0 3px 3px 0);
         @include themed(){
             background: t($bg-white-02-color);
@@ -94,4 +94,34 @@
     height: 590px;
     @include themed(){ color:t($txt-black-02);}
     font-weight: normal;
+}
+/* 서비스 소개 */
+.info-wrap{
+    .info-box{
+        @include infoBox;
+        margin-top: 20px;
+        line-height: 1.4;
+        @include themed(){ color:t($txt-black-01);}
+        strong{
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+    }   
+    button{
+        position: relative;
+        margin-top: 30px;
+        @include marking($default-blue-01,700);
+        i{
+            padding-left: 7px;
+            font-size: 12px;
+        }
+        &:hover{
+           &::after{
+               @include pseudoDefault(100%,1px);
+               background-color: $default-blue-01;
+               bottom: 0;
+               left: 0;
+           }
+        }
+    }
 }

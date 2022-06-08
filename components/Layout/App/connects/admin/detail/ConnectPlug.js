@@ -10,18 +10,35 @@ const ConnectPlug = (props) => {
   const [inputVal, setInputVal] = useState('');
   const [selectVal, setSelectVal] = useState('');
 
+  /* switch toggle */
   const onToggle = (e) => {
     e.target.closest('.switch').classList.toggle('on');
     e.target.closest('tr').classList.toggle('disabled');
   };
+  /* custom selectbox  */
   const onSelect = (e) => {
-    e.target.closest('.select-box').classList.toggle('on');
+    e.stopPropagation();
+    const selectBoxs = document.querySelectorAll('.select-box');
+    if (e.target.closest('.select-box').classList.contains('on')) {
+      e.target.closest('.select-box').classList.remove('on');
+    } else {
+      selectBoxs.forEach((selectbox) => selectbox.classList.remove('on'));
+      e.target.closest('.select-box').classList.add('on');
+    }
   };
-  const onOpenTooltip = (e) => {
-    const tooltipBox = document.querySelectorAll('.tablet');
-    tooltipBox.forEach((box) => box.classList.remove('on'));
-    e.target.closest('.tablet').classList.toggle('on');
+  /* tooltip box  */
+  const openTooltip = (e) => {
+    e.stopPropagation();
+    const tooltipBoxs = document.querySelectorAll('.tooltip-box');
+    const target = e.currentTarget.nextElementSibling;
+    if (target.classList.contains('on')) {
+      target.classList.remove('on');
+    } else {
+      tooltipBoxs.forEach((tooltipbox) => tooltipbox.classList.remove('on'));
+      target.classList.add('on');
+    }
   };
+  /* custom selectbox, tooltip box */
   useEffect(() => {
     const select = document.querySelector('.select-list').querySelectorAll('a');
     const selectBox = document.querySelector('.select-box');
@@ -38,17 +55,18 @@ const ConnectPlug = (props) => {
         selectBox.classList.toggle('on');
       })
     });
+    const tooltipBoxs = document.querySelectorAll('.tooltip-box');
     document.querySelector('body').addEventListener('click', (e) => {
       e.preventDefault();
       if ((e.target.closest('.select-box') === null && selectBox.classList.contains('on'))) {
         selectBox.classList.toggle('on');
       }
-      if (e.target.closest('.tablet') === null) {
-        const tooltipBox = document.querySelectorAll('.tablet');
-        tooltipBox.forEach((box) => box.classList.remove('on'));
+      if (e.target.closest('.tooltip-box') === null) {
+        tooltipBoxs.forEach((tooltipBox) => {
+          if (tooltipBox.classList.contains('on')) { tooltipBox.classList.toggle('on'); }
+        });
       }
     });
-
   }, []);
   return (<>
     <div className='detail-container'>
@@ -88,9 +106,9 @@ const ConnectPlug = (props) => {
           <table>
             <caption></caption>
             <colgroup>
-              <col width="35%"/>
-              <col width="20%"/>
-              <col width="13%"/>
+              <col width="36%"/>
+              <col width="18%"/>
+              <col width="14%"/>
               <col width="13%"/>
               <col width="auto"/>
             </colgroup>
@@ -126,7 +144,7 @@ const ConnectPlug = (props) => {
                       <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                     </label>
                     <div className='btn-wrap tablet'>
-                      <a href="#none" className='btn-more' onClick={(e) => onOpenTooltip(e)}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                      <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                       <div className='tooltip-box'>
                         <div>
                           <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -162,7 +180,7 @@ const ConnectPlug = (props) => {
                       <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                     </label>
                     <div className='btn-wrap tablet'>
-                      <a href="#none" className='btn-more' onClick={(e) => onOpenTooltip(e)}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                      <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                       <div className='tooltip-box'>
                         <div>
                           <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -198,7 +216,7 @@ const ConnectPlug = (props) => {
                       <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                     </label>
                     <div className='btn-wrap tablet'>
-                      <a href="#none" className='btn-more' onClick={(e) => onOpenTooltip(e)}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                      <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                       <div className='tooltip-box'>
                         <div>
                           <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -234,7 +252,7 @@ const ConnectPlug = (props) => {
                       <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                     </label>
                     <div className='btn-wrap tablet'>
-                      <a href="#none" className='btn-more' onClick={(e) => onOpenTooltip(e)}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                      <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                       <div className='tooltip-box'>
                         <div>
                           <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -270,7 +288,7 @@ const ConnectPlug = (props) => {
                       <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                     </label>
                     <div className='btn-wrap tablet'>
-                      <a href="#none" className='btn-more' onClick={(e) => onOpenTooltip(e)}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                      <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                       <div className='tooltip-box'>
                         <div>
                           <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -307,11 +325,11 @@ const ConnectPlug = (props) => {
           <table>
             <caption></caption>
             <colgroup>
-              <col width="210px"/>
-              <col width="210px"/>
-              <col width="210px"/>
-              <col width="210px"/>
-              <col width="210px"/>
+              <col width="35%"/>
+              <col width="20%"/>
+              <col width="13%"/>
+              <col width="13%"/>
+              <col width="auto"/>
             </colgroup>
             <thead>
               <tr>

@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import {useDispatch, useSelector} from 'react-redux';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { Input } from 'antd';
 import {getTeamsConnect} from "../../../../../store/connect/connect";
@@ -26,10 +26,35 @@ const MyConnectPlug = (props) => {
     dispatch(getTeamsConnect(team.teamId));
   }, [user.user.memberships]);
 
+  /* switch toggle */
   const onToggle = (e) => {
     e.target.closest('.switch').classList.toggle('on');
     e.target.closest('tr').classList.toggle('disabled');
   };
+  /* (s) tooltipbox toggle */
+  useEffect(() => {
+    const tooltipBoxs = document.querySelectorAll('.tooltip-box');
+    document.querySelector('body').addEventListener('click', (e) => {
+      e.preventDefault();
+      if (e.target.closest('.tooltip-box') === null) {
+        tooltipBoxs.forEach((tooltipBox) => {
+          if (tooltipBox.classList.contains('on')) { tooltipBox.classList.toggle('on'); }
+        });
+      }
+    });
+  }, []);
+  const openTooltip = (e) => {
+    e.stopPropagation();
+    const tooltipBoxs = document.querySelectorAll('.tooltip-box');
+    const target = e.currentTarget.nextElementSibling;
+    if (target.classList.contains('on')) {
+      target.classList.remove('on');
+    } else {
+      tooltipBoxs.forEach((tooltipbox) => tooltipbox.classList.remove('on'));
+      target.classList.add('on');
+    }
+  };
+  /* (e) tooltipbox toggle */
   return (
   <>
     { connect.myConnectCount !== '' &&
@@ -54,10 +79,10 @@ const MyConnectPlug = (props) => {
               <table>
                 <caption></caption>
                 <colgroup>
-                    <col width="38%"/>
-                    <col width="30%"/>
-                    <col width="12%"/>
-                    <col width="auto"/>
+                  <col width="40%"/>
+                  <col width="auto"/>
+                  <col width="14%"/>
+                  <col width="23%"/>
                 </colgroup>
                 <thead>
                 <tr>
@@ -80,12 +105,12 @@ const MyConnectPlug = (props) => {
                       <td className='of-visible'>
                         <div className='status-wrap'>
                           <label className={data2.status === 'enabled' ? 'switch on' : 'switch'} labefor="unit">
-                            <span className='txt'>작동중</span>
+                            <span className='txt'>{data2.status === 'enabled' ? '작동중' : '중지됨'}</span>
                             <Input type="checkbox" id=""/>
                             <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                           </label>
                           <div className='btn-wrap tablet'>
-                            <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                            <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                             <div className='tooltip-box'>
                               <div>
                                 <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -125,10 +150,10 @@ const MyConnectPlug = (props) => {
         <table>
           <caption></caption>
           <colgroup>
-              <col width="38%"/>
-              <col width="30%"/>
-              <col width="12%"/>
-              <col width="auto"/>
+            <col width="40%"/>
+            <col width="auto"/>
+            <col width="14%"/>
+            <col width="23%"/>
           </colgroup>
           <thead>
             <tr>
@@ -156,7 +181,7 @@ const MyConnectPlug = (props) => {
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
                   <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <a href="#none" className='btn-more' onClick={openTooltip} onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                     <div className='tooltip-box'>
                       <div>
                         <button className='btn-icon' onClick={() => handleClick({type: 'jira'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -188,7 +213,7 @@ const MyConnectPlug = (props) => {
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
                   <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                     <div className='tooltip-box'>
                       <div>
                         <button className='btn-icon' onClick={() => handleClick({type: 'outgoing'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -220,7 +245,7 @@ const MyConnectPlug = (props) => {
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
                   <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                     <div className='tooltip-box'>
                       <div>
                         <button className='btn-icon' onClick={() => handleClick({type: 'rss'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -252,7 +277,7 @@ const MyConnectPlug = (props) => {
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
                   <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                     <div className='tooltip-box'>
                       <div>
                         <button className='btn-icon' onClick={() => handleClick({type: 'github'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -284,7 +309,7 @@ const MyConnectPlug = (props) => {
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
                   <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                     <div className='tooltip-box'>
                       <div>
                         <button className='btn-icon' onClick={() => handleClick({type: 'googleCalendar'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -316,7 +341,7 @@ const MyConnectPlug = (props) => {
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
                   <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                     <div className='tooltip-box'>
                       <div>
                         <button className='btn-icon' onClick={() => handleClick({type: 'trello'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -348,7 +373,7 @@ const MyConnectPlug = (props) => {
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
                   <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                     <div className='tooltip-box'>
                       <div>
                         <button className='btn-icon' onClick={() => handleClick({type: 'incoming'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -380,7 +405,7 @@ const MyConnectPlug = (props) => {
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
                   <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                     <div className='tooltip-box'>
                       <div>
                         <button className='btn-icon' onClick={() => handleClick({type: 'bitbucket'})}><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -413,10 +438,10 @@ const MyConnectPlug = (props) => {
         <table>
           <caption></caption>
           <colgroup>
-              <col width="38%"/>
-              <col width="30%"/>
-              <col width="12%"/>
-              <col width="auto"/>
+            <col width="38%"/>
+            <col width="auto"/>
+            <col width="12%"/>
+            <col width="25%"/>
           </colgroup>
           <thead>
             <tr>
@@ -444,7 +469,7 @@ const MyConnectPlug = (props) => {
                     <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                   </label>
                   <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more'><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
+                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
                     <div className='tooltip-box'>
                       <div>
                         <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
