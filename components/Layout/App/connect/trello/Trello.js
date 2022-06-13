@@ -601,7 +601,7 @@ const Trello = () => {
                         {/* [D] : 로딩 시 노출 */}
                         {/* <span>
                             <div className='loading'>
-                            <span>불러오는 중...</span><div className='three_quarters_loader'><span></span></div>
+                            <span>불러오는 중...</span><div className='loader'><span></span></div>
                           </div>
                         </span> */}
                         {/* //[D] : 로딩 case */}

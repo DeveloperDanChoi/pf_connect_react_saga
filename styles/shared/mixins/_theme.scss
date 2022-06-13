@@ -1,4 +1,4 @@
-// common theme default
+/**** common theme default *****/
 $default-gray-01: #BCBCBC;
 $default-gray-02: #F2F4F8;
 $default-gray-03: #DDD;
@@ -10,9 +10,47 @@ $default-red-01:#FF5C48; //하이라이트 01
 $default-white-01: #FFF;
 $default-blue-01: #438FFF; //하이라이트 02
 $default-black-01: #000;
+
+/*
+테마 믹스인 사용방법
+1. shortcut에 변수 추가
+2. light, dark에 변수 값 정의
+3. @include themes() 내부 t() 함수 안에 정의한 변수 값 넣어 호출
+
+/**** shortcut *****/
+$bg-gray-01-color:'bg-gray-01-color';
+$bg-gray-11-color:'bg-gray-11-color';
+$bg-gray-02-color:'bg-gray-02-color';
+$bg-gray-03-color:'bg-gray-03-color';
+$bg-gray-04-color:'bg-gray-04-color';
+$bg-green-01-color:'bg-green-01-color';
+$bg-white-01-color:'bg-white-01-color';
+$bg-white-02-color:'bg-white-02-color';
+$txt-black-01:'txt-black-01';
+$txt-black-02:'txt-black-02';
+$green-01:'green-01';
+$green-02:'green-02';
+$green-03:'green-03';
+$red-01:'red-01';
+$white-01:'white-01';
+$black-01:'black-01';
+$gray-01:'gray-01';
+$gray-02:'gray-02';
+$gray-03:'gray-03';
+$btn-gray:'btn-gray';
+$btn-gray-hover:'btn-gray-hover';
+$btn-gray-02:'btn-gray-02';
+$btn-gray-02-hover:'btn-gray-02-hover';
+$btn-gray-03-hover:'btn-gray-03-hover';
+$menu-hover:'menu-hover';
+$border-gray:'border-gray';
+$border-gray-02:'border-gray-02';
+$box-shadow:'box-shadow';
+$box-shadow-02:'box-shadow-02';
+$box-shadow-03:'box-shadow-03';
  
 /* theme => light, dark */
-$colors:(
+$themes:(
   light: (
     bg-gray-01-color: #F2F4F8, 
     bg-gray-11-color: #F2F4F8, 
@@ -73,45 +111,13 @@ $colors:(
   )
 );
 
-/**** shortcut *****/
-$bg-gray-01-color:'bg-gray-01-color';
-$bg-gray-11-color:'bg-gray-11-color';
-$bg-gray-02-color:'bg-gray-02-color';
-$bg-gray-03-color:'bg-gray-03-color';
-$bg-gray-04-color:'bg-gray-04-color';
-$bg-green-01-color:'bg-green-01-color';
-$bg-white-01-color:'bg-white-01-color';
-$bg-white-02-color:'bg-white-02-color';
-$txt-black-01:'txt-black-01';
-$txt-black-02:'txt-black-02';
-$green-01:'green-01';
-$green-02:'green-02';
-$green-03:'green-03';
-$red-01:'red-01';
-$white-01:'white-01';
-$black-01:'black-01';
-$gray-01:'gray-01';
-$gray-02:'gray-02';
-$gray-03:'gray-03';
-$btn-gray:'btn-gray';
-$btn-gray-hover:'btn-gray-hover';
-$btn-gray-02:'btn-gray-02';
-$btn-gray-02-hover:'btn-gray-02-hover';
-$btn-gray-03-hover:'btn-gray-03-hover';
-$menu-hover:'menu-hover';
-$border-gray:'border-gray';
-$border-gray-02:'border-gray-02';
-$box-shadow:'box-shadow';
-$box-shadow-02:'box-shadow-02';
-$box-shadow-03:'box-shadow-03';
-/**** //shortcut *****/
-
+// 모든 항목을 반복하여 sass 맵 정의
 @mixin themed() {
-  @each $theme, $map in $colors {
+  @each $theme, $map in $themes {
     @at-root .#{$theme} & {
       $theme-map: () !global;
       @each $key, $submap in $map {
-        $value: map-get(map-get($colors, $theme), '#{$key}');
+        $value: map-get(map-get($themes, $theme), '#{$key}');
         $theme-map: map-merge($theme-map, ($key: $value)) !global;
       }
       @content;

@@ -1,5 +1,4 @@
-@import './buttons.scss';
-
+/* ui type mixins */
 @mixin responsive-innerbox($top:0,$bottom:$top,$type:default) {
   position: relative;
   min-height: auto;
@@ -26,6 +25,13 @@
     }
   }
 }
+@mixin cardBox() {
+  @include rounded(8px);
+  @include themed() {
+    background: t($bg-white-01-color);
+    box-shadow:0px 4px 13px t($box-shadow);
+  }
+}
 
 @mixin infoBox($ellipsis:'not') {
   strong{
@@ -43,6 +49,14 @@
   }
 }
 
+@mixin spanIcon($padding:19px) {
+  position: relative;  
+  padding-left: $padding;
+    &::before{
+      @include position(0,1px);
+    }
+}
+/* common mixins */
 @mixin clear {
   &:after {
     content: '';
@@ -64,7 +78,7 @@
     transform: translateX(-50%);
   }
 }
-// @mixin title
+
 @mixin vertical($vertical-align:middle) {
   display: inline-block;
   vertical-align: $vertical-align;
@@ -75,6 +89,7 @@
   width: $w;
   height: $h;
 }
+
 @mixin marking($color,$weight,$space:unset) {
   color: $color;
   font-weight: $weight;
@@ -89,7 +104,6 @@
   display: flex;
   flex-wrap: wrap;
 }
-
 @mixin box($width, $height ,$box:block) {
   display: $box;
   width: $width;
@@ -112,14 +126,6 @@
   }
 }
 
-@mixin spanIcon($padding:19px) {
-  position: relative;  
-  padding-left: $padding;
-    &::before{
-      @include position(0,1px);
-    }
-}
-
 @mixin opacity($value) {
   @each $prefix in -ms-, -webkit-, -o-, -moz-, '' {
     #{$prefix}opacity: $value;
@@ -140,13 +146,6 @@
   height: calc(#{$line} * #{$lineHeight});
 }
 
-@mixin cardBox() {
-  @include rounded(8px);
-  @include themed() {
-    background: t($bg-white-01-color);
-    box-shadow:0px 4px 13px t($box-shadow);
-  }
-}
 @mixin font-set(){
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'icomoon' !important;
@@ -162,21 +161,21 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-/*반응형 화면 크기*/
+/* media Qurey mixins */
 $jnd-pc-min-width: 1024px;
 $jnd-tablet-min-width: 768px;
 $jnd-tablet-max-width: 1023px;
 
-/*반응형, 브라우저 크기가 768이상, 1023px 이하일때  최대 768*/
+/*반응형, 브라우저 크기가 768이상, 1023px 이하일때 */
 @mixin tablet{
-  @media (max-width: 768px){  
+  @media (max-width: $jnd-tablet-min-width){  
     @content;
   }
 }
 
-/*반응형, 브라우저 크기가 1024px 이상일때     최대 1024*/
+/*반응형, 브라우저 크기가 1024px 이상일때 최대 1024*/
 @mixin desktop{
-  @media (max-width: 1024px){
+  @media (max-width: $jnd-pc-min-width){
     @content;
   }
 }

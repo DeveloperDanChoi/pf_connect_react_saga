@@ -79,10 +79,10 @@ const MyConnectPlug = (props) => {
               <table>
                 <caption></caption>
                 <colgroup>
-                  <col width="40%"/>
                   <col width="auto"/>
-                  <col width="14%"/>
-                  <col width="23%"/>
+                  <col width="20%"/>
+                  <col width="15%"/>
+                  <col width="190px"/>
                 </colgroup>
                 <thead>
                 <tr>
@@ -150,10 +150,10 @@ const MyConnectPlug = (props) => {
         <table>
           <caption></caption>
           <colgroup>
-            <col width="40%"/>
             <col width="auto"/>
-            <col width="14%"/>
-            <col width="23%"/>
+            <col width="20%"/>
+            <col width="15%"/>
+            <col width="190px"/>
           </colgroup>
           <thead>
             <tr>
@@ -438,10 +438,10 @@ const MyConnectPlug = (props) => {
         <table>
           <caption></caption>
           <colgroup>
-            <col width="38%"/>
             <col width="auto"/>
-            <col width="12%"/>
-            <col width="25%"/>
+            <col width="20%"/>
+            <col width="15%"/>
+            <col width="190px"/>
           </colgroup>
           <thead>
             <tr>
@@ -486,8 +486,8 @@ const MyConnectPlug = (props) => {
             </tr>
           </tbody>
         </table>
-        <div className='table_botttom'>
-          <div className='three_quarters_loader'><span></span></div>
+        <div className='table-bottom'>
+          <div className='loader'><span></span></div>
           <button type='button'>더보기<i className='icon-ic-b-arrow-down'></i></button>
         </div>
       </div>

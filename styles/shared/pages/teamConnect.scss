@@ -1,4 +1,4 @@
- /*커넥트 서브 페이지 - 공통,테이블 */
+ /* 커넥트 서브 페이지 - 공통, 테이블 */
 .connect-container{
   position: relative;
   width: 100%;
@@ -66,7 +66,7 @@
             @include rounded(50%);
         }
     }
-    .table_botttom{
+    .table-bottom{
       padding: 20px;
       @include themed() {border-top: 1px solid t($border-gray-02);}
       button{

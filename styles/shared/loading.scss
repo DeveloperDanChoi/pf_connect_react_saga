@@ -1,3 +1,4 @@
+/* 로딩 */
 .loading{
     display: flex;
     align-items: center;
@@ -12,17 +13,17 @@
         background:t($bg-white-02-color)
     }
     span{ font-weight: 700; }
-    .three_quarters_loader{
+    .loader{
         display: inline-block;
         margin-left: 9px;
     }
 }
-.table_botttom{
-    .three_quarters_loader{margin: 0 auto 18px;}
+.table-bottom{
+    .loader{margin: 0 auto 18px;}
 }
 /*로딩바*/
 /* :not(:required) hides this rule from IE9 and below */
-.three_quarters_loader:not(:required) {
+.loader:not(:required) {
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
@@ -35,10 +36,6 @@
     @include rounded(9px);
 }
 
-.three-quarters-loader.center:not(:required) {
-//   @include position(50%,50%);
-}
-  
 @-moz-keyframes three-quarters-loader {
   0% {
     -moz-transform: rotate(0deg);
