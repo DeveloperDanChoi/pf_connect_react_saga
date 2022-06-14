@@ -8,9 +8,9 @@ import {
   DOMAIN_CHECK_ERROR,
   domainCheckError,
 } from './authority';
-import { setTeam, setTeamId } from '../team/team';
+import { modules as teamModules } from '../team/team';
+import { modules as connectModules } from '../connect/connect';
 import {
-  setConnects,
   setTeamsConnect,
   setAuthentication,
 } from '../connect/connect';
@@ -26,19 +26,19 @@ import {
   getAuthenticationGoogleCalendarCalendarList,
 } from '../../api/connect/Authentication/authentication';
 import {
-  getAccountV3,
-} from '../../api/inner/account';
-import {
   getL10N,
-  getStartAccountV2,
+  getAccountV4TeamsMe,
 } from '../../api/start/start';
 import {
   redirectToLoginAndList,
 } from '../../lib/helpers/routeHelper';
 import { getCookie, hasAccessToken } from '../../lib/cookie';
+import { getV1AdminTeamsTopics, getV1AdminTeams } from '../../api/team/Admin/admin';
+import { getV1TeamsStart } from '../../api/connect/ConnectStart/connectStart';
 
 /**
  * 인증에 문제가 있을 경우 로그인화면으로 이동<br>
+ * TODO: api success fail 공통화
  * @param action
  * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): *)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): *)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): *)|* extends ((...args: any[]) => infer RT) ? RT : never))>>|SimpleEffect<"PUT", PutEffectDescriptor<{data: *, type: string}>>|SimpleEffect<"CALL", CallEffectDescriptor<(function(): *)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(): *)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(): *)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
  */
@@ -54,73 +54,66 @@ function* authorize(action) {
       getTeamV2,
       action.data === 'local' ? 'tosslab' : action.data,
     );
+
+    // 유효한 팀일 경우에만
     if (result.status === 200 && result.data.valid) {
-      // const result2 = yield call(
-      //     getAccountMembersV2,
-      // );
-      // console.log( result2 )
-      if (result.status === 200) {
-        const { teamId } = result.data;
-        yield put(setTeamId(teamId));
+      const { teamId } = result.data;
+      yield put(teamModules.creators.setTeamId(teamId));
 
-        const apis = [
-          call(getConnect),
-          // call(getTeamsConnect, teamId),
-          call(getAuthenticationList, teamId),
-          call(getStartAccountV2, teamId),
-          call(getAccountV3),
-        ];
+      const apis = [
+        call(getConnect),//TODO: new system api, 커넥트 전체 앱 목록
+        // call(getTeamsConnect, teamId), // 팀에 연결된 커넥트 정보
+        call(getAuthenticationList, teamId), // 내가 인증한 커넥트 정보
+        call(getAccountV4TeamsMe, teamId), // TODO: email 요청할 것, 내 정보
+        call(getV1TeamsStart, teamId), // 내가 참여한 토픽 정보
+        call(getV1AdminTeamsTopics, teamId), // 팀의 공개 토픽 정보
+        call(getV1AdminTeams, teamId), // 팀 정보
+      ];
 
-        if (history.state.url === '/googleCalendar') {
-          apis.push(call(getAuthenticationGoogleCalendarCalendarList));
-        } else if (history.state.url !== '/') {
-          console.log(history.state);
-        }
-
-        // const results = yield all(apis);
-        const [ connect, /*teamsConnect, */authentication, teamsAccount, account, svc ] = yield all(apis);
-
-        if (connect.status === 200) {
-          yield put(setConnects(((data) => {
-            for (const item of data) {
-              item.display = 'block';
-            }
-            return data;
-          })(connect.data.connects)));
-        }
-
-        // TODO: MFA
-        // if (teamsConnect && teamsConnect.status === 200) {
-        //   yield put(setTeamsConnect(teamsConnect.data));
-        // }
-
-        yield put(setAuthentication(authentication.data));
-
-        if (teamsAccount.status === 200) {
-          yield put(setTeam(_.filter(teamsAccount.data.memberships, (d) => d.teamId === teamId)[0]));
-        }
-
-        if (account.status === 200) {
-          yield put(userModules.creators.setUser(account.data));
-          // TODO: api 나오면 실제 적용할 것
-          // yield put(modules.creators.setTheme('light'));
-          // yield put(themeModules.creators.setTheme('dark'));
-        }
-
-        if (history.state.url === '/googleCalendar') {
-          yield put(googleCalendarModules.creators.setAuthenticationGoogleCalendarCalendarList(svc.data));
-        }
-
-
-        // TODO: DEV
-        const resultL10N = yield call(
-            getL10N,
-        );
-
-        yield put(userModules.creators.setL10n(resultL10N.data));
-
-        isUnauthorized = false;
+      // TODO: 직링크에 대한 데이터 처리
+      if (history.state.url === '/googleCalendar') {
+        apis.push(call(getAuthenticationGoogleCalendarCalendarList));
+      } else if (history.state.url !== '/') {
+        console.log(history.state);
       }
+
+      const [ connect, /*teamsConnect, */ authenticationList, accountV4TeamsMe, v1TeamsStart, v1AdminTeamsTopics, v1AdminTeams, svc ] = yield all(apis);
+
+      if (connect.status === 200) {
+        yield put(connectModules.creators.setConnects(((data) => {
+          for (const item of data) {
+            item.display = 'block';
+          }
+          return data;
+        })(connect.data.connects)));
+      }
+
+      // TODO: MFA
+
+      yield put(connectModules.creators.setAuthentication(authenticationList.data));
+
+      yield put(userModules.creators.setUser(accountV4TeamsMe.data));
+
+      yield put(userModules.creators.setRooms(v1TeamsStart.data));
+
+      yield put(teamModules.creators.setRooms(v1AdminTeamsTopics.data));
+
+      yield put(teamModules.creators.setTeam(v1AdminTeams.data));
+
+      /*
+
+      if (history.state.url === '/googleCalendar') {
+        yield put(googleCalendarModules.creators.setAuthenticationGoogleCalendarCalendarList(svc.data));
+      }
+      */
+
+      const resultL10N = yield call(
+          getL10N,
+          accountV4TeamsMe.data.account.lang,
+      );
+      yield put(teamModules.creators.setL10n(resultL10N.data));
+
+      isUnauthorized = false;
     }
   } catch (e) {
     console.error(e);

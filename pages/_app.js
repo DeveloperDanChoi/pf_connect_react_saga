@@ -18,8 +18,8 @@ import {
 import '../styles/globals.scss';
 // eslint-disable-next-line import/order
 /* swiper */
-import 'swiper/swiper.scss';
-import 'swiper/components/navigation/navigation.scss';
+// import 'swiper/swiper.scss';
+// import 'swiper/components/navigation/navigation.scss';
 
 import _ from 'lodash';
 import FixedMeta from '../components/FixedMeta/FixedMeta';

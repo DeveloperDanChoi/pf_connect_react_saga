@@ -82,6 +82,7 @@ const ConnectCard = () => {
             </div>
         )) }
       </div>
+      <p>아래는 퍼블</p>
       {/* [D] : 로고 이미지 변경 필요 */}
       <div className='connect-card-wrap type_list'>
         <div className='connect-card'>

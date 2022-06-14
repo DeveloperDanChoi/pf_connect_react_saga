@@ -1,11 +1,13 @@
 /* eslint-disable max-len */
 import {useDispatch, useSelector} from 'react-redux';
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { Input } from 'antd';
-import {getTeamsConnect} from "../../../../../store/connect/connect";
-import {template1} from "../../../../../service/connect";
+import {getTeamsConnect, updateStatus} from "../../../../../store/connect/connect";
+import {template2} from "../../../../../service/connect";
 import Router from "next/router";
+import {putTeamsGithubSetting} from "../../../../../api/connect/WebAdmin/Github/github";
+
 
 const MyConnectPlug = (props) => {
   const dispatch = useDispatch();
@@ -13,6 +15,8 @@ const MyConnectPlug = (props) => {
     console.log('state !!', state);
     return state;
   });
+
+  const allModules = template2.allModules();
 
   const handleClick = (data) => {
     // TODO: config path
@@ -30,6 +34,12 @@ const MyConnectPlug = (props) => {
   const onToggle = (e) => {
     e.target.closest('.switch').classList.toggle('on');
     e.target.closest('tr').classList.toggle('disabled');
+  };
+  const handleToggleStatus = (e, data) => {
+    //githubModules
+    dispatch(updateStatus(data));
+    // e.target.closest('.switch').classList.toggle('on');
+    // e.target.closest('tr').classList.toggle('disabled');
   };
   /* (s) tooltipbox toggle */
   useEffect(() => {
@@ -64,17 +74,17 @@ const MyConnectPlug = (props) => {
         <span className='sub_tit'>총 <strong>{connect.myConnectCount}</strong>개 연동 중</span>
       </div>
       { connect.connects.map((data, i) => (
-          <>
+          <Fragment key={i}>
           {
             connect.myConnect[data.name] && (
             <div className='connect-table-wrap'>
               <div className='connect-info-box'>
                 <p className='img-box'><img src={data.botThumbnail} alt={data.name}></img></p>
                 <div className='info'>
-                  <strong>{data.label}</strong>
+                  <strong className="info-tit">{data.label}</strong>
                   <p>{data.name}</p>
                 </div>
-                <div className='connect-etc-box'><span>{connect.myConnect[data.name].length}개 연동중</span></div>
+                <div className='connect-etc-box'><span><i className='icon-ic-plug'></i>{connect.myConnect[data.name].length}개 연동중</span></div>
               </div>
               <table>
                 <caption></caption>
@@ -94,20 +104,20 @@ const MyConnectPlug = (props) => {
                 </thead>
                 <tbody>
                 {
-                  connect.myConnect[data.name].map((data2, i2) => (
-                    <tr className={data2.status}>
+                  connect.myConnect[data.name].map((dataConnect, i2) => (
+                    <tr key={i2} className={dataConnect.status}>
                       <td>
-                        <span className='img-box'><img src={data2.bot.thumbnailUrl} alt={data.name}></img></span>
-                        <span>{data2.bot.name}</span>
+                        <span className='img-box'><img src={dataConnect.bot.thumbnailUrl} alt={data.name}></img></span>
+                        <span>{dataConnect.bot.name}</span>
                       </td>
-                      <td><span className='fc-green'>{data2.roomId}</span></td>
-                      <td><span className='fw-normal'>{data2.createdAt}</span></td>
+                      <td><span className='fc-green'>{dataConnect.roomName}</span></td>
+                      <td><span className='fw-normal'>{dataConnect.createdAt}</span></td>
                       <td className='of-visible'>
                         <div className='status-wrap'>
-                          <label className={data2.status === 'enabled' ? 'switch on' : 'switch'} labefor="unit">
-                            <span className='txt'>{data2.status === 'enabled' ? '작동중' : '중지됨'}</span>
+                          <label className={dataConnect.statusClss} labefor="unit">
+                            <span className='txt'>{dataConnect.statusText}</span>
                             <Input type="checkbox" id=""/>
-                            <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                            <a href="#none" className="slider" onClick={(e) => handleToggleStatus(e, dataConnect)}></a>
                           </label>
                           <div className='btn-wrap tablet'>
                             <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
@@ -119,7 +129,7 @@ const MyConnectPlug = (props) => {
                           </div>
                           </div>
                           <div className='btn-wrap pc'>
-                            <button className='btn-icon' onClick={() => handleClick(data2)}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                            <button className='btn-icon' onClick={() => handleClick(dataConnect)}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
                             <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
                           </div>
                         </div>
@@ -132,7 +142,7 @@ const MyConnectPlug = (props) => {
             </div>
             )
           }
-          </>
+          </Fragment>
       )) }
       {/* ******************************* */}
       {/* ******************************* */}
@@ -497,3 +507,8 @@ const MyConnectPlug = (props) => {
   </>);
 };
 export default MyConnectPlug;
+/**
+ * TODO: 더보기 기능
+ * TODO: 이미지 radius
+ * TODO: 토픽명 매핑
+ */

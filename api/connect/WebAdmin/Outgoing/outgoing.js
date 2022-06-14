@@ -1,40 +1,40 @@
 import { api } from '../../../_call';
 
 /**
- * Outgoing Webhook Connect 설정을 삭제하는 API
- * https://tosslab.atlassian.net/wiki/spaces/API/pages/1120344375/DELETE+connect-api+teams+teamId+outgoing
+ * Outgoing Webhook Connect 설정을 삭제하는 API<br>
+ * https://tosslab.atlassian.net/wiki/spaces/API/pages/1120344375/DELETE+connect-api+teams+teamId+outgoing<br>
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const deleteTeamsOutgoing = (data) => api.delete(`/connect-api/teams/${data.teamId}/outgoing?connectId=${data.connectId}`, data.data, { version: 1 });
 
 /**
- * Outgoing Webhook Connect 설정을 단일 조회하는 API
- * https://tosslab.atlassian.net/wiki/spaces/API/pages/1120344286/GET+connect-api+teams+teamId+outgoing+connectId
+ * Outgoing Webhook Connect 설정을 단일 조회하는 API<br>
+ * https://tosslab.atlassian.net/wiki/spaces/API/pages/1120344286/GET+connect-api+teams+teamId+outgoing+connectId<br>
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const getTeamsOutgoing = (data) => api.get(`/connect-api/teams/${data.teamId}/outgoing/${data.connectId}`, { version: 1 });
 
 /**
- * Outgoing Webhook Connect 설정을 생성하는 API
- * https://tosslab.atlassian.net/wiki/spaces/API/pages/1120343337/POST+connect-api+teams+teamId+outgoing
+ * Outgoing Webhook Connect 설정을 생성하는 API<br>
+ * https://tosslab.atlassian.net/wiki/spaces/API/pages/1120343337/POST+connect-api+teams+teamId+outgoing<br>
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const postTeamsOutgoing = (data) => api.post(`/connect-api/teams/${data.teamId}/outgoing`, data.data, { version: 1 });
 
 /**
- * Outgoing Webhook Connect 설정을 수정하는 API
- * https://tosslab.atlassian.net/wiki/spaces/API/pages/1120344297/PUT+connect-api+teams+teamId+outgoing+setting
+ * Outgoing Webhook Connect 설정을 수정하는 API<br>
+ * https://tosslab.atlassian.net/wiki/spaces/API/pages/1120344297/PUT+connect-api+teams+teamId+outgoing+setting<br>
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const putTeamsOutgoingSetting = (data) => api.put(`/connect-api/teams/${data.teamId}/outgoing/setting`, data.data, { version: 1 });
 
 /**
- * Outgoing Webhook Connect 설정을 활성/비활성하는 API
- * https://tosslab.atlassian.net/wiki/spaces/API/pages/1120344366/PUT+connect-api+teams+teamId+outgoing+status
+ * Outgoing Webhook Connect 설정을 활성/비활성하는 API<br>
+ * https://tosslab.atlassian.net/wiki/spaces/API/pages/1120344366/PUT+connect-api+teams+teamId+outgoing+status<br>
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */

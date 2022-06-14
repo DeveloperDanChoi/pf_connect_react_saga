@@ -1,4 +1,3 @@
-import {setBannerHide} from "../store/connect/connect";
 import {helpUrl, surveyUrl} from "../constants/path";
 
 /**
@@ -7,25 +6,19 @@ import {helpUrl, surveyUrl} from "../constants/path";
  */
 export const banner = (() => {
   /**
-   * 배너 닫기
-   */
-  const close = () => {
-    dispatch(setBannerHide('none'));
-  };
-  /**
    * 더 알아보기<br>
    */
   const help = ({user}) => {
-    window.open(helpUrl[user.lang]);
+    window.open(helpUrl[user.account.lang]);
   };
   /**
    * 서비스 추가 요청하기<br>
    */
   const survey = ({user}) => {
     // window.open(surveyUrl.ko + '?email=' + primary.email);
-    window.open(surveyUrl[user.lang]);
+    window.open(surveyUrl[user.account.lang]);
   };
   return {
-    close, help, survey,
+    help, survey,
   };
 })();

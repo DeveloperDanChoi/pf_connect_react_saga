@@ -22,6 +22,12 @@ const publicRuntimeConfig = {
     development: 'https://i1.jandi.io',
     oprs: 'https://i1.gamevilcom2us.net',
   }),
+  CONNECT_API_URL: getAddress({
+    production: 'http://local.jandi.io:8080',
+    alpha: 'http://local.jandi.io:8080',
+    development: 'http://local.jandi.io:8080',
+    oprs: 'http://local.jandi.io:8080',
+  }),
   WEB_URL: getAddress({
     production: 'https://www.jandi.com',
     alpha: 'https://www.jandi.com',

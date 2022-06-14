@@ -1,4 +1,6 @@
 /* eslint-disable no-restricted-syntax,guard-for-in */
+import { modules as githubModules } from '../store/connect/github/github';
+
 export const template1 = (() => {
   const that = {
     dispatch: {},
@@ -111,6 +113,11 @@ export const template1 = (() => {
       }
     }
   }
+  function allModules() {
+    return {
+      github: githubModules,
+    }
+  }
   return {
     initialize,
     list,
@@ -119,6 +126,22 @@ export const template1 = (() => {
     authorize,
     connect,
     set,
+    allModules,
+  };
+})();
+export const template2 = (() => {
+  const that = {
+    dispatch: {},
+    connectType: '',
+  };
+
+  function allModules() {
+    return {
+      github: githubModules,
+    }
+  }
+  return {
+    allModules,
   };
 })();
 

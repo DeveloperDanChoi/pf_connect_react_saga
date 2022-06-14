@@ -1,26 +1,55 @@
 /* eslint-disable max-len,no-param-reassign,default-param-last */
 import produce from '../../lib/produce';
-import { util } from '../../service/util';
-
-export const SET_TEAM = 'team/SET_TEAM';
-export const SET_TEAM_ID = 'team/SET_TEAM_ID';
-export const SET_PAGE_TITLE = 'team/SET_PAGE_TITLE';
-
-export const setTeam = (data) => ({ type: SET_TEAM, data });
-export const setTeamId = (data) => ({ type: SET_TEAM_ID, data });
-export const setPageTitle = (data) => ({ type: SET_PAGE_TITLE, data });
+import { util } from "../../service/util";
+export const initialModules = [
+  /**
+   * Team Info
+   */
+  { type: 'get', name: 'TEAM', data: false },
+  { type: 'set', name: 'TEAM', data: true },
+  /**
+   * Team ID
+   */
+  { type: 'get', name: 'TEAM_ID', data: false },
+  { type: 'set', name: 'TEAM_ID', data: true },
+  /**
+   * 해당팀에 public 토픽 + 로그인한 유저의 private 토픽<br>
+   */
+  { type: 'get', name: 'ROOMS', data: false },
+  { type: 'set', name: 'ROOMS', data: true },
+  /**
+   * L10N
+   */
+  { type: 'set', name: 'L10N', data: true },
+  /**
+   * 팀 멤버의 목록 조회<br>
+   */
+  { type: 'get', name: 'TEAMS_MEMBERS', data: false },
+  { type: 'set', name: 'TEAMS_MEMBERS', data: true },
+];
+export const modules = (() => util.createModule(initialModules, 'team'))();
 
 export const initialState = {
   teamId: 0,
-  pageTitle: '',
-  team: {},
+  rooms: {},
+  team: {
+    team: {
+      team: {
+        name: '',
+      }
+    }
+  },
+  teamsMembers: [],
 };
 
+const { types } = modules;
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
-    case SET_TEAM_ID:
-    case SET_PAGE_TITLE:
-    case SET_TEAM:
+    case types.SET_TEAM:
+    case types.SET_TEAM_ID:
+    case types.SET_ROOMS:
+    case types.SET_L10N:
+    case types.SET_TEAMS_MEMBERS:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
       break;
     default:

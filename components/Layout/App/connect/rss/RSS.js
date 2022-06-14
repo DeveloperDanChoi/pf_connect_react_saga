@@ -17,6 +17,11 @@ const RSS = () => {
   });
   const { creators } = modules;
 
+
+
+
+
+
   /*==== UI ====*/
   
   /** variable - checkbox,selectbox,swiper ...  **/
@@ -119,6 +124,14 @@ const RSS = () => {
   /** (e)common function  **/
 
   /*==== UI ====*/
+
+
+
+
+
+
+
+
   useEffect(() => {
     template1.initialize({
       dispatch,
@@ -132,8 +145,12 @@ const RSS = () => {
   }, []);
 
   return (<>
+
+
+
+  <p>---- 퍼블</p>
   {/* [D] : 연동하기 */}
-   <div className='detail-container'>
+  <div className='detail-container'>
       <div className='detail-header'>
         <div className='inner'>
           <div className='connect-info-box'>
@@ -294,9 +311,9 @@ const RSS = () => {
           </div>
         </div>
       </div>
-    </div>
-    {/* [D] : 수정하기 */}
-    <div className='detail-container'>
+  </div>
+  {/* [D] : 수정하기 */}
+  <div className='detail-container'>
       <div className='detail-header'>
         <div className='inner'>
           <div className='connect-info-box'>
@@ -440,8 +457,11 @@ const RSS = () => {
         </div>
         <button type='button' className='full-btn'>연동 추가하기</button>
       </div>{/* //detail-wrapper */}
-    </div>
-  </>);
+  </div>
+</>);
 };
 
 export default RSS;
+/**
+ * TODO: file 이벤트 전파 이슈?
+ */

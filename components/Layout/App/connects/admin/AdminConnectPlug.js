@@ -1,27 +1,121 @@
 /* eslint-disable max-len */
-import { useDispatch } from 'react-redux';
-import React, {useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { Fragment, useEffect } from 'react';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
-import { Input } from 'antd';
-import Router, {useRouter} from "next/router";
+import Router from 'next/router';
+import { modules as connectModules } from '../../../../../store/connect/connect';
+import { modules as teamModules } from '../../../../../store/team/team';
 
 const AdminConnectPlug = (props) => {
   const dispatch = useDispatch();
+  const { connect, team, user } = useSelector((state) => {
+    // console.log('state !!', state);
+    return state;
+  });
+
+  /**
+   * 상세 페이지 이동
+   * @param data
+   */
   const handleClick = (data) => {
+    console.log( data )
     // TODO: DEV
-    Router.push('/app/connects/admin/detail', '/app/connects/admin/detail');
+    Router.push('/app/connects/admin/detail', '/app/connects/admin/detail?' + data);
   };
 
+  /**
+   * TODO: 다른 데이터 가공할 때 처리할 수 없는지 검토
+   * 닉네임 생성하는 함수
+   * 3명까지만 보여준다
+   * @param data
+   * @returns {string}
+   */
+  const connectMemberNames = (data, length) => {
+    let names = data[0].member.name;
+
+    for (let i = 1; i < 3; i++) {
+      names = names + ',' + data[i].member.name;
+    }
+
+    return names + ' 외 ' + (length - 3) + '인';
+  };
+
+  /**
+   * TODO: 다른 데이터 가공할 때 처리할 수 없는지 검토
+   * 총 연동
+   * @returns {number}
+   */
+  const totalCount = () => {
+    let cnt = 0;
+
+    for (const item in connect.teamsConnect) {
+      cnt = cnt + connect.teamsConnect[item].length;
+    }
+
+    return cnt;
+  };
+
+  useEffect(() => {
+    if (team.teamId === 0) return;
+
+    dispatch(teamModules.creators.getTeamsMembers(team.teamId));
+  }, [user.user.member]);
+
+  useEffect(() => {
+    if (team.teamId === 0) return;
+
+    dispatch(connectModules.creators.getTeamsConnect(team.teamId));
+  }, [team.teamsMembers]);
+
   return (<>
-     <div className='connect-container'>
+    <div className='connect-container'>
       <div className='title-wrap type02'>
         <h2>잔디 커넥트 관리자</h2>
         <p className='sub_tit'>
-          <strong className='icon-ic-company'>TossLab,Inc.</strong> <span>총 <strong>47</strong>개 연동 중</span>
+          <strong className='icon-ic-company'>{team.team.team.name}</strong> <span>총 <strong>{totalCount()}</strong>개 연동 중</span>
         </p>
+      </div>
+      <div className='connect-admin-wrap'>
+        { Object.keys(connect.teamsConnect).map((data, i) => (
+          <a key={i} href="#none" className='connect-info-box' onClick={() => handleClick(data)}>
+            <p className='img-box'><img src={connect.connectsObj[data].botThumbnail} alt={data.name}></img></p>
+            <div className='info'>
+              <strong>{connect.connectsObj[data].label}</strong>
+              <p>{connect.connectsObj[data].category}</p>
+            </div>
 
+            <div className='connect-etc-box'>
+              <span><i className='icon-ic-plug'></i>{connect.teamsConnect[data].length}개 연동중</span>
+              <div className='profile-box'>
+                {
+                  connect.teamsConnect[data].length > 3 && connect.teamsConnect[data].map((connectData, j) => {
+                    return (
+                        j < 3 ? <div key={j} className='item'><img src={connectData.member.photoUrl} alt={connectData.member.name}></img></div> :
+                        j === 3 ?
+                            <Fragment key={j}>
+                              <div className='item'><div className='etc-profile'><i className='icon-ic-more'></i></div></div>
+                              <div className='tooltip'><span>{connectMemberNames(connect.teamsConnect[data], connect.teamsConnect[data].length)}</span></div>
+                            </Fragment>
+                            : <Fragment key={j}></Fragment>
+                    )
+                  })
+                }
+                {
+                  connect.teamsConnect[data].length < 4 && connect.teamsConnect[data].map((connectData, j) => (
+                      <div key={j} className='item'><img src={connectData.member.photoUrl} alt={connectData.member.name}></img></div>)
+                  )
+                }
+                {
+                    connect.teamsConnect[data].length === 0 && <div className='item'><div className='etc-profile'><i className='icon-ic-more'></i></div></div>
+                }
+              </div>
+            </div>
+          </a>
+        ))}
       </div>
 
+
+      <p>----- 퍼블</p>
       <div className='connect-admin-wrap'>
         <a href="#none" className='connect-info-box'>
           <p className='img-box'><img src={getPublicAssetPath('static/icon_google.png')} alt="Google 캘린더"></img></p>

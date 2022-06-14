@@ -1,4 +1,4 @@
-import { api } from '../../_call';
+import {api, connect_api} from '../../_call';
 import {
   deleteTeamsBitbucket,
   getTeamsBitbucket,
@@ -128,6 +128,7 @@ export const postWebhook = (data) => api.post(`/connect-api/webhook/${data.teamI
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const getConnect = () => api.get('/connect-api/connect', { version: 1 });
+// export const getConnect = () => connect_api.get('/connect-api/connect', { version: 1 });
 
 /**
  * 팀에 연결된 모든 Connect 정보를 요청하는 API<br>

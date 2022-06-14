@@ -3,7 +3,8 @@ import {
 } from 'redux-saga/effects';
 
 import authorizeSaga from './authority/authoritySaga';
-import connectSaga from './connect/connectSaga';
+import connectSaga, { saga as connectActions } from './connect/connectSaga';
+import { modules as connectModules } from './connect/connect';
 import bitbucketSaga, { saga as bitbucketActions } from './connect/bitbucket/bitbucketSaga';
 import { modules as bitbucketModules } from './connect/bitbucket/bitbucket';
 import githubSaga, { saga as githubActions } from './connect/github/githubSaga';
@@ -20,7 +21,8 @@ import rssSaga, { saga as rssActions } from './connect/rss/rssSaga';
 import { modules as rssModules } from './connect/rss/rss';
 import trelloSaga, { saga as trelloActions } from './connect/trello/trelloSaga';
 import { modules as trelloModules } from './connect/trello/trello';
-import teamSaga from './team/teamSaga';
+import teamSaga, { saga as teamActions } from './team/teamSaga';
+import { modules as teamModules } from './team/team';
 import userSaga from './user/userSaga';
 import modalSaga from './modal/modalSaga';
 import themeSaga from './theme/themeSaga';
@@ -48,7 +50,7 @@ export default function* rootSaga() {
   yield all([
     configUrl(),
     fork(authorizeSaga),
-    fork(connectSaga),
+    fork(connectSaga), handler(connectModules, connectActions),
 
     fork(bitbucketSaga), handler(bitbucketModules, bitbucketActions),
     fork(githubSaga), handler(githubModules, githubActions),
@@ -64,7 +66,7 @@ export default function* rootSaga() {
     // fork(authSagas),
     // fork(memberManagementSaga),
     // fork(organizationSaga),
-    fork(teamSaga),
+    fork(teamSaga), handler(teamModules, teamActions),
     fork(userSaga),
     fork(modalSaga),
     fork(themeSaga),

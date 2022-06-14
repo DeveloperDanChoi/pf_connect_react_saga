@@ -1,12 +1,12 @@
 import { api, l10n } from '../_call';
 /**
- * 계정에 관련된 Team 의 Chat, Topic 정보를 일괄 가져온다.
- * https://tosslab.atlassian.net/wiki/spaces/API/pages/1116308708/v2+GET+start-api+account
+ * Start API: 별도의 윈도로 뜨는 앱들을 위한 Account and Member 데이터<br>
+ * https://tosslab.atlassian.net/wiki/spaces/API/pages/2256535553/GET+start-api+v4+teams+teamId+me<br>
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const getStartAccountV2 = () => api.get('/start-api/account', { version: 2 });
+export const getAccountV4TeamsMe = (data) => api.get(`/start-api/v4/teams/${data}/me`, { version: 4 });
 
-export const getL10N = () => l10n.get('/translation/json/web_client/ko', { version: 1 });
+export const getL10N = (data) => l10n.get(`/translation/json/web_client/${data}`, { version: 1 });
 
 /**
  * API List > Start API

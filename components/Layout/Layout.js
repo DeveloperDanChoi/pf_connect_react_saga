@@ -2,7 +2,6 @@ import React, { useEffect} from 'react';
 import Router, {useRouter, withRouter} from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import ConnectList from './App/connect/ConnectCard';
-import { setBannerHide } from '../../store/connect/connect';
 import { helpUrl, surveyUrl } from '../../constants/path';
 import Header from './Header';
 import Left from './Left';

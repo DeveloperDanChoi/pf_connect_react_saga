@@ -11,6 +11,16 @@ import { config } from '../lib/config';
 
 const { getAccessToken: getAccessTokenFromServer } = ServerSideHelper;
 
+/**
+ * TODO: call2로 교체
+ * @deprecated
+ * @param target
+ * @param method
+ * @param uri
+ * @param headersInfo
+ * @param data
+ * @returns {Promise<AxiosResponse<any> | void>|Promise<AxiosResponse<any>>}
+ */
 const call = (target, method, uri, headersInfo, data = null) => {
   const setUrl = () => {
     const url = target === 'web' ? config.getConfig().WEB_URL : config.getConfig().API_URL;
@@ -68,9 +78,9 @@ const call = (target, method, uri, headersInfo, data = null) => {
     }
   }
 };
-const callL10N = (target, method, uri, headersInfo, data = null) => {
+const call2 = (target, method, uri, headersInfo, data = null) => {
   const setUrl = () => {
-    const url = config.getConfig().L10N_URL;
+    const url = config.getConfig()[target];
     return `${url}${uri}`;
   };
 
@@ -133,6 +143,13 @@ export const api = {
   delete: (uri, data, headersInfo) => call('api', 'delete', uri, headersInfo, data),
 };
 
+export const connect_api = {
+  get: (uri, headersInfo) => call2('CONNECT_API_URL', 'get', uri, headersInfo),
+  post: (uri, data, headersInfo) => call2('CONNECT_API_URL', 'post', uri, headersInfo, data),
+  put: (uri, data, headersInfo) => call2('CONNECT_API_URL', 'put', uri, headersInfo, data),
+  delete: (uri, data, headersInfo) => call2('CONNECT_API_URL', 'delete', uri, headersInfo, data),
+};
+
 export const web = {
   get: (uri, data, headersInfo) => call('web', 'get', uri, headersInfo),
   post: (uri, data, headersInfo) => call('web', 'post', uri, headersInfo, data),
@@ -143,7 +160,7 @@ export const upload = {
 };
 
 export const l10n = {
-  get: (uri, headersInfo) => callL10N('api', 'get', uri, headersInfo),
+  get: (uri, headersInfo) => call2('L10N_URL', 'get', uri, headersInfo),
 };
 
 export default {};

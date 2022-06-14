@@ -4,6 +4,10 @@ import { useRouter, withRouter } from 'next/router';
 const Header = (props) => {
   const router = useRouter();
 
+  /**
+   * 헤더 뒤로 가기
+   * TODO: url 체크해서 페이지 이동 시켜야함 #
+   */
   const handleBack = () => {
     if (router.asPath !== '/') {
       router.back();
