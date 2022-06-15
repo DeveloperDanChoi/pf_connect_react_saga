@@ -333,8 +333,8 @@ const Outgoing = () => {
                                       <div className='folder-group'>
                                         <div className='folder-tit'><span className='icon-ic-folder-open'>새폴더</span></div>
                                         <ul>
-                                          <li><a href='#none'>모든 대화방</a></li>
-                                          <li><a href='#none'>참여한 대화방</a></li>
+                                          <li><a href='#none'>모든 대화방<i className="icon-ic-lock"></i><i className="icon-ic-bell-slash"></i></a></li>
+                                          <li><a href='#none'>참여한 대화방<i className="icon-ic-board"></i><i className="icon-ic-bell-slash"></i></a></li>
                                         </ul>
                                       </div>
                                       <div className='folder-group'>
@@ -513,8 +513,8 @@ const Outgoing = () => {
                                 <div className='folder-group'>
                                   <div className='folder-tit'><span className='icon-ic-folder-open'>새폴더</span></div>
                                   <ul>
-                                    <li><a href='#none'>모든 대화방</a></li>
-                                    <li><a href='#none'>참여한 대화방</a></li>
+                                    <li><a href='#none'>모든 대화방<i className="icon-ic-lock"></i><i className="icon-ic-bell-slash"></i></a></li>
+                                    <li><a href='#none'>참여한 대화방<i className="icon-ic-board"></i><i className="icon-ic-bell-slash"></i></a></li>
                                   </ul>
                                 </div>
                                 <div className='folder-group'>
