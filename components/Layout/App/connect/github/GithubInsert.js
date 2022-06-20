@@ -1,26 +1,27 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState, useRef} from 'react';
+import React, {
+  useEffect, useRef, Fragment, useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { Input } from 'antd';
 import { modules } from '../../../../../store/connect/github/github';
 import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
-import { Input } from 'antd';
+import { banner } from '../../../../../service/banner';
+import { searcher, searcherLanguage } from '../../../../../service/searcher';
+import { LANGUAGE2 } from '../../../../../constants/type';
 
 const Github = () => {
+  const connectType = 'github';
   const dispatch = useDispatch();
   const router = useRouter();
-  const { team, github } = useSelector((state) => {
-    // console.log('Github state !!', state);
-    return state;
-  });
+  const {
+    team, github, user, connect,
+  } = useSelector((state) => state);
   const { creators } = modules;
 
-  /*==== UI ====*/
-
-  /** variable - checkbox,selectbox,swiper ...  **/
-  const [searchVal, setSearchVal] = useState(''); /* [D] 임시 */
   /* swiper */
   const swiperRef = useRef(null);
   const swiperOptions = {
@@ -32,6 +33,50 @@ const Github = () => {
     spaceBetween: 50,
     shouldSwiperUpdate: true,
   };
+
+  /**
+   *
+   * @type {{change: change, disabled: disabled, toggle: toggle}}
+   */
+  const tab = (() => {
+    /**
+     *
+     * @param e
+     */
+    const change = (e) => {
+      if (swiperRef.current) {
+        setTimeout(() => swiperRef.current.swiper.update());
+      } // swiper observer
+      e.preventDefault();
+      const menu = document.querySelectorAll('.tab-menu li a');
+      const content = document.querySelectorAll('.tab-cont');
+
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < menu.length; i++) {
+        content[i].classList.remove('on');
+        menu[i].classList.remove('on');
+      }
+      content[e.currentTarget.id - 1].classList.add('on');
+      e.currentTarget.classList.add('on');
+    };
+    /**
+     *
+     */
+    const disabled = () => {
+      document.querySelector('.connect').classList.toggle('disabled');
+      document.querySelector('.full-btn').toggleAttribute('disabled');
+    };
+    /**
+     *
+     * @param e
+     */
+    const toggle = (e) => {
+      e.target.closest('.switch').classList.toggle('on');
+      disabled();
+    };
+    return { change, disabled, toggle };
+  })();
+
   /* custom check box value */
   const [checkboxs, setCheckboxs] = useState({
     commit: false,
@@ -43,18 +88,8 @@ const Github = () => {
     issueComment: false,
     pullRequestReview: false,
   });
-  /* custom select box value */
-  const [selects, setSelects] = useState({
-    langVal: '',
-    topicVal: '',
-    accoutVal: '',
-    repositoryVal: '',
-  });
 
-  const { langVal, topicVal, accoutVal, repositoryVal } = selects;
   const { commit, pullRequest, issue, branchTag, commitComment, pullRequestComment, issueComment, pullRequestReview } = checkboxs;
-
-  /** (s)common function  **/
 
   /* custom checkbox */
   const onChangeCheckbox = (e) => {
@@ -66,75 +101,28 @@ const Github = () => {
     });
   };
 
-  /* (s) custom select */
-  const onSelect = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const target = e.currentTarget.closest('.select-box');
-    const selectBoxs = document.querySelectorAll('.select-box');
-    if (target.classList.contains('on')) {
-      target.classList.remove('on');
-    } else {
-      selectBoxs.forEach((selectbox) => selectbox.classList.remove('on'));
-      target.classList.add('on');
-    }
-  };
-  /* custom select - select option */
-  const onChangeSelect = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    const target = e.currentTarget;
-    const selectLists = target.closest('.select-list').querySelectorAll('li a');
-    const { name } = target.closest('.select-box').firstChild;
-
-    setSelects({
-      ...selects,
-      [name]: target.innerText,
-    });
-    selectLists.forEach((list) => list.classList.remove('on'));
-    target.classList.toggle('on');
-    target.closest('.select-box').classList.toggle('on');
-  };
   useEffect(() => {
-    const selectBoxs = document.querySelectorAll('.select-box');
-    document.querySelector('body').addEventListener('click', (e) => {
-      e.preventDefault();
-      if (e.target.closest('.select-box') === null) {
-        selectBoxs.forEach((selectbox) => {
-          if (selectbox.classList.contains('on')) { selectbox.classList.toggle('on'); }
-        });
-      }
+    // if (user.rooms.chats.length === 0) return;
+
+    searcher.initialize({
+      dispatch,
+      document,
+      team,
+      user,
+      github,
+      connectType,
+      set: creators.setInputGithub,
     });
-  }, []);
-  /* (e) custom select */
-
-  /* tab */
-  const onTabChange = (e) => {
-    if(swiperRef.current) {setTimeout(()=> swiperRef.current.swiper.update());} //swiper observer
-    e.preventDefault();
-    const menu = document.querySelectorAll('.tab-menu li a');
-    const content = document.querySelectorAll('.tab-cont');
-
-    for(let i = 0; i < menu.length; i++) {
-      content[i].classList.remove('on');
-      menu[i].classList.remove('on');
-    }
-    content[e.currentTarget.id - 1].classList.add('on');
-    e.currentTarget.classList.add('on');
-  };
-  /* 연동하기 탭 disabled */
-  const onDisabledContent = () => {
-    document.querySelector('.connect').classList.toggle('disabled');
-    document.querySelector('.full-btn').toggleAttribute('disabled');
-  };
-  /* switch toggle */
-  const onToggle = (e) => {
-    e.target.closest('.switch').classList.toggle('on');
-    onDisabledContent();
-  };
-  /** (e)common function  **/
-
-  /*==== UI ====*/
+    searcherLanguage.initialize({
+      dispatch,
+      document,
+      team,
+      user,
+      github,
+      connectType,
+      set: creators.setInputGithub,
+    });
+  }, [user.rooms]);
 
   useEffect(() => {
     template1.initialize({
@@ -155,21 +143,23 @@ const Github = () => {
     <div className='detail-container'>
       <div className='detail-header'>
         <div className='inner'>
-          <div className='connect-info-box'>
-            <p className='img-box'><img src={getPublicAssetPath('static/icon_github.png')} alt="github"></img></p>
+          { connect.connectsObj[connectType]
+          && <div className='connect-info-box'>
+            <p className='img-box'><img src={connect.connectsObj[connectType].botThumbnail} alt="rss"></img></p>
             <div className='info'>
-                <strong>GitHub</strong>
-                <p>콘텐츠, 미디어 및 뉴스</p>
+              <strong>{connect.connectsObj[connectType].label}</strong>
+              <p>{connect.connectsObj[connectType].category}</p>
             </div>
           </div>
+          }
         </div>
       </div>{/* //detail-header */}
 
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={onTabChange} id="1" className='on'>서비스 소개</a></li>
-            <li><a href='#none' onClick={onTabChange} id="2">연동하기</a></li>
+            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a href='#none' onClick={tab.change} id="2">연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
@@ -181,7 +171,7 @@ const Github = () => {
                   <strong>GitHub</strong>
                   <p>Github은 Git 버전 컨트롤 시스템에 기반한 오픈소스 프로젝트를 위한 소셜 저장소입니다.<br/>GitHub을 잔디와 연동하게 되면, Github 브랜치의 Commit, Comments, Pull Request와 같은 다양한 변동 사항을 팀 내에서 메시지로 수신할 수 있습니다.</p>
                 </div>
-                <button type='button'>더 알아보기<i className='icon-ic-arrow-right-up'></i></button>
+                <button type='button' onClick={() => banner.help(user)}>더 알아보기<i className='icon-ic-arrow-right-up'></i></button>
               </div>
             </div>
           </div>
@@ -218,7 +208,11 @@ const Github = () => {
                           <div className='input-row'>
                             <button type='button'>인증된 계정</button>
                             <div className="select-box type-full">
-                              <a href="javascript(void:0);:" title="검색필드 선택" className="select-value" value={accoutVal} name="accoutVal" onClick={onSelect}>
+                              <a href="javascript(void:0);:"
+                                 title="검색필드 선택"
+                                 className="select-value"
+                                 name="accoutVal"
+                              >
                                 {/* [D] : 로딩 시 노출 */}
                                 <span>
                                     <div className='loading'>
@@ -226,13 +220,13 @@ const Github = () => {
                                   </div>
                                 </span>
                                 {/* //[D] : 로딩 case */}
-                                <span>{accoutVal === '' ? 'jandi@tosslab.com' : accoutVal}</span>
+                                <span></span>
                               </a>
                               <div className="select-list account-type">
                                   <ul>
-                                    <li><a href="#none" onClick={onChangeSelect} className='on'><span className='icon-ic-user-white'>jandi@tosslab.com</span></a><button type='button' className='btn-delete icon-ic-close'></button></li>
-                                    <li><a href="#none" onClick={onChangeSelect}><span className='icon-ic-user-white'>jandi02@tosslab.com</span></a><button type='button' className='btn-delete icon-ic-close'></button></li>
-                                    <li><a href="#none" onClick={onChangeSelect}><span className='icon-ic-user-white'>jandi03@tosslab.com</span></a><button type='button' className='btn-delete icon-ic-close'></button></li>
+                                    <li><a href="#none" className='on'><span className='icon-ic-user-white'>jandi@tosslab.com</span></a><button type='button' className='btn-delete icon-ic-close'></button></li>
+                                    <li><a href="#none" ><span className='icon-ic-user-white'>jandi02@tosslab.com</span></a><button type='button' className='btn-delete icon-ic-close'></button></li>
+                                    <li><a href="#none" ><span className='icon-ic-user-white'>jandi03@tosslab.com</span></a><button type='button' className='btn-delete icon-ic-close'></button></li>
                                     <li><a href="#none"><span className='icon-ic-user-add'>계정 추가하기</span></a></li>
                                   </ul>
                               </div>
@@ -253,7 +247,11 @@ const Github = () => {
                       <dd>
                         <div className='input-row'>
                           <div className="select-box list-type mgr8">
-                            <a href="#none" title="검색필드 선택" className="select-value" name='topicVal' onClick={onSelect}>
+                            <a href="#none"
+                               title="검색필드 선택"
+                               className="select-value"
+                               name='topicVal'
+                            >
                               {/* [D] : 로딩 시 노출 */}
                               {/* <span>
                                   <div className='loading'>
@@ -261,19 +259,22 @@ const Github = () => {
                                 </div>
                               </span> */}
                               {/* //[D] : 로딩 case */}
-                              <span>{topicVal === '' ? 'Repository 선택' : topicVal}</span>
+                              <span></span>
                             </a>
                             <div className="select-list custom-select">
                               <div className='search-box'>
                                 <div className='search-input-box'>
                                   <i className='icon-ic-search'></i>
-                                  <Input type='text' placeholder='검색어를 입력해주세요.' value={searchVal} className='input-type' onChange={(e) => setSearchVal(e.currentTarget.value)}></Input>
+                                  <Input type='text'
+                                         placeholder='검색어를 입력해주세요.'
+                                         className='input-type'
+                                  ></Input>
                                 </div>
                               </div>
 
                               {/* custom-select-wrap */}
                               {
-                                !searchVal && (
+                                github.input.searhRepoText === '' && (
                                   <div className='custom-select-wrap'>
                                     <ul>
                                       <li><span className='tit'>Repository 선택</span></li>
@@ -282,16 +283,16 @@ const Github = () => {
                                         <dt className='tit'>tosslab</dt>
                                         <dd>
                                           <ul>
-                                            <li><a href='#none' onClick={onChangeSelect}>web_client</a></li>
-                                            <li><a href='#none' onClick={onChangeSelect}>web_admin</a></li>
-                                            <li><a href='#none' onClick={onChangeSelect}>react_landing</a></li>
-                                            <li><a href='#none' onClick={onChangeSelect}>web_client</a></li>
-                                            <li><a href='#none' onClick={onChangeSelect}>web_client</a></li>
-                                            <li><a href='#none' onClick={onChangeSelect}>web_client</a></li>
-                                            <li><a href='#none' onClick={onChangeSelect}>web_client</a></li>
-                                            <li><a href='#none' onClick={onChangeSelect}>web_client</a></li>
-                                            <li><a href='#none' onClick={onChangeSelect}>web_client</a></li>
-                                            <li><a href='#none' onClick={onChangeSelect}>web_client</a></li>
+                                            <li><a href='#none'>web_client</a></li>
+                                            <li><a href='#none'>web_admin</a></li>
+                                            <li><a href='#none'>react_landing</a></li>
+                                            <li><a href='#none'>web_client</a></li>
+                                            <li><a href='#none'>web_client</a></li>
+                                            <li><a href='#none'>web_client</a></li>
+                                            <li><a href='#none'>web_client</a></li>
+                                            <li><a href='#none'>web_client</a></li>
+                                            <li><a href='#none'>web_client</a></li>
+                                            <li><a href='#none'>web_client</a></li>
                                           </ul>
                                         </dd>
                                       </dl>
@@ -306,15 +307,15 @@ const Github = () => {
 
                               {/* search-list-wrap */}
                               {
-                                searchVal && (
+                                github.input.searchRepoText !== '' && (
                                 <div className='search-list-wrap'>
                                   <p className='tit'>7개의 결과가 있습니다.</p>
                                   <ul>
-                                  <li><a href='#none' onClick={onChangeSelect}>web_client</a></li>
-                                  <li><a href='#none' onClick={onChangeSelect}>web_admin</a></li>
-                                  <li><a href='#none' onClick={onChangeSelect}>react_landing</a></li>
-                                  <li><a href='#none' onClick={onChangeSelect}>web_client</a></li>
-                                  <li><a href='#none' onClick={onChangeSelect}>web_client</a></li>
+                                  <li><a href='#none'>web_client</a></li>
+                                  <li><a href='#none'>web_admin</a></li>
+                                  <li><a href='#none'>react_landing</a></li>
+                                  <li><a href='#none'>web_client</a></li>
+                                  <li><a href='#none'>web_client</a></li>
                                   </ul>
                                   <p className='tit no-result'>결과가 없습니다.</p>
                                 </div>
@@ -417,42 +418,56 @@ const Github = () => {
                       <dd>
                         <div className='input-row'>
                           <div className="select-box type-full">
-                            <a href="#none" title="검색필드 선택" className="select-value fc-green" name='repositoryVal' onClick={onSelect}><span>{repositoryVal === '' ? '그룹에 속한 대화방 1' : repositoryVal}</span></a>
+                            <a href="#none"
+                               title="검색필드 선택"
+                               className="select-value fc-green"
+                               name='searchText'
+                               onClick={searcher.open}>
+                              <span>{github.input.selectedTopic}</span>
+                            </a>
                             <div className="select-list custom-select">
                               <div className='search-box'>
                                 <div className='search-input-box'>
                                   <i className='icon-ic-search'></i>
-                                  <Input type='text' placeholder='검색어를 입력해주세요.' value={searchVal} className='input-type' onChange={(e) => setSearchVal(e.currentTarget.value)}></Input>
+                                  <Input type='text'
+                                         placeholder='검색어를 입력해주세요.'
+                                         className='input-type'
+                                         value={github.input.searchText}
+                                         onChange={(e) => searcher.change(e)}
+                                  ></Input>
                                 </div>
                               </div>
 
                               {/* custom-select-wrap */}
                               {
-                                !searchVal && (
+                                github.input.searchText === '' && (
                                   <div className='custom-select-wrap'>
                                     <dl className='option-wrap'>
                                       <dt className='tit'>토픽</dt>
                                       <dd>
-                                        <div className='folder-group'>
-                                          <div className='folder-tit'><span className='icon-ic-folder-open'>새폴더</span></div>
-                                          <ul>
-                                            <li><a href='#none' onClick={onChangeSelect} className='on'>그룹에 속한 대화방 1</a></li>
-                                            <li><a href='#none' onClick={onChangeSelect}>그룹에 속한 대화방 2그룹에 속한 대화방 2그룹에 속한 대화방 2그룹에 속한 대화방 2그룹에 속한 대화방 2그룹에 속한 대화방 2그룹에 속한 대화방 2그룹에 속한 대화방 2</a></li>
-                                          </ul>
-                                        </div>
-                                        <div className='folder-group'>
-                                          <div className='folder-tit'><span className='icon-ic-folder-open'>새폴더</span></div>
-                                          <ul>
-                                            <li><a href='#none' onClick={onChangeSelect}>그룹에 속한 대화방 11</a></li>
-                                            <li><a href='#none' onClick={onChangeSelect}>그룹에 속한 대화방 12</a></li>
-                                          </ul>
-                                        </div>
-                                        <div className=''>{/* [D]: 그룹 아닐 경우 folder-group 제거*/}
-                                          <ul>
-                                            <li><a href='#none' onClick={onChangeSelect}>구룹아냐</a></li>
-                                            <li><a href='#none' onClick={onChangeSelect}>구룹아닌방</a></li>
-                                          </ul>
-                                        </div>
+                                        {
+                                          github.input.searchRooms.map((roomsData, roomsIndex) => (<Fragment key={roomsIndex}>
+                                            {roomsData.seq
+                                            && <div className='folder-group'>
+                                              <div className='folder-tit'>
+                                                <span className='icon-ic-folder-open'>{roomsData.name}</span>
+                                              </div>
+                                              <ul>
+                                                {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
+                                                  <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                                </Fragment>))}
+                                              </ul>
+                                            </div>
+                                            }
+                                            {!roomsData.seq
+                                            && <div>
+                                              <ul>
+                                                <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                              </ul>
+                                            </div>
+                                            }
+                                          </Fragment>))
+                                        }
                                       </dd>
                                     </dl>
                                     <dl className='option-wrap'>
@@ -472,19 +487,27 @@ const Github = () => {
                               }
                               {/* //custom-select-wrap */}
 
-                              {/* search-list-wrap */}
+                              {/* search-list-wrap 검샋결과가 있을 경우 폴더는 제외 */}
                               {
-                                searchVal && (
-                                <div className='search-list-wrap'>
-                                  <p className='tit'>7개의 결과가 있습니다.</p>
-                                  <ul>
-                                    <li><a href='#none' onClick={onChangeSelect}>1. 테스트</a> </li>
-                                    <li><a href='#none' onClick={onChangeSelect}>2. 테스트방2</a> </li>
-                                    <li><a href='#none' onClick={onChangeSelect}>1. 테스트</a> </li>
-                                    <li><a href='#none' onClick={onChangeSelect}>1. 테스트</a> </li>
-                                  </ul>
-                                  <p className='tit no-result'>결과가 없습니다.</p>
-                                </div>
+                                github.input.searchText !== '' && (
+                                  <div className='search-list-wrap'>
+                                    {
+                                      github.input.searchFilters.length > 0
+                                      && <>
+                                        <p className='tit'>{github.input.searchFilters.length}개의 결과가 있습니다.</p>
+                                        <ul>
+                                          {
+                                            github.input.searchFilters.map((roomData, roomIndex) => (
+                                              <li key={roomIndex}>
+                                                <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                              </li>
+                                            ))
+                                          }
+                                        </ul>
+                                      </>
+                                    }
+                                    {github.input.searchFilters.length === 0 && <p className='tit no-result'>결과가 없습니다.</p>}
+                                  </div>
                                 )
                               }
                               {/* search-list-wrap */}
@@ -506,16 +529,22 @@ const Github = () => {
                       <dd>
                         <div className='input-row'>
                           <div className="select-box type-full">
-                            <a href="#none" title="검색필드 선택" className="select-value" value={langVal} name="langVal" onClick={onSelect}><span>{langVal === '' ? '한국어' : langVal}</span></a>
+                            <a href="#none"
+                               title="검색필드 선택"
+                               className="select-value"
+                               name="langVal"
+                               onClick={searcherLanguage.open}
+                            ><span>{github.input.langText}</span></a>
                             <div className="select-list">
-                                <ul>
-                                  <li><a href="#none" onClick={onChangeSelect} className='on'><span>한국어</span></a></li>
-                                  <li><a href="#none" onClick={onChangeSelect}><span>English</span></a></li>
-                                  <li><a href="#none" onClick={onChangeSelect}><span>日本語</span></a></li>
-                                  <li><a href="#none" onClick={onChangeSelect}><span>简体中文</span></a></li>
-                                  <li><a href="#none" onClick={onChangeSelect}><span>繁體中文</span></a></li>
-                                  <li><a href="#none" onClick={onChangeSelect}><span>Tiếng Việt </span></a></li>
-                                </ul>
+                              <ul>
+                                {
+                                  Object.keys(LANGUAGE2).map((lang, langIndex) => (
+                                    <Fragment key={langIndex}>
+                                      <li><a href="#none" onClick={(e) => searcherLanguage.select(e, LANGUAGE2[lang])}><span>{lang}</span></a></li>
+                                    </Fragment>
+                                  ))
+                                }
+                              </ul>
                             </div>
                           </div>
                         </div>

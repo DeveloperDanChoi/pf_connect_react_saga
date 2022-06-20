@@ -1,30 +1,30 @@
-/* eslint-disable max-len */
-import React, {useEffect, useState, useRef, Fragment} from 'react';
+/* eslint-disable max-len,react/no-unescaped-entities,import/no-unresolved */
+import React, {
+  useEffect, useRef, Fragment,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import SwiperCore, { Navigation } from 'swiper';
+import { Input } from 'antd';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { modules } from '../../../../../store/connect/bitbucket/bitbucket';
 import { template1 } from '../../../../../service/connect';
-import Thumbnail from "../../../../ui/Thumbnail/Thumbnail";
+import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
-import { Input } from 'antd';
-/* swiper */
-import SwiperCore, { Navigation } from "swiper";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import {modules as connectModules} from "../../../../../store/connect/connect";
-import {banner} from "../../../../../service/banner";
+import { banner } from '../../../../../service/banner';
+import { searcher, searcherLanguage } from '../../../../../service/searcher';
+import { LANGUAGE2 } from '../../../../../constants/type';
 
-SwiperCore.use([ Navigation]);
+SwiperCore.use([Navigation]);
 
 const Bitbucket = () => {
   const connectType = 'bitbucket';
   const dispatch = useDispatch();
   const router = useRouter();
-  const { team, bitbucket, user, connect } = useSelector((state) => {
-    return state;
-  });
-  const [rooms, setRooms] = useState([]);
+  const {
+    team, bitbucket, user, connect,
+  } = useSelector((state) => state);
   const { creators } = modules;
-
 
   /* swiper */
   const swiperRef = useRef(null);
@@ -38,7 +38,6 @@ const Bitbucket = () => {
     shouldSwiperUpdate: true,
   };
 
-
   /**
    *
    * @type {{change: change, disabled: disabled, toggle: toggle}}
@@ -49,12 +48,15 @@ const Bitbucket = () => {
      * @param e
      */
     const change = (e) => {
-      if(swiperRef.current) {setTimeout(()=> swiperRef.current.swiper.update());} //swiper observer
+      if (swiperRef.current) {
+        setTimeout(() => swiperRef.current.swiper.update());
+      } // swiper observer
       e.preventDefault();
       const menu = document.querySelectorAll('.tab-menu li a');
       const content = document.querySelectorAll('.tab-cont');
 
-      for(let i = 0; i < menu.length; i++) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < menu.length; i++) {
         content[i].classList.remove('on');
         menu[i].classList.remove('on');
       }
@@ -76,174 +78,39 @@ const Bitbucket = () => {
       e.target.closest('.switch').classList.toggle('on');
       disabled();
     };
-    return { change, disabled, toggle }
+    return { change, disabled, toggle };
   })();
-
 
   /* 연동하기 탭 disabled */
   const onDisabledContent = () => {
     document.querySelector('.connect').classList.toggle('disabled');
     document.querySelector('.full-btn').toggleAttribute('disabled');
   };
-  //연동 추가하기
-  const onClick = (e) => {
+  const onClick = () => {
     onDisabledContent();
-  }
+  };
 
-  /**
-   * 검색 모듈
-   * TODO: 1차 샘플링
-   */
-  const searcher = ((
-      keyward,
-      dispatch,
-      selects,
-      filters) => {
-    const open = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const target = e.currentTarget.closest('.select-box');
-      const selectBoxs = document.querySelectorAll('.select-box');
-      if (target.classList.contains('on')) {
-        target.classList.remove('on');
-      } else {
-        selectBoxs.forEach((selectbox) => selectbox.classList.remove('on'));
-        target.classList.add('on');
-      }
-    };
-
-    /**
-     * @deprecated
-     */
-    function fields() {
-      return [
-        { value: 0, field: 'member.name', label: '생성자', class: 'on' },
-        { value: 1, field: '', label: '연동된 토픽 / JANDI', class: '' },
-        { value: 2, field: 'bot.name', label: '커넥트', class: '' },
-      ];
-    }
-    function change(e) {
-      keyward[1](e.target.value);
-
-      filters[1]((() => {
-        const arr = [];
-
-        for (const topic of user.rooms.topics) {
-          if (topic.name.indexOf(e.target.value) > -1) {
-            arr.push(topic);
-          }
-        }
-
-        for (const bot of user.rooms.bots) {
-          console.log(bot)
-          if (bot.name.indexOf(e.target.value) > -1) {
-            for (const chat of user.rooms.chats) {
-              if (bot.id === chat.companionId) {
-                arr.push(bot);
-              }
-            }
-          }
-        }
-
-        return arr;
-      })());
-    }
-    function initialize(document) {
-      if (Object.keys(user.rooms).length === 0) return;
-
-      const { folders } = user.rooms;
-      const topics = (({topics}) => {
-        const newTopics = [];
-        for (const topic of topics) {
-          newTopics.push({ ...topic, parent: false });
-        }
-        return newTopics;
-      })(user.rooms);
-      const newRooms = [];
-
-      for (const folder of folders) {
-        newRooms.push({
-          ...folder,
-          rooms: ((rooms) => {
-            const newRooms = [];
-            for (const room of rooms) {
-              for (const topic of topics) {
-                if (room === topic.id) {
-                  topic.parent = true;
-                  newRooms.push(topic);
-                  break;
-                }
-              }
-            }
-            return newRooms;
-          })(folder.rooms)
-        });
-      }
-
-      for (const topic of topics) {
-        if (!topic.parent) {
-          newRooms.push(topic);
-        }
-      }
-
-      setRooms(newRooms);
-    }
-    function value() {
-      return keyward[0];
-    }
-    function searchText() {
-      return selects[0].searchText;
-    }
-    function search() {
-      const filters = [];
-      const searchType = document.querySelector('.select-list .on');
-      const query = fields()[searchType.getAttribute('value')].value;
-
-      for (const item of connect.teamsConnect[connectType]) {
-        if (query === 0 && item.member && item.member.name && item.member.name.indexOf(keyward[0]) > -1) {
-          filters.push(item);
-        }
-      }
-      dispatch(connectModules.creators.setTeamsConnectDetail(filters));
-    }
-    function select(e, data) {
-      e.stopPropagation();
-      e.preventDefault();
-      const target = e.currentTarget;
-      const selectLists = target.closest('.select-list').querySelectorAll('li a');
-      const { name } = target.closest('.select-box').firstChild;
-
-      selects[1]({
-        ...selects[0],
-        [name]: target.innerText,
-      });
-      selectLists.forEach((list) => list.classList.remove('on'));
-      target.classList.toggle('on');
-      target.closest('.select-box').classList.toggle('on');
-
-      for (const chat of user.rooms.chats) {
-        if (chat.companionId === data.id) {
-          template1.set('roomId', chat.id);
-          break;
-        }
-      }
-    }
-    function filter() {
-      return filters[0];
-    }
-    return {
-      initialize,
-      fields, open,
-      change,
-      value,
-      search,
-      select,
-      searchText,
-      filter,
-    }
-  })(useState(''), dispatch, useState({ searchText: '' }), useState([]));
   useEffect(() => {
-    searcher.initialize(document);
+    // if (user.rooms.chats.length === 0) return;
+
+    searcher.initialize({
+      dispatch,
+      document,
+      team,
+      user,
+      bitbucket,
+      connectType,
+      set: creators.setInputBitbucket,
+    });
+    searcherLanguage.initialize({
+      dispatch,
+      document,
+      team,
+      user,
+      bitbucket,
+      connectType,
+      set: creators.setInputBitbucket,
+    });
   }, [user.rooms]);
 
   useEffect(() => {
@@ -256,7 +123,7 @@ const Bitbucket = () => {
       load: creators.getTeamsBitbucket,
       connect: [creators.postTeamsBitbucket, creators.putTeamsBitbucketSetting],
       set: creators.setInputBitbucket,
-    });
+    }, false);
   }, []);
 
   return (<>
@@ -264,14 +131,14 @@ const Bitbucket = () => {
     <div className='detail-container'>
       <div className='detail-header'>
         <div className='inner'>
-          { connect.connectsObj[connectType] &&
-              <div className='connect-info-box'>
-                <p className='img-box'><img src={connect.connectsObj[connectType].botThumbnail} alt="rss"></img></p>
-                <div className='info'>
-                  <strong>{connect.connectsObj[connectType].label}</strong>
-                  <p>{connect.connectsObj[connectType].category}</p>
-                </div>
+          { connect.connectsObj[connectType]
+            && <div className='connect-info-box'>
+              <p className='img-box'><img src={connect.connectsObj[connectType].botThumbnail} alt="rss"></img></p>
+              <div className='info'>
+                <strong>{connect.connectsObj[connectType].label}</strong>
+                <p>{connect.connectsObj[connectType].category}</p>
               </div>
+            </div>
           }
         </div>
       </div>{/* //detail-header */}
@@ -299,7 +166,7 @@ const Bitbucket = () => {
           </div>
           <div className='tab-cont'>
             <div className='detail-content type-swiper'>
-                <Swiper
+              <Swiper
                 ref={swiperRef}
                 {...swiperOptions}
               >
@@ -370,7 +237,7 @@ const Bitbucket = () => {
                              className="select-value fc-green"
                              name='searchText'
                              onClick={searcher.open}>
-                            <span>{searcher.searchText() === '' ? '' : searcher.searchText()}</span>
+                            <span>{bitbucket.input.selectedTopic}</span>
                           </a>
                           <div className="select-list custom-select">
                             <div className='search-box'>
@@ -379,7 +246,7 @@ const Bitbucket = () => {
                                 <Input type='text'
                                        placeholder='검색어를 입력해주세요.'
                                        className='input-type'
-                                       value={searcher.value()}
+                                       value={bitbucket.input.searchText}
                                        onChange={(e) => searcher.change(e)}
                                 ></Input>
                               </div>
@@ -387,72 +254,75 @@ const Bitbucket = () => {
 
                             {/* custom-select-wrap */}
                             {
-                                searcher.value() === '' && (
-                                    <div className='custom-select-wrap'>
-                                      <dl className='option-wrap'>
-                                        <dt className='tit'>토픽</dt>
-                                        <dd>
-                                          {
-                                            rooms.map((roomsData, roomsIndex) => (<Fragment key={roomsIndex}>
-                                              {roomsData.seq &&
-                                                  <div className='folder-group'>
-                                                    <div className='folder-tit'><span
-                                                        className='icon-ic-folder-open'>{roomsData.name}</span></div>
-                                                    <ul>
-                                                      {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                                        <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
-                                                      </Fragment>))}
-                                                    </ul>
-                                                  </div>
-                                              }
-                                              {!roomsData.seq &&
-                                                  <div>
-                                                    <ul>
-                                                      <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomsData.name}</a></li>
-                                                    </ul>
-                                                  </div>
-                                              }
-                                            </Fragment>))
-                                          }
-                                        </dd>
-                                      </dl>
-                                      <dl className='option-wrap'>
-                                        <dt className='tit'>채팅</dt>
-                                        <dd>
-                                          {
-                                            user.rooms.bots.map((botData, botIndex) => (
-                                                <div key={botIndex}>
-                                                  <ul>
-                                                    <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
-                                                  </ul>
+                              bitbucket.input.searchText === '' && (
+                                <div className='custom-select-wrap'>
+                                  <dl className='option-wrap'>
+                                    <dt className='tit'>토픽</dt>
+                                    <dd>
+                                      {
+                                        bitbucket.input.searchRooms.map((roomsData, roomsIndex) => (<Fragment key={roomsIndex}>
+                                          {roomsData.seq
+                                              && <div className='folder-group'>
+                                                <div className='folder-tit'>
+                                                  <span className='icon-ic-folder-open'>{roomsData.name}</span>
                                                 </div>
-                                            ))
+                                                <ul>
+                                                  {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
+                                                    <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                                  </Fragment>))}
+                                                </ul>
+                                              </div>
                                           }
-                                        </dd>
-                                      </dl>
-                                    </div>
-                                )
+                                          {!roomsData.seq
+                                              && <div>
+                                                <ul>
+                                                  <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                                </ul>
+                                              </div>
+                                          }
+                                        </Fragment>))
+                                      }
+                                    </dd>
+                                  </dl>
+                                  <dl className='option-wrap'>
+                                    <dt className='tit'>채팅</dt>
+                                    <dd>
+                                      {
+                                        user.rooms.bots.map((botData, botIndex) => (
+                                          <div key={botIndex}>
+                                            <ul>
+                                              <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                            </ul>
+                                          </div>
+                                        ))
+                                      }
+                                    </dd>
+                                  </dl>
+                                </div>
+                              )
                             }
                             {/* //custom-select-wrap */}
 
                             {/* search-list-wrap 검샋결과가 있을 경우 폴더는 제외 */}
                             {
-                                searcher.value() !== '' && (
+                                bitbucket.input.searchText !== '' && (
                                     <div className='search-list-wrap'>
                                       {
-                                          searcher.filter().length > 0 &&
-                                          <>
-                                            <p className='tit'>{searcher.filter().length}개의 결과가 있습니다.</p>
-                                            <ul>
-                                              {
-                                                searcher.filter().map((roomData, roomIndex) => (
-                                                    <li key={roomIndex}><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
-                                                ))
-                                              }
-                                            </ul>
-                                          </>
+                                        bitbucket.input.searchFilters.length > 0
+                                        && <>
+                                          <p className='tit'>{bitbucket.input.searchFilters.length}개의 결과가 있습니다.</p>
+                                          <ul>
+                                            {
+                                              bitbucket.input.searchFilters.map((roomData, roomIndex) => (
+                                                <li key={roomIndex}>
+                                                  <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                                </li>
+                                              ))
+                                            }
+                                          </ul>
+                                        </>
                                       }
-                                      {searcher.filter().length === 0 && <p className='tit no-result'>결과가 없습니다.</p>}
+                                      {bitbucket.input.searchFilters.length === 0 && <p className='tit no-result'>결과가 없습니다.</p>}
                                     </div>
                                 )
                             }
@@ -475,15 +345,21 @@ const Bitbucket = () => {
                     <dd>
                       <div className='input-row'>
                         <div className="select-box type-full">
-                          <a href="#none" title="검색필드 선택" className="select-value" name="langVal" ><span></span></a>
+                          <a href="#none"
+                             title="검색필드 선택"
+                             className="select-value"
+                             name="langVal"
+                             onClick={searcherLanguage.open}
+                          ><span>{bitbucket.input.langText}</span></a>
                           <div className="select-list">
                               <ul>
-                                <li><a href="#none" className='on'><span>한국어</span></a></li>
-                                <li><a href="#none" ><span>English</span></a></li>
-                                <li><a href="#none" ><span>日本語</span></a></li>
-                                <li><a href="#none" ><span>简体中文</span></a></li>
-                                <li><a href="#none" ><span>繁體中文</span></a></li>
-                                <li><a href="#none" ><span>Tiếng Việt </span></a></li>
+                                {
+                                  Object.keys(LANGUAGE2).map((lang, langIndex) => (
+                                    <Fragment key={langIndex}>
+                                      <li><a href="#none" onClick={(e) => searcherLanguage.select(e, LANGUAGE2[lang])}><span>{lang}</span></a></li>
+                                    </Fragment>
+                                  ))
+                                }
                               </ul>
                           </div>
                         </div>
@@ -525,3 +401,6 @@ const Bitbucket = () => {
 };
 
 export default Bitbucket;
+/**
+ * TODO: 검색어 없을 경우 영역 활성 안되는 문제
+ */

@@ -7,6 +7,7 @@ import { template1 } from '../../../../../service/connect';
 import Thumbnail from "../../../../ui/Thumbnail/Thumbnail";
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { Input } from 'antd';
+import { banner } from "../../../../../service/banner";
 
 const GoogleCalendar = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const GoogleCalendar = () => {
   const { creators } = modules;
 
   /*==== UI ====*/
-  
+
   /** variable - checkbox,selectbox,swiper ...  **/
   const [searchVal, setSearchVal] = useState(''); /* [D] 임시 */
   /* swiper */
@@ -185,7 +186,7 @@ const GoogleCalendar = () => {
                   <strong>Google 캘린더</strong>
                   <p>Google 캘린더는 일정을 관리하고 공유할 뿐 아니라 알림도 받을 수 있는 서비스입니다.<br/>Google 캘린더를 잔디와 연동하게 되면, 일정에 대한 알림 또는 일정 요약을 잔디 팀 내에서 메시지로 받을 수 있습니다.</p>
                 </div>
-                <button type='button'>더 알아보기<i className='icon-ic-arrow-right-up'></i></button>
+                <button type='button' onClick={() => banner.help(user)}>더 알아보기<i className='icon-ic-arrow-right-up'></i></button>
               </div>
             </div>
           </div>
@@ -259,7 +260,7 @@ const GoogleCalendar = () => {
                         <div className='setting-contents'>
                           <ul>
                             <li>
-                              <div className='custom-checkbox none-hover' onClick={onChangeCheckbox}> 
+                              <div className='custom-checkbox none-hover' onClick={onChangeCheckbox}>
                                 <input type="checkbox" id="service_01_01" checked={service_01_01} value="1" name="service_01_01"/>
                                 <label htmlFor="service_01_01">
                                   <div className='setting-item'>

@@ -10,6 +10,7 @@ import { Input } from 'antd';
 /* swiper */
 import SwiperCore, { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { banner } from "../../../../../service/banner";
 
 SwiperCore.use([ Navigation]);
 
@@ -23,7 +24,7 @@ const Jira = () => {
   const { creators } = modules;
 
   /*==== UI ====*/
-  
+
   /** variable - checkbox,selectbox,swiper ...  **/
   const [searchVal, setSearchVal] = useState(''); /* [D] 임시 */
   /* swiper */
@@ -178,7 +179,7 @@ const Jira = () => {
                   <strong>JIRA</strong>
                   <p>Atlassian사의 프로젝트 매니지먼트 툴입니다.<br/>JIRA를 잔디와 연동하게 되면, 각 JIRA 이슈들의 상태 변경이나 업데이트 현황을 잔디 팀 내에서 메시지로 받을 수 있습니다.</p>
                 </div>
-                <button type='button'>더 알아보기<i className='icon-ic-arrow-right-up'></i></button>
+                <button type='button' onClick={() => banner.help(user)}>더 알아보기<i className='icon-ic-arrow-right-up'></i></button>
               </div>
             </div>
           </div>

@@ -21,6 +21,7 @@ const Bitbucket = () => {
 
   useEffect(() => {
     console.log( router.query.id )
+    return;
     if (!router.query.id) {
       const prefix = '/app/connect';
       Router.push(`${prefix}/bitbucket?id=1577`, `${prefix}/bitbucket`);

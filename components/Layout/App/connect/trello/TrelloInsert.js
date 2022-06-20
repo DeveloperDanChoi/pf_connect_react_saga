@@ -7,6 +7,7 @@ import { template1 } from '../../../../../service/connect';
 import Thumbnail from "../../../../ui/Thumbnail/Thumbnail";
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { Input } from 'antd';
+import { banner } from "../../../../../service/banner";
 
 const Trello = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const Trello = () => {
   const { creators } = modules;
 
   /*==== UI ====*/
-  
+
   /** variable - checkbox,selectbox,swiper ...  **/
   const [searchVal, setSearchVal] = useState(''); /* [D] 임시 */
   /* swiper */
@@ -189,7 +190,7 @@ const Trello = () => {
                   <strong>Trello</strong>
                   <p>Trello는 인터랙티브한 방식으로 할 일 관리를 할 수 있는 협업툴입니다.<br/>Trello를 잔디와 연동하게 되면, 각 카드나 보드의 변동 사항을 잔디 팀 내에서 메시지로 받을 수 있습니다.</p>
                 </div>
-                <button type='button'>더 알아보기<i className='icon-ic-arrow-right-up'></i></button>
+                <button type='button' onClick={() => banner.help(user)}>더 알아보기<i className='icon-ic-arrow-right-up'></i></button>
               </div>
             </div>
           </div>

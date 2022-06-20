@@ -4,7 +4,7 @@ import React, {Fragment, useEffect, useState} from 'react';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { Input } from 'antd';
 import {getTeamsConnect, updateStatus} from "../../../../../store/connect/connect";
-import {template2} from "../../../../../service/connect";
+import {template1} from "../../../../../service/connect";
 import Router from "next/router";
 import {putTeamsGithubSetting} from "../../../../../api/connect/WebAdmin/Github/github";
 
@@ -16,7 +16,7 @@ const MyConnectPlug = (props) => {
     return state;
   });
 
-  const allModules = template2.allModules();
+  const allModules = template1.allModules();
 
   const handleClick = (data) => {
     // TODO: config path
@@ -175,7 +175,7 @@ const MyConnectPlug = (props) => {
           </thead>
           <tbody>
             <tr>
-              <td> 
+              <td>
                 <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
                 <span>
                   JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
@@ -207,7 +207,7 @@ const MyConnectPlug = (props) => {
               </td>
             </tr>
             <tr>
-              <td> 
+              <td>
                 <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
                 <span>
                   JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
@@ -239,7 +239,7 @@ const MyConnectPlug = (props) => {
               </td>
             </tr>
             <tr>
-              <td> 
+              <td>
                 <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
                 <span>
                   JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
@@ -271,7 +271,7 @@ const MyConnectPlug = (props) => {
               </td>
             </tr>
             <tr>
-              <td> 
+              <td>
                 <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
                 <span>
                   JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
@@ -303,7 +303,7 @@ const MyConnectPlug = (props) => {
               </td>
             </tr>
             <tr>
-              <td> 
+              <td>
                 <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
                 <span>
                   JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
@@ -335,7 +335,7 @@ const MyConnectPlug = (props) => {
               </td>
             </tr>
             <tr>
-              <td> 
+              <td>
                 <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
                 <span>
                   JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
@@ -367,7 +367,7 @@ const MyConnectPlug = (props) => {
               </td>
             </tr>
             <tr>
-              <td> 
+              <td>
                 <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
                 <span>
                   JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
@@ -434,7 +434,7 @@ const MyConnectPlug = (props) => {
         </table>
       </div>
       {/* //connect-table-wrap */}
-      
+
       <div className='connect-table-wrap'>
         <div className='connect-info-box'>
           <p className='img-box'><img src={getPublicAssetPath('static/icon_jira.png')} alt="jira"></img></p>
@@ -463,7 +463,7 @@ const MyConnectPlug = (props) => {
           </thead>
           <tbody>
             <tr>
-              <td> 
+              <td>
                 <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')} alt="dummy"></img></span>
                 <span>
                   JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동

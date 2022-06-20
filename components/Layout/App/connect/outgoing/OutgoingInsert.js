@@ -10,6 +10,7 @@ import { Input } from 'antd';
 /* swiper */
 import SwiperCore, { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { banner } from "../../../../../service/banner";
 
 SwiperCore.use([ Navigation]);
 
@@ -22,7 +23,7 @@ const Outgoing = () => {
   const { creators } = modules;
 
   /*==== UI ====*/
-  
+
   /** variable - checkbox,selectbox,swiper ...  **/
   const [searchVal, setSearchVal] = useState(''); /* [D] 임시 */
    /* swiper */
@@ -167,7 +168,7 @@ const Outgoing = () => {
                   <strong>Webhook 발신 (Outgoing Webhook)</strong>
                   <p>Webhook 발신 (Outgoing Webhook)은 특정 키워드를 포함한 메시지가 잔디에서 발생하였을 때 외부 서버로 전달할 수 있는 기능입니다. 외부 서버 개발을 통해 사내 서비스 연동, 챗봇 등으로 다양하게 활용할 수 있습니다.</p>
                 </div>
-                <button type='button'>더 알아보기<i className='icon-ic-arrow-right-up'></i></button>
+                <button type='button' onClick={() => banner.help(user)}>더 알아보기<i className='icon-ic-arrow-right-up'></i></button>
               </div>
             </div>
           </div>

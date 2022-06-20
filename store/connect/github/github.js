@@ -97,6 +97,15 @@ export const initialState = {
     hookEvent: '',
     hookBranch: '',
     webhookToken: '',
+    langText: '한국어',
+    searchRepoText: '',
+    selectedRepo: 'repo',
+    searchRepos: [],
+    searchRepoFilters: [],
+    searchText: '',
+    selectedTopic: 'JANDI',
+    searchRooms: [],
+    searchFilters: [],
   },
 };
 

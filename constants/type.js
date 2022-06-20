@@ -21,5 +21,13 @@ export const LANGUAGE = {
   CHINESE: 'zh-cn',
   VIETNAMESE: 'vi',
 };
+export const LANGUAGE2 = {
+  한국어: 'kr',
+  English: 'en',
+  日本語: 'jp',
+  简体中文: 'zh-tw',
+  繁體中文: 'zh-cn',
+  'Tiếng Việt': 'vi',
+};
 
 export default {};

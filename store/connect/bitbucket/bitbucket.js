@@ -75,6 +75,12 @@ export const initialState = {
     webhookToken: '',
     botName: '',
     botThumbnailFile: '',
+    lang: '',
+    langText: '한국어',
+    searchText: '',
+    selectedTopic: 'JANDI',
+    searchRooms: [],
+    searchFilters: [],
   },
 };
 

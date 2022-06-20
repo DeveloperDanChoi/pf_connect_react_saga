@@ -10,6 +10,7 @@ import { Input } from 'antd';
 /* swiper */
 import SwiperCore, { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { banner } from "../../../../../service/banner";
 
 SwiperCore.use([Navigation]);
 
@@ -21,9 +22,9 @@ const Incoming = () => {
     return state;
   });
   const { creators } = modules;
-  
+
   /*==== UI ====*/
-  
+
   /** variable - checkbox,selectbox,swiper ...  **/
   const [searchVal, setSearchVal] = useState(''); /* [D] 임시 */
   /* swiper */
@@ -176,7 +177,7 @@ const Incoming = () => {
                   <strong>Webhook 수신 (Incoming Webhook)</strong>
                   <p>Incoming Webhook은 잔디로 전송된 데이터를 잔디 내의 메시지로 수신할 수 있는 기능입니다.<br/>약간의 노력으로 뉴스 기사를 잔디 메시지로 받아보는 등 다양한 기능을 구현하여 사용할 수 있습니다.</p>
                 </div>
-                <button type='button'>더 알아보기<i className='icon-ic-arrow-right-up'></i></button>
+                <button type='button' onClick={() => banner.help(user)}>더 알아보기<i className='icon-ic-arrow-right-up'></i></button>
               </div>
             </div>
           </div>

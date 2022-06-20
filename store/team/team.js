@@ -36,10 +36,13 @@ export const initialState = {
     team: {
       team: {
         name: '',
-      }
-    }
+      },
+    },
   },
   teamsMembers: [],
+  langList: [
+    { label: '한국어', value: 'ko' },
+  ],
 };
 
 const { types } = modules;
