@@ -56,16 +56,38 @@ export const initialModules = [
     name: 'INPUT_RSS_VALUE',
     data: true,
   },
+  /**
+   * 사용자 정의 로컬
+   */
+  {
+    type: 'set',
+    name: 'LOCAL',
+    data: true,
+  },
+  /**
+   * 사용자 정의 로컬
+   */
+  {
+    type: 'set',
+    name: 'LOCAL_VALUE',
+    data: true,
+  },
 ];
-export const modules = (() => util.createModule(initialModules, 'bitbucket'))();
+export const modules = (() => util.createModule(initialModules, 'rss'))();
 export const initialState = {
   input: {
-    roomId: '',
+    roomId: '20128232',
     feedUrl: '',
     botName: '',
     botThumbnailFile: '',
-    lang: '',
+    lang: 'ko',
   },
+  local: {
+    isEdit: false,
+  },
+  teamsRss: {
+    id: 0,
+  }
 };
 
 const { types } = modules;
@@ -73,6 +95,12 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
     case types.SET_INPUT_RSS_VALUE:
       draft.input[action.data.data.key] = action.data.data.value;
+      break;
+    case types.SET_LOCAL_VALUE:
+      draft.local[action.data.data.key] = action.data.data.value;
+      break;
+    case types.SET_TEAMS_RSS:
+      draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
       break;
     default:
       break;

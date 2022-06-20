@@ -21,7 +21,9 @@ const ConnectPlug = (props) => {
   const handleClick = (data) => {
     // TODO: config path
     const prefix = '/app/connect';
-    Router.push(`${prefix}/${data.type}`, `${prefix}/${data.type}`);
+    Router.push(`${prefix}/${data.type}?id=${data.id}`, `${prefix}/${data.type}`);
+    // Router.push(`/${data.type}?id=${data.id}`, `/${data.type}`);
+
   };
 
   /**

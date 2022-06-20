@@ -41,7 +41,7 @@ const ConnectCard = () => {
           <div className='inner'>
             <strong>Notion</strong>
             <p>Notion 문서의 변동 사항을 잔디에서 확인하 수 있습니다.</p>
-            <button>연동하기</button>
+            <button onClick={() => handleClick({name: 'notion'})}>연동하기</button>
           </div>
         </div>
         <div className='connect-card'>
@@ -51,7 +51,7 @@ const ConnectCard = () => {
           <div className='inner'>
             <strong>Figma</strong>
             <p>figma 문서의 변동 사항을 잔디에서 확인하 수 있습니다.</p>
-            <button>연동하기</button>
+            <button onClick={() => handleClick({name: 'figma'})}>연동하기</button>
           </div>
         </div>
         <div className='connect-card'>
@@ -61,7 +61,7 @@ const ConnectCard = () => {
           <div className='inner'>
             <strong>Asana</strong>
             <p>Asana의 변동 사항을 잔디에서 확인하 수 있습니다.</p>
-            <button>연동하기</button>
+            <button onClick={() => handleClick({name: 'asana'})}>연동하기</button>
           </div>
         </div>
       </div>

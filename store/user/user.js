@@ -38,7 +38,12 @@ const initialState = {
   myConnect: [],
   myConnectCount: '',
   myConnectInfo: {},
-  rooms: {},
+  rooms: {
+    bots: [],
+    chats: [],
+    topics: [],
+    folders: [],
+  },
   user: {
     account: {
       lang: 'ko'

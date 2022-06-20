@@ -129,20 +129,3 @@ export const template1 = (() => {
     allModules,
   };
 })();
-export const template2 = (() => {
-  const that = {
-    dispatch: {},
-    connectType: '',
-  };
-
-  function allModules() {
-    return {
-      github: githubModules,
-    }
-  }
-  return {
-    allModules,
-  };
-})();
-
-export default {};

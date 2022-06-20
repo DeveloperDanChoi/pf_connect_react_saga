@@ -1,11 +1,23 @@
-import React from 'react';
+import React, {useRef} from 'react';
 
 import { useDispatch } from 'react-redux';
 import { Portal } from '../../modal/Portal';
 import ImageCropper from '../../modal/cropper/ImageCropper';
+import {getPublicAssetPath} from "../../../lib/assetHelper";
+import {template1} from "../../../service/connect";
 
 const Thumbnail = ({ state, parent }) => {
   const dispatch = useDispatch();
+
+  const fileRef = useRef('');
+
+  const handleUpload = () => {
+    const event = new MouseEvent('click', {
+      view: window,
+      cancelable: true,
+    });
+    fileRef.current.dispatchEvent(event);
+  };
 
   const handleChange = (e) => {
     const { files } = e.target;
@@ -28,10 +40,12 @@ const Thumbnail = ({ state, parent }) => {
     }
   };
 
-  return (<div className={'dev-focus'}>
-    <img src={state.input.thumbnail} />
-    <input type="file" onChange={handleChange} />
-  </div>);
+  return (<>
+    <a href='#none' className='btn-profile' onClick={handleUpload}>
+      <img src={state.input.thumbnail} /><span>Edit</span>
+      <input type="file" onChange={handleChange} ref={fileRef} />
+    </a>
+  </>);
 };
 
 export default Thumbnail;
