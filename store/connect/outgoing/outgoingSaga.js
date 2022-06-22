@@ -25,6 +25,7 @@ export const saga = (() => ({
    */
   * getTeamsOutgoing(data) {
     const result = yield call(getTeamsOutgoing, data.data);
+
     yield put(creators.setTeamsOutgoing(result.data));
   },
   /**

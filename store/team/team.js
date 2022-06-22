@@ -26,6 +26,11 @@ export const initialModules = [
    */
   { type: 'get', name: 'TEAMS_MEMBERS', data: false },
   { type: 'set', name: 'TEAMS_MEMBERS', data: true },
+  /**
+   * 팀 멤버의 프로필 조회<br>
+   */
+  { type: 'get', name: 'TEAMS_MEMBER_PROFILES', data: false },
+  { type: 'set', name: 'TEAMS_MEMBER_PROFILES', data: true },
 ];
 export const modules = (() => util.createModule(initialModules, 'team'))();
 

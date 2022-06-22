@@ -84,6 +84,9 @@ export const initialState = {
   authenticationTrelloBoardsList: {
     boards: [],
   },
+  teamsTrello: {
+    id: 0,
+  },
   input: {
     botName: '',
     botThumbnailFile: '',

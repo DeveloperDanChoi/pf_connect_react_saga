@@ -70,6 +70,9 @@ export const initialModules = [
 ];
 export const modules = (() => util.createModule(initialModules, 'bitbucket'))();
 export const initialState = {
+  teamsBitbucket: {
+    id: 0,
+  },
   input: {
     roomId: '',
     webhookToken: '',

@@ -70,6 +70,9 @@ export const initialModules = [
 ];
 export const modules = (() => util.createModule(initialModules, 'incoming'))();
 export const initialState = {
+  teamsIncoming: {
+    id: 0,
+  },
   input: {
     roomId: '',
     webhookToken: '',

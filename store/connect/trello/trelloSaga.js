@@ -29,6 +29,10 @@ export const saga = (() => ({
   * getTeamsTrello(data) {
     const result = yield call(getTeamsTrello, data.data);
     yield put(creators.setTeamsTrello(result.data));
+    // yield put(creators.setInputRss({ key: 'botThumbnailFile', value: result.data.botThumbnailFile }));
+    for (const key in result.data) {
+      yield put(creators.setInputTrello({ key, value: result.data[key] }));
+    }
   },
   /**
    * Connect Trello Service 생성

@@ -11,10 +11,10 @@ const Trello = () => {
 
   useEffect(() => {
     console.log( router.query.id )
-    return;
+    // return;
     if (!router.query.id) {
       const prefix = '/app/connect';
-      Router.push(`${prefix}/trello?id=3135`, `${prefix}/trello`);
+      Router.push(`${prefix}/trello?id=25088`, `${prefix}/trello`);
     }
   }, []);
 

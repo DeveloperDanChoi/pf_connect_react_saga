@@ -23,6 +23,8 @@ export const getV1AdminTeamsMembers = (data) => api.get(`/team-api/v1/admin/team
  */
 export const getV1AdminTeams = (data) => api.get(`/team-api/v1/admin/teams/${data}`, { version: 1 });
 
+export const getV1AdminTeamsMemberProfiles = (data) => api.get(`/team-api/v1/admin/teams/${data.teamId}/members/${data.memberId}/profiles`, { version: 1 });
+
 /**
  * API List > Team API > Admin
  */

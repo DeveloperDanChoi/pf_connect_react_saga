@@ -567,7 +567,7 @@ const Trello = () => {
                 </div>
               </div>
               <button type='button' className='full-btn'>연동 추가하기</button>
-            </div>{/* //detail-wrapper */}
+            </div>{/* //detail-wrap정per */}
           </div>
         </div>
       </div>

@@ -75,6 +75,9 @@ export const initialModules = [
 ];
 export const modules = (() => util.createModule(initialModules, 'rss'))();
 export const initialState = {
+  teamsRss: {
+    id: 0,
+  },
   input: {
     roomId: '20128232',
     feedUrl: '',
@@ -94,9 +97,6 @@ export const initialState = {
   local: {
     isEdit: false,
   },
-  teamsRss: {
-    id: 0,
-  }
 };
 
 const { types } = modules;

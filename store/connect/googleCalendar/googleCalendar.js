@@ -87,6 +87,9 @@ export const initialState = {
   teamsConnect: [],
   authentication: [],
   authenticationGoogleCalendarCalendarList: [],
+  teamsGoogleCalendar: {
+    id: 0,
+  },
   input: {
     googleId: '',
     calendarId: '',

@@ -70,6 +70,9 @@ export const initialModules = [
 ];
 export const modules = (() => util.createModule(initialModules, 'jira'))();
 export const initialState = {
+  teamsJira: {
+    id: 0,
+  },
   input: {
     roomId: '',
     webhookToken: '',

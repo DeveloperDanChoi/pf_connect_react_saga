@@ -11,10 +11,10 @@ const RSS = () => {
 
   useEffect(() => {
     console.log( router.query.id )
-    return;
+    // return;
     if (!router.query.id) {
       const prefix = '/app/connect';
-      Router.push(`${prefix}/rss?id=3186`, `${prefix}/rss`);
+      Router.push(`${prefix}/rss?id=3184`, `${prefix}/rss`);
     }
   }, []);
 

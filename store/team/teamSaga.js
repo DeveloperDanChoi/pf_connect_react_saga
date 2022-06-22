@@ -1,5 +1,5 @@
 import {call, put, select} from "redux-saga/effects";
-import {getV1AdminTeamsMembers} from "../../api/team/Admin/admin";
+import { getV1AdminTeamsMemberProfiles, getV1AdminTeamsMembers } from "../../api/team/Admin/admin";
 import {getTeamsConnect} from "../../api/connect/WebAdmin/webAdmin";
 import {modules as teamModules} from "../team/team";
 
@@ -11,6 +11,13 @@ export const saga = (() => ({
     * getTeamsMembers(data) {
         const result = yield call(getV1AdminTeamsMembers, data.data);
         yield put(creators.setTeamsMembers(result.data.records));
+    },
+    /**
+     * 팀 멤버의 프로필 조회<br>
+     */
+    * getTeamsMemberProfiles(data) {
+        const result = yield call(getV1AdminTeamsMemberProfiles, data.data);
+        yield put(creators.setTeamsMemberProfile(result.data.records));
     },
 }))();
 

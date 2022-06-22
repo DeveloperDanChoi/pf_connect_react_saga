@@ -87,6 +87,9 @@ export const initialState = {
     authenticationName: '',
     repos: [],
   },
+  teamsGithub: {
+    id: 0,
+  },
   input: {
     mode: '', // check !!
     roomId: '',

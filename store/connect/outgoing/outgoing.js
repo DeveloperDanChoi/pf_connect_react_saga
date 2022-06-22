@@ -70,6 +70,9 @@ export const initialModules = [
 ];
 export const modules = (() => util.createModule(initialModules, 'outgoing'))();
 export const initialState = {
+  teamsOutgoing: {
+    id: 0,
+  },
   teamsToken: {
     webhookToken: '',
   },
@@ -97,6 +100,7 @@ const { types } = modules;
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
     case types.SET_TEAMS_TOKEN:
+    case types.SET_TEAMS_OUTGOING:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
       break;
     case types.SET_INPUT_OUTGOING_VALUE:

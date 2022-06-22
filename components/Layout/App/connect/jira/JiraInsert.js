@@ -188,7 +188,7 @@ const Jira = () => {
             </div>
           </div>
           <div className='tab-cont'>
-            <div className='detail-content connect'>
+            <div className='detail-정content connect'>
               <div className='connect-row-item'>
                 <div className='title'><strong>커넥트 설정</strong></div>
                 <div className='content'>
