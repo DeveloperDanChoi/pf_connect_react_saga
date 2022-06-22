@@ -11,7 +11,7 @@ const Outgoing = () => {
 
   useEffect(() => {
     console.log( router.query.id )
-    // return;
+    return;
     if (!router.query.id) {
       const prefix = '/app/connect';
       Router.push(`${prefix}/outgoing?id=2821`, `${prefix}/outgoing`);
