@@ -84,6 +84,8 @@ export const modules = (() => util.createModule(initialModules, 'github'))();
 export const initialState = {
   authenticationGithubReposList: {
     authenticationId: '',
+    authenticationName: '',
+    repos: [],
   },
   input: {
     mode: '', // check !!
@@ -95,11 +97,22 @@ export const initialState = {
     hookRepoId: '',
     hookRepoName: '',
     hookEvent: '',
+    hookEventChecked: {
+      commit: false,
+      pullRequest: false,
+      issue: false,
+      branchTag: false,
+      commitComment: false,
+      pullRequestComment: false,
+      issueComment: false,
+      pullRequestReview: false,
+    },
     hookBranch: '',
     webhookToken: '',
     langText: '한국어',
     searchRepoText: '',
-    selectedRepo: 'repo',
+    selectedRepo: 'Repository 선택',
+    selectedAuthentication: 'gmail.com',
     searchRepos: [],
     searchRepoFilters: [],
     searchText: '',
@@ -107,6 +120,16 @@ export const initialState = {
     searchRooms: [],
     searchFilters: [],
   },
+  getHookEventList: [
+    { text: 'Commits', value: 'push' },
+    { text: 'Commit Comments', value: 'commit_comment' },
+    { text: 'Pull Requests Opened / Closed', value: 'pull_request' },
+    { text: 'Pull Request Comments', value: 'pull_request_review_comment' },
+    { text: 'Issue Opened / Closed', value: 'issues' },
+    { text: 'Issue Comments', value: 'issues_comment' },
+    { text: 'Branch or Tag Created / Deleted', value: 'create,delete' },
+    { text: 'Pull Request Review', value: 'pull_request_review' },
+  ],
 };
 
 const { types } = modules;

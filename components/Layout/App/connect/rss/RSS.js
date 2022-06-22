@@ -1,9 +1,7 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Router, { useRouter } from 'next/router';
-import { modules } from '../../../../../store/connect/rss/rss';
-import { template1 } from '../../../../../service/connect';
 import RssInsert from './RssInsert';
 import RssUpdate from './RssUpdate';
 

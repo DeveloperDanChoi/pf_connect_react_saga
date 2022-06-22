@@ -247,7 +247,7 @@ const Bitbucket = () => {
                                        placeholder='검색어를 입력해주세요.'
                                        className='input-type'
                                        value={bitbucket.input.searchText}
-                                       onChange={(e) => searcher.change(e)}
+                                       onChange={searcher.change}
                                 ></Input>
                               </div>
                             </div>

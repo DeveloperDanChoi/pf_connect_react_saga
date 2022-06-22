@@ -72,7 +72,7 @@ function* authorize(action) {
 
       // TODO: 직링크에 대한 데이터 처리
       if (history.state.url === '/googleCalendar') {
-        apis.push(call(getAuthenticationGoogleCalendarCalendarList));
+        // apis.push(call(getAuthenticationGoogleCalendarCalendarList));
       } else if (history.state.url !== '/') {
         console.log(history.state);
       }

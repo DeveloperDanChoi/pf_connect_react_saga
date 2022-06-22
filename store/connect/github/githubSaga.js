@@ -36,6 +36,17 @@ export const saga = (() => ({
   },
   /**
    * Github Connect 설정 생성
+   * mode
+   * roomId
+   * botName
+   * botThumbnailFile
+   * lang
+   * authenticationId
+   * hookRepoId
+   * hookRepoName
+   * hookEvent
+   * hookBranch
+   * * webhookToken
    * @param data
    * @returns {Generator<*, void, *>}
    */
@@ -53,7 +64,7 @@ export const saga = (() => ({
       hookEvent: 'push,commit_comment,pull_request,pull_request_review_comment,issues,issue_comment,pull_request_review',
       hookBranch: '',
     };
-    const result = yield call(postTeamsGithub, { teamId: 279, data: params });
+    // const result = yield call(postTeamsGithub, { teamId: 279, data: params });
   },
   /**
    * Github Connect 설정 수정

@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React, {
-  useEffect, useRef, Fragment, useState,
+  useEffect, useRef, Fragment,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -10,7 +10,9 @@ import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { banner } from '../../../../../service/banner';
-import { searcher, searcherLanguage } from '../../../../../service/searcher';
+import {
+  searcher, searcherAuth, searcherLanguage, searcherRepo,
+} from '../../../../../service/searcher';
 import { LANGUAGE2 } from '../../../../../constants/type';
 
 const Github = () => {
@@ -77,50 +79,23 @@ const Github = () => {
     return { change, disabled, toggle };
   })();
 
-  /* custom check box value */
-  const [checkboxs, setCheckboxs] = useState({
-    commit: false,
-    pullRequest: false,
-    issue: false,
-    branchTag: false,
-    commitComment: false,
-    pullRequestComment: false,
-    issueComment: false,
-    pullRequestReview: false,
-  });
-
-  const { commit, pullRequest, issue, branchTag, commitComment, pullRequestComment, issueComment, pullRequestReview } = checkboxs;
-
   /* custom checkbox */
   const onChangeCheckbox = (e) => {
     e.preventDefault();
     const target = e.currentTarget.querySelector('input');
-    setCheckboxs({
-      ...checkboxs,
+    template1.set('hookEventChecked', {
+      ...github.input.hookEventChecked,
       [target.name]: !target.checked,
     });
   };
 
   useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
-
     searcher.initialize({
-      dispatch,
-      document,
-      team,
-      user,
-      github,
-      connectType,
-      set: creators.setInputGithub,
+      dispatch, document, team, user, github, connectType, set: creators.setInputGithub,
     });
     searcherLanguage.initialize({
-      dispatch,
-      document,
-      team,
-      user,
-      github,
-      connectType,
-      set: creators.setInputGithub,
+      dispatch, document, team, user, github, connectType, set: creators.setInputGithub,
     });
   }, [user.rooms]);
 
@@ -137,6 +112,18 @@ const Github = () => {
       set: creators.setInputGithub,
     });
   }, []);
+
+  useEffect(() => {
+    searcherRepo.initialize({
+      dispatch, document, team, user, github, connectType, set: creators.setInputGithub,
+    });
+    searcherAuth.initialize({
+      dispatch, document, team, user, github, connectType, set: creators.setInputGithub,
+    });
+
+    template1.set('authenticationId', github.authenticationGithubReposList.authenticationId);
+    template1.set('selectedAuthentication', github.authenticationGithubReposList.authenticationName);
+  }, [github.authenticationGithubReposList]);
 
   return (<>
     {/* [D] : 연동하기 */}
@@ -178,7 +165,8 @@ const Github = () => {
           <div className='tab-cont'>
               <div className='detail-content connect'>
                 {/* [D] : 계정 인증 전 case */}
-                <div className='connect-row-item'>
+                { github.input.authenticationId === ''
+                  && <div className='connect-row-item'>
                   <div className='title'><strong>계정 설정</strong></div>
                   <div className='content'>
                     <dl className='row'>
@@ -188,53 +176,77 @@ const Github = () => {
                       </dt>
                       <dd>
                         <div className='input-row single-type'>
-                          <button type='button'>계정 인증하기</button>
+                          <button type='button' onClick={template1.authorize}>계정 인증하기</button>
                         </div>
                       </dd>
                     </dl>
                   </div>
                 </div>
-                <button type='button' className='full-btn' disabled>연동 추가하기</button>
-               {/* //[D] : 계정 인증 전 case */}
-                <div className='connect-row-item'>
-                    <div className='title'><strong>계정 설정</strong></div>
-                    <div className='content'>
-                      <dl className='row'>
-                        <dt>
-                          <p className='tit'>계정 인증</p>
-                          <p className='info'>연동 서비스 추가를 위해서는 계정 인증이 필요합니다.</p>
-                        </dt>
-                        <dd>
-                          <div className='input-row'>
-                            <button type='button'>인증된 계정</button>
-                            <div className="select-box type-full">
-                              <a href="javascript(void:0);:"
-                                 title="검색필드 선택"
-                                 className="select-value"
-                                 name="accoutVal"
-                              >
-                                {/* [D] : 로딩 시 노출 */}
-                                <span>
-                                    <div className='loading'>
-                                    <span>불러오는 중...</span><div className='loader'><span></span></div>
-                                  </div>
-                                </span>
-                                {/* //[D] : 로딩 case */}
-                                <span></span>
-                              </a>
-                              <div className="select-list account-type">
-                                  <ul>
-                                    <li><a href="#none" className='on'><span className='icon-ic-user-white'>jandi@tosslab.com</span></a><button type='button' className='btn-delete icon-ic-close'></button></li>
-                                    <li><a href="#none" ><span className='icon-ic-user-white'>jandi02@tosslab.com</span></a><button type='button' className='btn-delete icon-ic-close'></button></li>
-                                    <li><a href="#none" ><span className='icon-ic-user-white'>jandi03@tosslab.com</span></a><button type='button' className='btn-delete icon-ic-close'></button></li>
-                                    <li><a href="#none"><span className='icon-ic-user-add'>계정 추가하기</span></a></li>
-                                  </ul>
-                              </div>
+                }
+                {/* [D] : 계정 인증 후 case */}
+                {github.input.authenticationId !== ''
+                && <><div className='connect-row-item'>
+                  <div className='title'><strong>계정 설정</strong></div>
+                  <div className='content'>
+                    <dl className='row'>
+                      <dt>
+                        <p className='tit'>계정 인증</p>
+                        <p className='info'>연동 서비스 추가를 위해서는 계정 인증이 필요합니다.</p>
+                      </dt>
+                      <dd>
+                        <div className='input-row'>
+                          <button type='button'>인증된 계정</button>
+                          <div className="select-box type-full">
+                            <a href="javascript(void:0);:"
+                               title="검색필드 선택"
+                               className="select-value"
+                               name="accoutVal"
+                               onClick={searcherAuth.open}
+                            >
+                              {/* [D] : 로딩 시 노출 */}
+                              {false &&
+                              <span>
+                                      <div className='loading'>
+                                      <span>불러오는 중...</span><div className='loader'><span></span></div>
+                                    </div>
+                                  </span>
+                              }
+                              {/* //[D] : 로딩 case */}
+                              <span>{github.input.selectedAuthentication}</span>
+                            </a>
+                            <div className="select-list account-type">
+                              {
+                                connect.authentication.map((authData, authIndex) => {
+                                  if (authData.id === connectType) {
+                                    return (<ul key={authIndex}>
+                                      {
+                                        authData.datas.map((data, i) => {
+                                          if (data.status === 'created') {
+                                            return (
+                                              <li key={i}>
+                                                <a href="#none"
+                                                   onClick={(e) => searcherAuth.select(e, data)}
+                                                >
+                                                  <span className='icon-ic-user-white'>{data.connectId}</span>
+                                                </a>
+                                                <button type='button' className='btn-delete icon-ic-close' onClick={(e) => template1.disconnect(e, github.input)}></button>
+                                              </li>
+                                            );
+                                          }
+                                        })
+                                      }
+                                      {/* github 1계정*/}
+                                      {/*<li><a href="#none"><span className='icon-ic-user-add'>계정 추가하기</span></a></li>*/}
+                                    </ul>);
+                                  }
+                                })
+                              }
                             </div>
                           </div>
-                        </dd>
-                      </dl>
-                    </div>
+                        </div>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
                 <div className='connect-row-item'>
                   <div className='title'><strong>서비스 설정</strong></div>
@@ -251,6 +263,7 @@ const Github = () => {
                                title="검색필드 선택"
                                className="select-value"
                                name='topicVal'
+                               onClick={searcherRepo.open}
                             >
                               {/* [D] : 로딩 시 노출 */}
                               {/* <span>
@@ -259,7 +272,7 @@ const Github = () => {
                                 </div>
                               </span> */}
                               {/* //[D] : 로딩 case */}
-                              <span></span>
+                              <span>{github.input.selectedRepo}</span>
                             </a>
                             <div className="select-list custom-select">
                               <div className='search-box'>
@@ -268,63 +281,74 @@ const Github = () => {
                                   <Input type='text'
                                          placeholder='검색어를 입력해주세요.'
                                          className='input-type'
+                                         value={github.input.searchRepoText}
+                                         onChange={searcherRepo.change}
                                   ></Input>
                                 </div>
                               </div>
 
                               {/* custom-select-wrap */}
                               {
-                                github.input.searhRepoText === '' && (
+                                github.input.searchRepoText === '' && (
                                   <div className='custom-select-wrap'>
                                     <ul>
                                       <li><span className='tit'>Repository 선택</span></li>
                                     </ul>
-                                    <dl className='option-wrap'>
-                                        <dt className='tit'>tosslab</dt>
-                                        <dd>
-                                          <ul>
-                                            <li><a href='#none'>web_client</a></li>
-                                            <li><a href='#none'>web_admin</a></li>
-                                            <li><a href='#none'>react_landing</a></li>
-                                            <li><a href='#none'>web_client</a></li>
-                                            <li><a href='#none'>web_client</a></li>
-                                            <li><a href='#none'>web_client</a></li>
-                                            <li><a href='#none'>web_client</a></li>
-                                            <li><a href='#none'>web_client</a></li>
-                                            <li><a href='#none'>web_client</a></li>
-                                            <li><a href='#none'>web_client</a></li>
-                                          </ul>
-                                        </dd>
-                                      </dl>
-                                      <dl className='option-wrap'>
-                                        <dt className='tit'>tosslab2</dt>
-                                        <dd></dd>
-                                      </dl>
+                                    {
+                                      github.authenticationGithubReposList.repos.map((repoData, reposIndex) => (
+                                        <dl key={reposIndex} className='option-wrap'>
+                                          <dt className='tit'>{repoData.owner}</dt>
+                                          <dd>
+                                            <ul>
+                                              {
+                                                repoData.lists.map((listData, listsIndex) => (
+                                                  <li key={listsIndex}>
+                                                    <a href='#none' onClick={(e) => searcherRepo.select(e, listData)}>{listData.name}</a>
+                                                  </li>
+                                                ))
+                                              }
+                                            </ul>
+                                          </dd>
+                                        </dl>
+                                      ))
+                                    }
                                   </div>
                                 )
                               }
                               {/* //custom-select-wrap */}
 
-                              {/* search-list-wrap */}
+                              {/* search-list-wrap 검샋결과가 있을 경우 owner 제외 */}
                               {
                                 github.input.searchRepoText !== '' && (
                                 <div className='search-list-wrap'>
-                                  <p className='tit'>7개의 결과가 있습니다.</p>
-                                  <ul>
-                                  <li><a href='#none'>web_client</a></li>
-                                  <li><a href='#none'>web_admin</a></li>
-                                  <li><a href='#none'>react_landing</a></li>
-                                  <li><a href='#none'>web_client</a></li>
-                                  <li><a href='#none'>web_client</a></li>
-                                  </ul>
-                                  <p className='tit no-result'>결과가 없습니다.</p>
+                                  {
+                                    github.input.searchRepoFilters.length > 0
+                                    && <>
+                                      <p className='tit'>{github.input.searchRepoFilters.length}개의 결과가 있습니다.</p>
+                                      <ul>
+                                        {
+                                          github.input.searchRepoFilters.map((repoData, repoIndex) => (
+                                            <li key={repoIndex}>
+                                              <a href='#none' onClick={(e) => searcherRepo.select(e, repoData)}>{repoData.name}</a>
+                                            </li>
+                                          ))
+                                        }
+                                      </ul>
+                                    </>
+                                  }
+                                  {github.input.searchRepoFilters.length === 0 && <p className='tit no-result'>결과가 없습니다.</p>}
                                 </div>
                                 )
                               }
                               {/* search-list-wrap */}
                             </div>
                           </div>{/* //select-box */}
-                          <Input type="text" className='input-type' placeholder='brach(선택사항)'></Input>
+                          <Input type="text"
+                                 className='input-type'
+                                 placeholder='brach(선택사항)'
+                                 value={github.input.hookBranch}
+                                 onChange={(e) => template1.set('hookBranch', e.target.value)}
+                          ></Input>
                         </div>
                       </dd>
                     </dl>
@@ -339,49 +363,49 @@ const Github = () => {
                             <ul>
                               <li>
                                 <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                                  <input type="checkbox" id="commit" checked={commit} value="1" name="commit"/>
+                                  <input type="checkbox" id="commit" checked={github.input.hookEventChecked.commit} value="1" name="commit" readOnly />
                                   <label htmlFor="commit"><span>Commits</span></label>
                                 </div>
                               </li>
                               <li>
                                 <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                                  <input type="checkbox" id="pullRequest" checked={pullRequest} value="1" name="pullRequest"/>
+                                  <input type="checkbox" id="pullRequest" checked={github.input.hookEventChecked.pullRequest} value="1" name="pullRequest" readOnly />
                                   <label htmlFor="pullRequest"><span>Pull Requests Opened / Closed</span></label>
                                 </div>
                               </li>
                               <li>
                                 <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                                  <input type="checkbox" id="issue" checked={issue} value="1" name="issue"/>
+                                  <input type="checkbox" id="issue" checked={github.input.hookEventChecked.issue} value="1" name="issue" readOnly />
                                   <label htmlFor="issue"><span>Issue Opened / Closed</span></label>
                                 </div>
                               </li>
                               <li>
                                 <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                                  <input type="checkbox" id="branchTag" checked={branchTag} value="1" name="branchTag"/>
+                                  <input type="checkbox" id="branchTag" checked={github.input.hookEventChecked.branchTag} value="1" name="branchTag" readOnly />
                                   <label htmlFor="branchTag"><span>Branch or Tag Created / Deleted</span></label>
                                 </div>
                               </li>
                               <li>
                                 <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                                  <input type="checkbox" id="commitComment" checked={commitComment} value="1" name="commitComment"/>
+                                  <input type="checkbox" id="commitComment" checked={github.input.hookEventChecked.commitComment} value="1" name="commitComment" readOnly />
                                   <label htmlFor="commitComment"><span>Commit Comments</span></label>
                                 </div>
                               </li>
                               <li>
                                 <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                                  <input type="checkbox" id="pullRequestComment" checked={pullRequestComment} value="1" name="pullRequestComment"/>
+                                  <input type="checkbox" id="pullRequestComment" checked={github.input.hookEventChecked.pullRequestComment} value="1" name="pullRequestComment" readOnly />
                                   <label htmlFor="pullRequestComment"><span>Pull Request Comments</span></label>
                                 </div>
                               </li>
                               <li>
                                 <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                                  <input type="checkbox" id="issueComment" checked={issueComment} value="1" name="issueComment"/>
+                                  <input type="checkbox" id="issueComment" checked={github.input.hookEventChecked.issueComment} value="1" name="issueComment" readOnly />
                                   <label htmlFor="issueComment"><span>Issue Comments</span></label>
                                 </div>
                               </li>
                               <li>
                                 <div className='custom-checkbox' onClick={onChangeCheckbox}>
-                                  <input type="checkbox" id="pullRequestReview" checked={pullRequestReview} value="1" name="pullRequestReview"/>
+                                  <input type="checkbox" id="pullRequestReview" checked={github.input.hookEventChecked.pullRequestReview} value="1" name="pullRequestReview" readOnly />
                                   <label htmlFor="pullRequestReview"><span>Pull Request Review</span></label>
                                 </div>
                               </li>
@@ -402,11 +426,12 @@ const Github = () => {
                       </dt>
                       <dd>
                         <div className='input-row'>
-                          <a href='#none' className='btn-profile'>
-                            <img src={getPublicAssetPath('static/icon_github.png')} alt="github"></img>
-                            <span>Edit</span>
-                          </a>
-                          <Input type="text" className='input-type' placeholder='Google 캘린더'></Input>
+                          <Thumbnail state={github} parent={template1} />
+                          <Input type="text"
+                                 className='input-type'
+                                 onChange={(e) => template1.set('botName', e.target.value)}
+                                 value={github.input.botName}
+                          ></Input>
                         </div>
                       </dd>
                     </dl>
@@ -473,13 +498,15 @@ const Github = () => {
                                     <dl className='option-wrap'>
                                       <dt className='tit'>채팅</dt>
                                       <dd>
-                                        <div className='folder-group'>
-                                          <div className='folder-tit'><span className='icon-ic-folder-open'>새폴더</span></div>
-                                          <ul>
-                                            <li><a href='#none'>모든 대화방</a></li>
-                                            <li><a href='#none'>참여한 대화방</a></li>
-                                          </ul>
-                                        </div>
+                                        {
+                                          user.rooms.bots.map((botData, botIndex) => (
+                                            <div key={botIndex}>
+                                              <ul>
+                                                <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                              </ul>
+                                            </div>
+                                          ))
+                                        }
                                       </dd>
                                     </dl>
                                   </div>
@@ -552,7 +579,9 @@ const Github = () => {
                     </dl>
                   </div>
                 </div>
-                <button type='button' className='full-btn' disabled>연동 추가하기</button>
+                {/* disabled */}
+                <button type='button' className='full-btn' onClick={(e) => template1.connect(e, github)}>연동 추가하기</button>
+              </>}
               </div>{/* //detail-wrapper */}
             </div>
           </div>
@@ -562,3 +591,6 @@ const Github = () => {
 };
 
 export default Github;
+/**
+ * TODO: 인증된 계정 button cursor
+ */

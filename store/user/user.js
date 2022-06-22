@@ -46,8 +46,11 @@ const initialState = {
   },
   user: {
     account: {
-      lang: 'ko'
+      lang: 'ko',
     },
+    member: {
+      id: 0,
+    }
   },
 };
 

@@ -134,7 +134,6 @@ export const saga = (() => ({
     const { user, team } = yield select((state) => state);
     const memberId = user.user.member.id;
     const result = teamsConnectConvert.initialize(yield call(getTeamsConnect, data.data), team);
-
     let connectTotalCount = 0;
     const myConnectInfo = {};
     const myConnect = ((data) => {

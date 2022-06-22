@@ -61,7 +61,6 @@ export const template1 = (() => {
       data.connectId = that.router.query.id;
       that.dispatch(that.connect[1].call(null, data));
     } else {
-      console.log('this !!');
       that.dispatch(that.connect[0].call(null, data));
     }
     // that.dispatch(action.call(null, data));

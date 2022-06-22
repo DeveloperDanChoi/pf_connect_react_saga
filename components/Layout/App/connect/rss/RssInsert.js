@@ -1,14 +1,18 @@
 /* eslint-disable max-len */
-import React, {useEffect, useState, useRef, Fragment} from 'react';
+import React, {
+  useEffect, useRef, Fragment,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { Input } from 'antd';
+import SwiperCore, { Navigation } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { modules } from '../../../../../store/connect/rss/rss';
 import { template1 } from '../../../../../service/connect';
-import Thumbnail from "../../../../ui/Thumbnail/Thumbnail";
+import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
-import { Input } from 'antd';
 import { banner } from '../../../../../service/banner';
-import { modules as connectModules } from '../../../../../store/connect/connect';
+import { searcher, searcherLanguage } from '../../../../../service/searcher';
 
 const RssInsert = () => {
   const connectType = 'rss';
@@ -17,12 +21,9 @@ const RssInsert = () => {
   const { team, rss, user, connect } = useSelector((state) => {
     return state;
   });
-  const [rooms, setRooms] = useState([]);
   const { creators } = modules;
 
-
-  /** variable - checkbox,selectbox,swiper ...  **/
-   /* swiper */
+  /* swiper */
   const swiperRef = useRef(null);
   const swiperOptions = {
     navigation: true,
@@ -34,7 +35,6 @@ const RssInsert = () => {
     shouldSwiperUpdate: true,
   };
 
-
   /**
    *
    * @type {{change: change, disabled: disabled, toggle: toggle}}
@@ -45,12 +45,15 @@ const RssInsert = () => {
      * @param e
      */
     const change = (e) => {
-      if(swiperRef.current) {setTimeout(()=> swiperRef.current.swiper.update());} //swiper observer
+      if (swiperRef.current) {
+        setTimeout(() => swiperRef.current.swiper.update());
+      } // swiper observer
       e.preventDefault();
       const menu = document.querySelectorAll('.tab-menu li a');
       const content = document.querySelectorAll('.tab-cont');
 
-      for(let i = 0; i < menu.length; i++) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < menu.length; i++) {
         content[i].classList.remove('on');
         menu[i].classList.remove('on');
       }
@@ -72,164 +75,14 @@ const RssInsert = () => {
       e.target.closest('.switch').classList.toggle('on');
       disabled();
     };
-    return { change, disabled, toggle }
+    return { change, disabled, toggle };
   })();
 
-
-  /**
-   * 검색 모듈
-   * TODO: 1차 샘플링
-   */
-  const searcher = ((
-      keyward,
-      dispatch,
-      selects,
-      filters) => {
-    const open = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const target = e.currentTarget.closest('.select-box');
-      const selectBoxs = document.querySelectorAll('.select-box');
-      if (target.classList.contains('on')) {
-        target.classList.remove('on');
-      } else {
-        selectBoxs.forEach((selectbox) => selectbox.classList.remove('on'));
-        target.classList.add('on');
-      }
-    };
-
-    /**
-     * @deprecated
-     */
-    function fields() {
-      return [
-        { value: 0, field: 'member.name', label: '생성자', class: 'on' },
-        { value: 1, field: '', label: '연동된 토픽 / JANDI', class: '' },
-        { value: 2, field: 'bot.name', label: '커넥트', class: '' },
-      ];
-    }
-    function change(e) {
-      keyward[1](e.target.value);
-
-      filters[1]((() => {
-        const arr = [];
-
-        for (const topic of user.rooms.topics) {
-          if (topic.name.indexOf(e.target.value) > -1) {
-            arr.push(topic);
-          }
-        }
-
-        for (const bot of user.rooms.bots) {
-          console.log(bot)
-          if (bot.name.indexOf(e.target.value) > -1) {
-            for (const chat of user.rooms.chats) {
-              if (bot.id === chat.companionId) {
-                arr.push(bot);
-              }
-            }
-          }
-        }
-
-        return arr;
-      })());
-    }
-    function initialize(document) {
-      if (Object.keys(user.rooms).length === 0) return;
-
-      const { folders } = user.rooms;
-      const topics = (({topics}) => {
-        const newTopics = [];
-        for (const topic of topics) {
-          newTopics.push({ ...topic, parent: false });
-        }
-        return newTopics;
-      })(user.rooms);
-      const newRooms = [];
-
-      for (const folder of folders) {
-        newRooms.push({
-          ...folder,
-          rooms: ((rooms) => {
-            const newRooms = [];
-            for (const room of rooms) {
-              for (const topic of topics) {
-                if (room === topic.id) {
-                  topic.parent = true;
-                  newRooms.push(topic);
-                  break;
-                }
-              }
-            }
-            return newRooms;
-          })(folder.rooms)
-        });
-      }
-
-      for (const topic of topics) {
-        if (!topic.parent) {
-          newRooms.push(topic);
-        }
-      }
-
-      setRooms(newRooms);
-    }
-    function value() {
-      return keyward[0];
-    }
-    function searchText() {
-      return selects[0].searchText;
-    }
-    function search() {
-      const filters = [];
-      const searchType = document.querySelector('.select-list .on');
-      const query = fields()[searchType.getAttribute('value')].value;
-
-      for (const item of connect.teamsConnect[connectType]) {
-        if (query === 0 && item.member && item.member.name && item.member.name.indexOf(keyward[0]) > -1) {
-          filters.push(item);
-        }
-      }
-      dispatch(connectModules.creators.setTeamsConnectDetail(filters));
-    }
-    function select(e, data) {
-      e.stopPropagation();
-      e.preventDefault();
-      const target = e.currentTarget;
-      const selectLists = target.closest('.select-list').querySelectorAll('li a');
-      const { name } = target.closest('.select-box').firstChild;
-
-      selects[1]({
-        ...selects[0],
-        [name]: target.innerText,
-      });
-      selectLists.forEach((list) => list.classList.remove('on'));
-      target.classList.toggle('on');
-      target.closest('.select-box').classList.toggle('on');
-
-      for (const chat of user.rooms.chats) {
-        if (chat.companionId === data.id) {
-          template1.set('roomId', chat.id);
-          break;
-        }
-      }
-    }
-    function filter() {
-      return filters[0];
-    }
-    return {
-      initialize,
-      fields, open,
-      change,
-      value,
-      search,
-      select,
-      searchText,
-      filter,
-    }
-  })(useState(''), dispatch, useState({ searchText: '' }), useState([]));
   useEffect(() => {
-    searcher.initialize(document);
+    // if (user.rooms.chats.length === 0) return;
+    searcher.initialize({
+      dispatch, document, team, user, rss, connectType, set: creators.setInputRss,
+    });
   }, [user.rooms]);
 
 
@@ -243,7 +96,6 @@ const RssInsert = () => {
       connect: [creators.postTeamsRss, creators.putTeamsRssSetting],
       set: creators.setInputRss,
     }, false);
-
   }, []);
 
   return (<>
@@ -311,20 +163,13 @@ const RssInsert = () => {
                     </dt>
                     <dd>
                       <div className='input-row'>
-
-
-
-
-
-
-
                         <div className="select-box type-full">
                           <a href="#none"
                              title="검색필드 선택"
                              className="select-value fc-green"
                              name='searchText'
                              onClick={searcher.open}>
-                            <span>{searcher.searchText() === '' ? '' : searcher.searchText()}</span>
+                            <span>{rss.input.selectedTopic}</span>
                           </a>
                           <div className="select-list custom-select">
                             <div className='search-box'>
@@ -333,7 +178,7 @@ const RssInsert = () => {
                                 <Input type='text'
                                        placeholder='검색어를 입력해주세요.'
                                        className='input-type'
-                                       value={searcher.value()}
+                                       value={rss.input.searchText}
                                        onChange={(e) => searcher.change(e)}
                                 ></Input>
                               </div>
@@ -341,30 +186,31 @@ const RssInsert = () => {
 
                             {/* custom-select-wrap */}
                             {
-                              searcher.value() === '' && (
+                              rss.input.searchText === '' && (
                                 <div className='custom-select-wrap'>
                                   <dl className='option-wrap'>
                                     <dt className='tit'>토픽</dt>
                                     <dd>
                                       {
-                                        rooms.map((roomsData, roomsIndex) => (<Fragment key={roomsIndex}>
-                                          {roomsData.seq &&
-                                              <div className='folder-group'>
-                                                <div className='folder-tit'><span
-                                                    className='icon-ic-folder-open'>{roomsData.name}</span></div>
-                                                <ul>
-                                                  {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                                    <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
-                                                  </Fragment>))}
-                                                </ul>
-                                              </div>
+                                        rss.input.searchRooms.map((roomsData, roomsIndex) => (<Fragment key={roomsIndex}>
+                                          {roomsData.seq
+                                          && <div className='folder-group'>
+                                            <div className='folder-tit'>
+                                              <span className='icon-ic-folder-open'>{roomsData.name}</span>
+                                            </div>
+                                            <ul>
+                                              {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
+                                                <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                              </Fragment>))}
+                                            </ul>
+                                          </div>
                                           }
-                                          {!roomsData.seq &&
-                                              <div>
-                                                <ul>
-                                                  <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomsData.name}</a></li>
-                                                </ul>
-                                              </div>
+                                          {!roomsData.seq
+                                          && <div>
+                                            <ul>
+                                              <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                            </ul>
+                                          </div>
                                           }
                                         </Fragment>))
                                       }
@@ -375,11 +221,11 @@ const RssInsert = () => {
                                     <dd>
                                       {
                                         user.rooms.bots.map((botData, botIndex) => (
-                                            <div key={botIndex}>
-                                              <ul>
-                                                <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
-                                              </ul>
-                                            </div>
+                                          <div key={botIndex}>
+                                            <ul>
+                                              <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                            </ul>
+                                          </div>
                                         ))
                                       }
                                     </dd>
@@ -391,35 +237,30 @@ const RssInsert = () => {
 
                             {/* search-list-wrap 검샋결과가 있을 경우 폴더는 제외 */}
                             {
-                              searcher.value() !== '' && (
-                              <div className='search-list-wrap'>
-                                {
-                                  searcher.filter().length > 0 &&
-                                  <>
-                                    <p className='tit'>{searcher.filter().length}개의 결과가 있습니다.</p>
-                                    <ul>
-                                    {
-                                      searcher.filter().map((roomData, roomIndex) => (
-                                      <li key={roomIndex}><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
-                                      ))
-                                    }
-                                    </ul>
-                                  </>
-                                }
-                                {searcher.filter().length === 0 && <p className='tit no-result'>결과가 없습니다.</p>}
-                              </div>
+                              rss.input.searchText !== '' && (
+                                <div className='search-list-wrap'>
+                                  {
+                                    rss.input.searchFilters.length > 0
+                                    && <>
+                                      <p className='tit'>{rss.input.searchFilters.length}개의 결과가 있습니다.</p>
+                                      <ul>
+                                        {
+                                          rss.input.searchFilters.map((roomData, roomIndex) => (
+                                            <li key={roomIndex}>
+                                              <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                            </li>
+                                          ))
+                                        }
+                                      </ul>
+                                    </>
+                                  }
+                                  {rss.input.searchFilters.length === 0 && <p className='tit no-result'>결과가 없습니다.</p>}
+                                </div>
                               )
                             }
                             {/* search-list-wrap */}
                           </div>
                         </div>{/* //select-box */}
-
-
-
-
-
-
-
                       </div>
                     </dd>
                   </dl>

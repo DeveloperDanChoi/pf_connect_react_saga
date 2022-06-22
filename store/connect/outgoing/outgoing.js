@@ -81,6 +81,15 @@ export const initialState = {
     lang: '',
     botName: '',
     botThumbnailFile: '',
+    langText: '한국어',
+    searchCalText: '',
+    selectedAuthentication: '',
+    selectedCal: '',
+    searchText: '',
+    selectedTopic: 'JANDI',
+    searchRooms: [],
+    searchFilters: [],
+    searchCalFilters: [],
   },
 };
 
