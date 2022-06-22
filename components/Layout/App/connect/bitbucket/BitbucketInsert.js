@@ -291,7 +291,8 @@ const Bitbucket = () => {
                                         user.rooms.bots.map((botData, botIndex) => (
                                           <div key={botIndex}>
                                             <ul>
-                                              <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                              {/* TODO: icon 적용할 것 */}
+                                              <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}<i className="icon-ic-lock"></i><i className="icon-ic-board"></i><i className="icon-ic-bell-slash"></i></a></li>
                                             </ul>
                                           </div>
                                         ))
