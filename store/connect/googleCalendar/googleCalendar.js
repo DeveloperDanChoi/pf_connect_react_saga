@@ -120,6 +120,7 @@ export const initialState = {
     searchRooms: [],
     searchFilters: [],
     searchCalFilters: [],
+    member: { name: '' },
   },
   getMinute: {
     '0s': '정각',

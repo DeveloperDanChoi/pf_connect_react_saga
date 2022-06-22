@@ -107,11 +107,12 @@ function* authorize(action) {
       }
       */
 
-      const resultL10N = yield call(
-          getL10N,
-          accountV4TeamsMe.data.account.lang,
-      );
-      yield put(teamModules.creators.setL10n(resultL10N.data));
+      // TODO: 고용량 데이터?
+      // const resultL10N = yield call(
+      //   getL10N,
+      //   accountV4TeamsMe.data.account.lang,
+      // );
+      // yield put(teamModules.creators.setL10n(resultL10N.data));
 
       isUnauthorized = false;
     }

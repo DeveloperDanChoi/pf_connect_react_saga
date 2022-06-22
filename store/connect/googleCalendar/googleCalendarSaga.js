@@ -11,6 +11,8 @@ import {
   getTeamsGoogleCalendar,
   postTeamsGoogleCalendar, putTeamsGoogleCalendarSetting,
 } from '../../../api/connect/WebAdmin/GoogleCalendar/googleCalendar';
+import { getV1AdminTeamsMembers } from '../../../api/team/Admin/admin';
+import { util } from '../../../service/util';
 
 const { creators } = modules;
 export const saga = (() => ({
@@ -22,13 +24,30 @@ export const saga = (() => ({
     yield put(creators.setAuthenticationGoogleCalendarCalendarList(result.data));
   },
   /**
-   * 구글 캘린더 Connect 연동 정보를 반환하는 API
+   * 구글 캘린더 Connect 연동 정보를 반환하는 API<br>
+   * 멤버 정보가 없을 경우 함께 불러와야 함<br>
    * @param data
    * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>|SimpleEffect<"PUT", PutEffectDescriptor<*>>, void, *>}
    */
   * getTeamsGoogleCalendar(data) {
     const result = yield call(getTeamsGoogleCalendar, data.data);
+    const resultMembers = yield call(getV1AdminTeamsMembers, result.data.teamId);
+
+    for (const member of resultMembers.data.records) {
+      if (member.id === result.data.memberId) {
+        yield put(creators.setInputGoogleCalendar({ key: 'member', value: member }));
+        break;
+      }
+    }
+
+    // TODO: 제거 하거나 편집일 떄 input -> teams 데이터로 변경
     yield put(creators.setTeamsGoogleCalendar(result.data));
+
+    for (const key in result.data) {
+      yield put(creators.setInputGoogleCalendar({ key, value: result.data[key] }));
+    }
+
+    yield put(creators.setInputGoogleCalendar({ key: 'createdAt', value: util.dateFormat(result.data.createdAt) }));
   },
   /**
    * 구글 캘린더와 Connect 연동을 하는 API
