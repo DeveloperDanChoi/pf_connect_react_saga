@@ -30,7 +30,7 @@ export const postTeamsRss = (data) => api.post(`/connect-api/teams/${data.teamId
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const putTeamsRssSetting = (data) => api.put(`/connect-api/teams/${data.teamId}/rss/setting`, data.data, { version: 1 });
+export const putTeamsRssSetting = ({ params, body }) => api.put(`/connect-api/teams/${params.teamId}/rss/setting`, body, { version: 1 });
 
 /**
  * RSS Connect 활성/비활성<br>

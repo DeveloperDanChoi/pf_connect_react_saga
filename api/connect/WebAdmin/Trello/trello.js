@@ -30,7 +30,7 @@ export const postTeamsTrello = (data) => api.post(`/connect-api/teams/${data.tea
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const putTeamsTrelloSetting = (data) => api.put(`/connect-api/teams/${data.teamId}/trello/setting`, data.data, { version: 1 });
+export const putTeamsTrelloSetting = ({ params, body }) => api.put(`/connect-api/teams/${params.teamId}/trello/setting`, body, { version: 1 });
 
 /**
  * Connect Trello Service 상태 변경<br>

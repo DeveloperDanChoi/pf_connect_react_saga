@@ -10,7 +10,7 @@ import { reduxModule } from '../../../service/reduxModule';
 
 export const initialModules = [
   /**
-   * RSS Connect 설정 단일 조회
+   * RSS Connect 설정 단일 조회<br>
    */
   {
     type: 'get',
@@ -24,7 +24,7 @@ export const initialModules = [
     data: true,
   },
   /**
-   * RSS Connect 설정 생성
+   * RSS Connect 설정 생성<br>
    */
   {
     type: 'post',
@@ -33,16 +33,27 @@ export const initialModules = [
     api: postTeamsRss,
   },
   /**
-   * RSS Connect 설정 수정
+   * RSS Connect 설정 수정<br>
    */
   {
     type: 'put',
     name: 'TEAMS_RSS_SETTING',
     data: true,
     api: putTeamsRssSetting,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+      },
+      body: {
+        connectId: 'Connect ID',
+        roomId: 'Room ID',
+        botName: 'Bot name',
+        botThumbnailFile: '봇의 프로필 이미지',
+      },
+    },
   },
   /**
-   * 사용자 정의 데이터
+   * 사용자 정의 데이터<br>
    */
   {
     type: 'set',
@@ -50,7 +61,7 @@ export const initialModules = [
     data: true,
   },
   /**
-   * 사용자 정의 데이터
+   * 사용자 정의 데이터<br>
    */
   {
     type: 'set',
@@ -58,7 +69,7 @@ export const initialModules = [
     data: true,
   },
   /**
-   * 사용자 정의 로컬
+   * 사용자 정의 로컬<br>
    */
   {
     type: 'set',
@@ -66,7 +77,7 @@ export const initialModules = [
     data: true,
   },
   /**
-   * 사용자 정의 로컬
+   * 사용자 정의 로컬<br>
    */
   {
     type: 'set',
@@ -94,6 +105,7 @@ export const initialState = {
     searchRooms: [],
     searchFilters: [],
     searchCalFilters: [],
+    member: { name: '' },
   },
   local: {
     isEdit: false,

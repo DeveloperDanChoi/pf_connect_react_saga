@@ -9,8 +9,9 @@ import { modules } from '../../../../../store/connect/trello/trello';
 import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
-import { banner } from '../../../../../service/banner';
-import { searcher, searcherAuth, searcherLanguage, searcherBoard, } from '../../../../../service/searcher';
+import {
+  searcher, searcherAuth, searcherLanguage, searcherBoard,
+} from '../../../../../service/searcher';
 import { LANGUAGE2 } from '../../../../../constants/type';
 
 const Trello = () => {
@@ -73,8 +74,8 @@ const Trello = () => {
           <div className='connect-info-box'>
             <p className='img-box'><img src={getPublicAssetPath('static/icon_trello.png')} alt="trello"></img></p>
             <div className='info'>
-                <div><strong>김지영</strong><span>의 trello</span></div>
-                <p>2021-12-06에 생성됨</p>
+              <div><strong>{trello.input.member.name}</strong><span>의 Trello</span></div>
+              <p>{trello.input.createdAt}에 생성됨</p>
             </div>
             <div className='connect-right-box'>
               <label className="switch on" labefor="unit">
@@ -88,24 +89,53 @@ const Trello = () => {
         </div>
       </div>{/* //detail-header */}
       <div className='detail-content connect'>
-        {/* [D] : 계정 인증 전 case */}
         <div className='connect-row-item'>
           <div className='title'><strong>계정 설정</strong></div>
           <div className='content'>
+            {/* 계정 인증 */}
             <dl className='row'>
               <dt>
                 <p className='tit'>계정 인증</p>
                 <p className='info'>연동 서비스 추가를 위해서는 계정 인증이 필요합니다.</p>
               </dt>
               <dd>
-                <div className='input-row single-type'>
-                  <button type='button'>계정 인증하기</button>
+                <div className='input-row'>
+                  <button type='button'>인증된 계정</button>
+                  <div className="select-box type-full">
+                    <a href="javascript(void:0);:"
+                       title="검색필드 선택"
+                       className="select-value"
+                       name="accoutVal"
+                    >
+                      {
+                        (() => {
+                          if (trello.authenticationTrelloBoardsList.authenticationName === '') {
+                            return (<>
+                            <span>
+                              <div className='loading'>
+                                <span>불러오는 중...</span><div className='three_quarters_loader'><span></span></div>
+                              </div>
+                            </span>
+                              <span>&nbsp;</span>
+                            </>);
+                          }
+                          return (<span>{trello.authenticationTrelloBoardsList.authenticationName}</span>);
+                        })()
+                      }
+                    </a>
+                    <div className="select-list account-type">
+                      <ul>
+                        <li>
+                          <a href="#none"><span className='icon-ic-user-white'>{trello.authenticationTrelloBoardsList.authenticationName}</span></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </dd>
             </dl>
           </div>
         </div>
-        {/* //[D] : 계정 인증 전 case */}
         <div className='connect-row-item'>
           <div className='title'><strong>서비스 설정</strong></div>
           <div className='content'>
@@ -364,7 +394,7 @@ const Trello = () => {
                        title="검색필드 선택"
                        className="select-value fc-green"
                        name='searchText'
-                       onClick={searcher.open}>
+                    >
                       <span>{trello.input.selectedTopic}</span>
                     </a>
                     <div className="select-list custom-select">
@@ -496,10 +526,15 @@ const Trello = () => {
             </dl>
           </div>
         </div>
-        <button type='button' className='full-btn'>수정하기</button>
-      </div>{/* //detail-wrap정per */}
+        <button type='button' className='full-btn' onClick={(e) => template1.connect(e, trello)}>수정하기</button>
+      </div>{/* //detail-wrapper */}
     </div>
   </>);
 };
 
 export default Trello;
+/**
+ * TODO: To.sia 계정 리스트 편집 불가 cursor 모양 disabled
+ * TODO: To.sia 인증된 계정 버튼 X 라벨 O
+ * TODO: 불러오는중.. 노출 안되는 문제
+ */

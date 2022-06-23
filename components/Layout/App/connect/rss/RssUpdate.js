@@ -48,8 +48,8 @@ const RssUpdate = () => {
           <div className='connect-info-box'>
             <p className='img-box'><img src={getPublicAssetPath('static/icon_rss.png')} alt="rss"></img></p>
             <div className="info">
-              <div><strong>{rss.input.memberName}</strong><span>의 Rss</span></div>
-              <p>{rss.input.createAt}에 생성됨</p></div>
+              <div><strong>{rss.input.member.name}</strong><span>의 Rss</span></div>
+              <p>{rss.input.createdAt}에 생성됨</p></div>
             <div className='connect-right-box'>
               <label className={rss.input.statusClss} labefor="unit">
                 <span className='txt'>작동중</span>
@@ -200,15 +200,15 @@ const RssUpdate = () => {
                 <Input type="text"
                        className='input-type'
                        placeholder='URL을 입력해주세요.'
-                       onChange={(e) => template1.set('feedUrl', e.target.value)}
                        value={rss.input.feedUrl}
+                       disabled
                 ></Input>
               </div>
             </dd>
           </dl>
         </div>
       </div>
-      <button type='button' className='full-btn' onClick={(e) => template1.connect(e, { rss })}>연동 추가하기</button>
+      <button type='button' className='full-btn' onClick={(e) => template1.connect(e, rss)}>수정하기</button>
     </div>{/* //detail-wrapper */}
   </div>
 </>);
@@ -219,6 +219,4 @@ export default RssUpdate;
  * TODO: input disabled cursor
  * TODO: load data thumnail set
  * TODO: load data topics set
- * TODO: load data creator set
- * TODO: load data createdAt set
  */
