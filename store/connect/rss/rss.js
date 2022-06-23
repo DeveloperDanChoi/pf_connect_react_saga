@@ -6,6 +6,7 @@ import {
   postTeamsRss,
   putTeamsRssSetting,
 } from '../../../api/connect/WebAdmin/RSS/rss';
+import { reduxModule } from '../../../service/reduxModule';
 
 export const initialModules = [
   /**
@@ -73,7 +74,7 @@ export const initialModules = [
     data: true,
   },
 ];
-export const modules = (() => util.createModule(initialModules, 'rss'))();
+export const modules = (() => reduxModule.modules.create(initialModules, 'rss'))();
 export const initialState = {
   teamsRss: {
     id: 0,

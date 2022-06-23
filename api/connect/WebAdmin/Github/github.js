@@ -30,7 +30,7 @@ export const postTeamsGithub = (data) => api.post(`/connect-api/teams/${data.tea
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const putTeamsGithubSetting = (data) => api.put(`/connect-api/teams/${data.teamId}/github/setting`, data.data, { version: 1 });
+export const putTeamsGithubSetting = ({ params, body }) => api.put(`/connect-api/teams/${params.teamId}/github/setting`, body, { version: 1 });
 
 /**
  * Github Connect 상태 수정<br>

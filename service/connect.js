@@ -56,12 +56,13 @@ export const template1 = (() => {
    * @param data
    * @param action
    */
-  function connect(e, data) {
+  function connect(e, { input }) {
+    // console.log( data , that.router.query)
     if (that.router.query.id && that.router.query.id !== '') {
-      data.connectId = that.router.query.id;
-      that.dispatch(that.connect[1].call(null, data));
+      // data.connectId = that.router.query.id;
+      that.dispatch(that.connect[1].call(null, input));
     } else {
-      that.dispatch(that.connect[0].call(null, data));
+      that.dispatch(that.connect[0].call(null, input));
     }
     // that.dispatch(action.call(null, data));
   }

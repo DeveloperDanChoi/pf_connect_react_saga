@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React, {
-  useEffect, useRef, Fragment,
+  useEffect, Fragment,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -9,7 +9,6 @@ import { modules } from '../../../../../store/connect/jira/jira';
 import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
-import { banner } from '../../../../../service/banner';
 import {
   searcher, searcherLanguage,
 } from '../../../../../service/searcher';
@@ -23,61 +22,6 @@ const Jira = () => {
     team, jira, user, connect,
   } = useSelector((state) => state);
   const { creators } = modules;
-
-  /* swiper */
-  const swiperRef = useRef(null);
-  const swiperOptions = {
-    navigation: true,
-    className: 'connect-swiper-container',
-    slidesPerView: 1,
-    observer: true,
-    observeParents: true,
-    spaceBetween: 50,
-    shouldSwiperUpdate: true,
-  };
-
-  /**
-   *
-   * @type {{change: change, disabled: disabled, toggle: toggle}}
-   */
-  const tab = (() => {
-    /**
-     *
-     * @param e
-     */
-    const change = (e) => {
-      if (swiperRef.current) {
-        setTimeout(() => swiperRef.current.swiper.update());
-      } // swiper observer
-      e.preventDefault();
-      const menu = document.querySelectorAll('.tab-menu li a');
-      const content = document.querySelectorAll('.tab-cont');
-
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < menu.length; i++) {
-        content[i].classList.remove('on');
-        menu[i].classList.remove('on');
-      }
-      content[e.currentTarget.id - 1].classList.add('on');
-      e.currentTarget.classList.add('on');
-    };
-    /**
-     *
-     */
-    const disabled = () => {
-      document.querySelector('.connect').classList.toggle('disabled');
-      document.querySelector('.full-btn').toggleAttribute('disabled');
-    };
-    /**
-     *
-     * @param e
-     */
-    const toggle = (e) => {
-      e.target.closest('.switch').classList.toggle('on');
-      disabled();
-    };
-    return { change, disabled, toggle };
-  })();
 
   useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
@@ -102,23 +46,6 @@ const Jira = () => {
     });
   }, []);
 
-  /**
-   * 새로고침 했을 때 member mapping
-   */
-  useEffect(() => {
-    // TODO: 여기서 해야하는가?
-    if (jira.teamsJira.id > 0) {
-      for (const item in jira.teamsJira) {
-        template1.set(item, jira.teamsJira[item]);
-      }
-    }
-    if (jira.teamsJira.id > 0 && team.teamsMembers.length === 0) {
-      // dispatch(teamModules.creators.getTeamsMemberProfiles(
-      //   { teamId: team.teamId, memberId: googleCalendar.teamsGoogleCalendar.memberId },
-      // ));
-    }
-  }, [jira.teamsJira, team.teamsMembers]);
-
   return (<>
     {/* [D] : 수정하기 */}
     <div className='detail-container'>
@@ -127,8 +54,8 @@ const Jira = () => {
           <div className='connect-info-box'>
             <p className='img-box'><img src={getPublicAssetPath('static/icon_jira.png')} alt="jira"></img></p>
             <div className='info'>
-                <div><strong>김지영</strong><span>의 Jira</span></div>
-                <p>2021-12-06에 생성됨</p>
+              <div><strong>{jira.input.member.name}</strong><span>의 Jira</span></div>
+              <p>{jira.input.createdAt}에 생성됨</p>
             </div>
             <div className='connect-right-box'>
               <label className="switch on" labefor="unit">
@@ -305,7 +232,6 @@ const Jira = () => {
             </dl>
           </div>
         </div>
-        {/* [D] : 연동 추가하기 완료될 경우 노출 */}
         <div className='connect-row-item webhook'>
           <div className='title'><strong>Webhook URL 등록</strong></div>
           <div className='content'>
@@ -330,8 +256,7 @@ const Jira = () => {
             </dl>
           </div>
         </div>
-        {/* //[D] : 연동 추가하기 완료될 경우 노출 */}
-        <button type='button' className='full-btn' >수정하기</button>
+        <button type='button' className='full-btn' onClick={(e) => template1.connect(e, jira)}>수정하기</button>
       </div>{/* //detail-wrapper */}
     </div>
   </>);

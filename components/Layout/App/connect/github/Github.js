@@ -11,10 +11,10 @@ const Github = () => {
 
   useEffect(() => {
     console.log( router.query.id )
-    return;
+    // return;
     if (!router.query.id) {
       const prefix = '/app/connect';
-      Router.push(`${prefix}/github?id=25087`, `${prefix}/github`);
+      Router.push(`${prefix}/github?id=25092`, `${prefix}/github`);
     }
   }, []);
 

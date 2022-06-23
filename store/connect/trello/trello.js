@@ -9,6 +9,7 @@ import {
   deleteAuthentications,
   getAuthenticationTrelloBoardsList,
 } from '../../../api/connect/Authentication/authentication';
+import { reduxModule } from '../../../service/reduxModule';
 
 export const initialModules = [
   /**
@@ -79,7 +80,7 @@ export const initialModules = [
     data: true,
   },
 ];
-export const modules = (() => util.createModule(initialModules, 'trello'))();
+export const modules = (() => reduxModule.modules.create(initialModules, 'trello'))();
 export const initialState = {
   authenticationTrelloBoardsList: {
     boards: [],

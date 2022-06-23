@@ -40,23 +40,6 @@ const Outgoing = () => {
     });
   }, []);
 
-  /**
-   * 새로고침 했을 때 member mapping
-   */
-  useEffect(() => {
-    // TODO: 여기서 해야하는가?
-    if (outgoing.teamsOutgoing.id > 0) {
-      for (const item in outgoing.teamsOutgoing) {
-        template1.set(item, outgoing.teamsOutgoing[item]);
-      }
-    }
-    if (outgoing.teamsOutgoing.id > 0 && team.teamsMembers.length === 0) {
-      // dispatch(teamModules.creators.getTeamsMemberProfiles(
-      //   { teamId: team.teamId, memberId: googleCalendar.teamsGoogleCalendar.memberId },
-      // ));
-    }
-  }, [outgoing.teamsOutgoing, team.teamsMembers]);
-
   return (<>
     <div className='detail-container'>
       <div className='detail-header'>
@@ -64,8 +47,8 @@ const Outgoing = () => {
           <div className='connect-info-box'>
             <p className='img-box'><img src={getPublicAssetPath('static/icon_webhook.png')} alt="webhook"></img></p>
             <div className='info'>
-                <strong>Webhook 발신 (Outgoing Webhook)</strong>
-                <p>생산성, 커스터마이징</p>
+              <div><strong>{outgoing.input.member.name}</strong><span>의 Webhook 발신 (Outgoing Webhook)</span></div>
+              <p>{outgoing.input.createdAt}에 생성됨</p>
             </div>
             <div className='connect-right-box'>
               <label className="switch on" labefor="unit">
@@ -260,7 +243,7 @@ const Outgoing = () => {
             </dl>
           </div>
         </div>
-        <button type='button' className='full-btn'>연동 추가하기</button>
+        <button type='button' className='full-btn' onClick={(e) => template1.connect(e, outgoing)}>수정하기</button>
       </div>{/* //detail-wrapper */}
     </div>
   </>);

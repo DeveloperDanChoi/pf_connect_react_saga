@@ -10,6 +10,7 @@ import {
   deleteAuthentications,
   getAuthenticationGithubReposList,
 } from '../../../api/connect/Authentication/authentication';
+import { reduxModule } from '../../../service/reduxModule';
 
 export const initialModules = [
   /**
@@ -53,6 +54,26 @@ export const initialModules = [
     name: 'TEAMS_GITHUB_SETTING',
     data: true,
     api: putTeamsGithubSetting,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+      },
+      body: {
+        // 수동모드 무엇?
+        mode: 'Enum(\'authed\', \'unauthed\')',
+        connectId: '연동된 커넥트 ID',
+        roomId: '수정할 Room ID',
+        botName: '수정할 봇 이름',
+        botThumbnailFile: '커넥트 봇 프로필 이미지 파일',
+        lang: '커넥트 설정 언어',
+        hookRepoId: 'Github Repo ID',
+        hookRepoName: 'Github Repo 이름(full_name),format: owner/repo',
+        hookEvent: '연동할 Github webhook events 목록(Github 참고) push,commit_comment,create,delete',
+        hookBranch: '연동할 Branch 목록, master,develop,feature/connect',
+        webhookToken: 'Webhook Token String - webhook url 재생성 한 경우',
+        authenticationId: '인증 ID',
+      },
+    },
   },
   /**
    * 연동 서비스 인증 삭제
@@ -80,7 +101,7 @@ export const initialModules = [
     data: true,
   },
 ];
-export const modules = (() => util.createModule(initialModules, 'github'))();
+export const modules = (() => reduxModule.modules.create(initialModules, 'github'))();
 export const initialState = {
   authenticationGithubReposList: {
     authenticationId: '',
@@ -91,7 +112,7 @@ export const initialState = {
     id: 0,
   },
   input: {
-    mode: '', // check !!
+    mode: 'authed',
     roomId: '',
     botName: '',
     botThumbnailFile: '',
@@ -100,16 +121,6 @@ export const initialState = {
     hookRepoId: '',
     hookRepoName: '',
     hookEvent: '',
-    hookEventChecked: {
-      commit: false,
-      pullRequest: false,
-      issue: false,
-      branchTag: false,
-      commitComment: false,
-      pullRequestComment: false,
-      issueComment: false,
-      pullRequestReview: false,
-    },
     hookBranch: '',
     webhookToken: '',
     langText: '한국어',
@@ -122,17 +133,38 @@ export const initialState = {
     selectedTopic: 'JANDI',
     searchRooms: [],
     searchFilters: [],
+    member: { name: '' },
+    hookEventChecked: {
+      commit: false,
+      commitComment: false,
+      pullRequest: false,
+      pullRequestComment: false,
+      issue: false,
+      issueComment: false,
+      branchTag: false,
+      pullRequestReview: false,
+    },
   },
   getHookEventList: [
-    { text: 'Commits', value: 'push' },
-    { text: 'Commit Comments', value: 'commit_comment' },
-    { text: 'Pull Requests Opened / Closed', value: 'pull_request' },
-    { text: 'Pull Request Comments', value: 'pull_request_review_comment' },
-    { text: 'Issue Opened / Closed', value: 'issues' },
-    { text: 'Issue Comments', value: 'issues_comment' },
-    { text: 'Branch or Tag Created / Deleted', value: 'create,delete' },
-    { text: 'Pull Request Review', value: 'pull_request_review' },
+    { id: 'commit', text: 'Commits', value: ['push'] },
+    { id: 'commitComment', text: 'Commit Comments', value: ['commit_comment'] },
+    { id: 'pullRequest', text: 'Pull Requests Opened / Closed', value: ['pull_request'] },
+    { id: 'pullRequestComment', text: 'Pull Request Comments', value: ['pull_request_review_comment'] },
+    { id: 'issue', text: 'Issue Opened / Closed', value: ['issues'] },
+    { id: 'issueComment', text: 'Issue Comments', value: ['issues_comment'] },
+    { id: 'branchTag', text: 'Branch or Tag Created / Deleted', value: ['create', 'delete'] },
+    { id: 'pullRequestReview', text: 'Pull Request Review', value: ['pull_request_review'] },
   ],
+  getHookEvent: {
+    push: 'commit',
+    commit_comment: 'commitComment',
+    pull_request: 'pullRequest',
+    pull_request_review_comment: 'pullRequestComment',
+    issues: 'issue',
+    issue_comment: 'issueComment',
+    create: 'branchTag',
+    pull_request_review: 'pullRequestReview',
+  },
 };
 
 const { types } = modules;

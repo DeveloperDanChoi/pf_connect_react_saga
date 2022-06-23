@@ -1,10 +1,9 @@
 /* eslint-disable max-len */
 import React, {
-  useEffect, useRef, Fragment,
+  useEffect, Fragment,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import SwiperCore, { Navigation } from 'swiper';
 import { Input } from 'antd';
 import { modules } from '../../../../../store/connect/bitbucket/bitbucket';
 import { template1 } from '../../../../../service/connect';
@@ -21,15 +20,6 @@ const Bitbucket = () => {
     team, bitbucket, user, connect,
   } = useSelector((state) => state);
   const { creators } = modules;
-
-  /* 연동하기 탭 disabled */
-  const onDisabledContent = () => {
-    document.querySelector('.connect').classList.toggle('disabled');
-    document.querySelector('.full-btn').toggleAttribute('disabled');
-  };
-  const onClick = () => {
-    onDisabledContent();
-  };
 
   useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
@@ -67,33 +57,16 @@ const Bitbucket = () => {
     }, false);
   }, []);
 
-  /**
-   * 새로고침 했을 때 member mapping
-   */
-  useEffect(() => {
-    // TODO: 여기서 해야하는가?
-    if (bitbucket.teamsBitbucket.id > 0) {
-      for (const item in bitbucket.teamsBitbucket) {
-        template1.set(item, bitbucket.teamsBitbucket[item]);
-      }
-    }
-    if (bitbucket.teamsBitbucket.id > 0 && team.teamsMembers.length === 0) {
-      // dispatch(teamModules.creators.getTeamsMemberProfiles(
-      //   { teamId: team.teamId, memberId: googleCalendar.teamsGoogleCalendar.memberId },
-      // ));
-    }
-  }, [bitbucket.teamsBitbucket, team.teamsMembers]);
-
   return (<>
     {/* [D] : 수정하기 */}
     <div className='detail-container'>
       <div className='detail-header'>
         <div className='inner'>
           <div className='connect-info-box'>
-            <p className='img-box'><img src={getPublicAssetPath('static/icon_bitbucket.png')} alt="jira"></img></p>
+            <p className='img-box'><img src={getPublicAssetPath('static/icon_bitbucket.png')} alt="bitbucket"></img></p>
             <div className='info'>
-                <strong>Bitbucket</strong>
-                <p>코드 호스팅 및 관리</p>
+              <div><strong>{bitbucket.input.member.name}</strong><span>의 Bitbucket</span></div>
+              <p>{bitbucket.input.createdAt}에 생성됨</p>
             </div>
             <div className='connect-right-box'>
               <label className="switch on" labefor="unit">
@@ -271,7 +244,6 @@ const Bitbucket = () => {
             </dl>
           </div>
         </div>
-        {/* [D] : 연동 추가하기 완료될 경우 노출 */}
         <div className='connect-row-item webhook'>
           <div className='title'><strong>Webhook URL 등록</strong></div>
           <div className='content'>
@@ -292,9 +264,7 @@ const Bitbucket = () => {
             </dl>
           </div>
         </div>
-        {/* //[D] : 연동 추가하기 완료될 경우 노출 */}
-        <button type='button' className='full-btn' onClick={onClick}>연동 추가하기 (Webhook URL 생성하기)</button>
-        <button type='button' className='full-btn' onClick={onClick} disabled>생성 완료 (Webhook URL을 해당 서비스에 등록해주세요)</button>{/* [D] : 연동 추가하기 완료될 경우 */}
+        <button type='button' className='full-btn' onClick={(e) => template1.connect(e, bitbucket)}>수정하기</button>
       </div>{/* //detail-wrapper */}
     </div>
   </>);

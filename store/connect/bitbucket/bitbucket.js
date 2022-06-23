@@ -7,10 +7,11 @@ import {
   putTeamsBitbucketSetting,
 } from '../../../api/connect/WebAdmin/Bitbucket/bitbucket';
 import { getTeamsToken } from '../../../api/connect/WebAdmin/webAdmin';
+import { reduxModule } from '../../../service/reduxModule';
 
 export const initialModules = [
   /**
-   * Webhook용 Token을 요청하는 API
+   * Webhook용 Token을 요청하는 API<br>
    */
   {
     type: 'get',
@@ -20,7 +21,7 @@ export const initialModules = [
   },
   { type: 'set', name: 'TEAMS_TOKEN', data: true },
   /**
-   * Bitbucket Connect 설정을 단일 조회하는 API
+   * Bitbucket Connect 설정을 단일 조회하는 API<br>
    */
   {
     type: 'get',
@@ -34,7 +35,7 @@ export const initialModules = [
     data: true,
   },
   /**
-   * Bitbucket Connect 설정을 생성하는 API
+   * Bitbucket Connect 설정을 생성하는 API<br>
    */
   {
     type: 'post',
@@ -43,16 +44,27 @@ export const initialModules = [
     api: postTeamsBitbucket,
   },
   /**
-   * Bitbucket Connect 설정을 수정하는 API
+   * Bitbucket Connect 설정을 수정하는 API<br>
    */
   {
     type: 'put',
     name: 'TEAMS_BITBUCKET_SETTING',
     data: true,
     api: putTeamsBitbucketSetting,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+      },
+      body: {
+        connectId: 'Connect ID',
+        roomId: 'Room ID',
+        botName: 'Bot name',
+        botThumbnailFile: '봇의 프로필 이미지',
+      },
+    },
   },
   /**
-   * 사용자 정의 데이터
+   * 사용자 정의 데이터<br>
    */
   {
     type: 'set',
@@ -60,7 +72,7 @@ export const initialModules = [
     data: true,
   },
   /**
-   * 사용자 정의 데이터
+   * 사용자 정의 데이터<br>
    */
   {
     type: 'set',
@@ -68,7 +80,7 @@ export const initialModules = [
     data: true,
   },
 ];
-export const modules = (() => util.createModule(initialModules, 'bitbucket'))();
+export const modules = (() => reduxModule.modules.create(initialModules, 'bitbucket'))();
 export const initialState = {
   teamsBitbucket: {
     id: 0,
@@ -84,6 +96,7 @@ export const initialState = {
     selectedTopic: 'JANDI',
     searchRooms: [],
     searchFilters: [],
+    member: { name: '' },
   },
 };
 

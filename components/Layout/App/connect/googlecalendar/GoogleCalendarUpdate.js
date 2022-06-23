@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Input } from 'antd';
 import { modules } from '../../../../../store/connect/googleCalendar/googleCalendar';
-import { modules as teamModules } from '../../../../../store/team/team';
 import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
@@ -20,7 +19,7 @@ const GoogleCalendar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const {
-    team, googleCalendar, user, connect,
+    team, googleCalendar, user,
   } = useSelector((state) => state);
   const { creators } = modules;
 
@@ -117,11 +116,14 @@ const GoogleCalendar = () => {
                     {
                       (() => {
                         if (googleCalendar.input.selectedAuthentication === '') {
-                          return (<span>
-                                    <div className='loading'>
-                                    <span>불러오는 중...</span><div className='three_quarters_loader'><span></span></div>
-                                  </div>
-                                </span>);
+                          return (<>
+                            <span>
+                              <div className='loading'>
+                                <span>불러오는 중...</span><div className='three_quarters_loader'><span></span></div>
+                              </div>
+                            </span>
+                            <span>&nbsp;</span>
+                          </>);
                         }
                         return (<span>{googleCalendar.input.selectedAuthentication}</span>);
                       })()
@@ -167,11 +169,14 @@ const GoogleCalendar = () => {
                     {
                       (() => {
                         if (googleCalendar.input.selectedCal === '') {
-                          return (<span>
-                                  <div className='loading'>
-                                  <span>불러오는 중...</span><div className='three_quarters_loader'><span></span></div>
-                                </div>
-                              </span>);
+                          return (<>
+                            <span>
+                              <div className='loading'>
+                                <span>불러오는 중...</span><div className='three_quarters_loader'><span></span></div>
+                              </div>
+                            </span>
+                            <span>&nbsp;</span>
+                          </>);
                         }
                         return (<span>{googleCalendar.input.selectedCal}</span>);
                       })()
@@ -604,5 +609,4 @@ export default GoogleCalendar;
 /**
  * TODO: To.sia 계정 리스트, 캘린더 리스트 편집 불가 cursor 모양 disabled
  * TODO: To.sia 인증된 계정 버튼 X 라벨 O
- * TODO: To.sia HELP !! 인증된 계정 리스트 로딩 노출 안되는 문제
  */

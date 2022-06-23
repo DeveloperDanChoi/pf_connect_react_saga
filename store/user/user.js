@@ -1,6 +1,7 @@
 /* eslint-disable max-len,no-param-reassign,default-param-last */
 import produce from '../../lib/produce';
 import { util } from '../../service/util';
+import { reduxModule } from '../../service/reduxModule';
 
 export const initialModules = [
   /**
@@ -32,7 +33,7 @@ export const initialModules = [
   { type: 'get', name: 'MY_CONNECT_INFO', data: false },
   { type: 'set', name: 'MY_CONNECT_INFO', data: true },
 ];
-export const modules = (() => util.createModule(initialModules, 'user'))();
+export const modules = (() => reduxModule.modules.create(initialModules, 'user'))();
 
 const initialState = {
   myConnect: [],

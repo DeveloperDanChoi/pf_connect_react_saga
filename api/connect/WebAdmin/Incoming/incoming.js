@@ -30,7 +30,7 @@ export const postTeamsIncoming = (data) => api.post(`/connect-api/teams/${data.t
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const putTeamsIncomingSetting = (data) => api.put(`/connect-api/teams/${data.teamId}/incoming/setting`, data.data, { version: 1 });
+export const putTeamsIncomingSetting = ({ params, body }) => api.put(`/connect-api/teams/${params.teamId}/incoming/setting`, body, { version: 1 });
 
 /**
  * Incoming Webhook Connect 설정을 활성/비활성하는 API<br>

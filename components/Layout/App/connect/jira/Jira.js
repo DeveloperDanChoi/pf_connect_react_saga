@@ -11,10 +11,10 @@ const Jira = () => {
 
   useEffect(() => {
     console.log( router.query.id )
-    return;
+    // return;
     if (!router.query.id) {
       const prefix = '/app/connect';
-      Router.push(`${prefix}/jira?id=2609`, `${prefix}/jira`);
+      Router.push(`${prefix}/jira?id=25094`, `${prefix}/jira`);
     }
   }, []);
 

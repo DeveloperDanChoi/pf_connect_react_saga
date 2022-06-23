@@ -1,6 +1,7 @@
 /* eslint-disable max-len,no-param-reassign,default-param-last */
 import produce from '../../lib/produce';
 import { util } from '../../service/util';
+import { reduxModule } from '../../service/reduxModule';
 
 export const initialModules = [
   /**
@@ -9,7 +10,7 @@ export const initialModules = [
   { type: 'get', name: 'THEME', data: false },
   { type: 'set', name: 'THEME', data: true },
 ];
-export const modules = (() => util.createModule(initialModules, 'theme'))();
+export const modules = (() => reduxModule.modules.create(initialModules, 'theme'))();
 
 const initialState = {
   theme: 'light',

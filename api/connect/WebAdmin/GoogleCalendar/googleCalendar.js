@@ -30,7 +30,7 @@ export const postTeamsGoogleCalendar = (data) => api.post(`/connect-api/teams/${
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const putTeamsGoogleCalendarSetting = (data) => api.put(`/connect-api/teams/${data.teamId}/googleCalendar/setting`, data.data, { version: 1 });
+export const putTeamsGoogleCalendarSetting = ({ params, body }) => api.put(`/connect-api/teams/${params.teamId}/googleCalendar/setting`, body, { version: 1 });
 
 /**
  * 구글 캘린더 Connect 연동을 enable/disable하는 API<br>

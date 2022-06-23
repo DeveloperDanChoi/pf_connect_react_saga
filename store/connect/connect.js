@@ -1,6 +1,7 @@
 /* eslint-disable max-len,no-param-reassign,default-param-last */
 import produce from '../../lib/produce';
-import { util } from "../../service/util";
+import { util } from '../../service/util';
+import { reduxModule } from '../../service/reduxModule';
 export const initialModules = [
   /**
    * Connect 공통 정보<br>
@@ -23,7 +24,7 @@ export const initialModules = [
   { type: 'get', name: 'TEAMS_CONNECT_DETAIL', data: false },
   { type: 'set', name: 'TEAMS_CONNECT_DETAIL', data: true },
 ];
-export const modules = (() => util.createModule(initialModules, 'connect'))();
+export const modules = (() => reduxModule.modules.create(initialModules, 'connect'))();
 
 // export const GET_TEAMS_CONNECT = 'connect/GET_TEAMS_CONNECT';
 // export const SET_TEAMS_CONNECT = 'connect/SET_TEAMS_CONNECT';

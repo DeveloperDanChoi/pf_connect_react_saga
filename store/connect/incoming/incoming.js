@@ -7,6 +7,7 @@ import {
   putTeamsIncomingSetting,
 } from '../../../api/connect/WebAdmin/Incoming/incoming';
 import { getTeamsToken } from '../../../api/connect/WebAdmin/webAdmin';
+import { reduxModule } from '../../../service/reduxModule';
 
 export const initialModules = [
   /**
@@ -50,6 +51,17 @@ export const initialModules = [
     name: 'TEAMS_INCOMING_SETTING',
     data: true,
     api: putTeamsIncomingSetting,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+      },
+      body: {
+        connectId: 'Connect ID',
+        roomId: 'Room ID',
+        botName: 'Bot name',
+        botThumbnailFile: '봇의 프로필 이미지',
+      },
+    },
   },
   /**
    * 사용자 정의 데이터
@@ -68,7 +80,7 @@ export const initialModules = [
     data: true,
   },
 ];
-export const modules = (() => util.createModule(initialModules, 'incoming'))();
+export const modules = (() => reduxModule.modules.create(initialModules, 'incoming'))();
 export const initialState = {
   teamsIncoming: {
     id: 0,
@@ -87,6 +99,7 @@ export const initialState = {
     searchRooms: [],
     searchFilters: [],
     searchCalFilters: [],
+    member: { name: '' },
   },
   teamsToken: {
     webhookUrl: '',

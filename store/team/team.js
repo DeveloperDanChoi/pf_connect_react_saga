@@ -1,6 +1,8 @@
 /* eslint-disable max-len,no-param-reassign,default-param-last */
 import produce from '../../lib/produce';
-import { util } from "../../service/util";
+import { util } from '../../service/util';
+import { reduxModule } from '../../service/reduxModule';
+
 export const initialModules = [
   /**
    * Team Info
@@ -32,7 +34,7 @@ export const initialModules = [
   { type: 'get', name: 'TEAMS_MEMBER_PROFILES', data: false },
   { type: 'set', name: 'TEAMS_MEMBER_PROFILES', data: true },
 ];
-export const modules = (() => util.createModule(initialModules, 'team'))();
+export const modules = (() => reduxModule.modules.create(initialModules, 'team'))();
 
 export const initialState = {
   teamId: 0,

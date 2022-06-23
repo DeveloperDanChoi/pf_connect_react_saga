@@ -10,6 +10,7 @@ import {
   deleteAuthentications,
   getAuthenticationGoogleCalendarCalendarList,
 } from '../../../api/connect/Authentication/authentication';
+import { reduxModule } from '../../../service/reduxModule';
 
 export const initialModules = [
   /**
@@ -54,6 +55,34 @@ export const initialModules = [
     name: 'TEAMS_GOOGLE_CALENDAR_SETTING',
     data: true,
     api: putTeamsGoogleCalendarSetting,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+      },
+      body: {
+        connectId: '구글 캘린더 Connect ID',
+        googleId: '구글 ID(email address)',
+        calendarId: '구글 캘린더 ID',
+        calendarSummary: '구글 캘린더 Summary',
+        roomId: 'Room ID',
+        botName: 'Bot name',
+        botThumbnailFile: '봇의 프로필 이미지',
+        lang: 'Language',
+        hasNotificationBefore: '미리 알림을 설정했는지 여부',
+        notificationBefore: '0s, 1m, 5m, 10m, 15m, 30m, 1h, 2h, 3h, 4h, 1d',
+        hasAllDayNotification: '종일 일정의 알림을 설정했는지 여부',
+        allDayNotificationBeforeDates: '0d, 1d, 2d',
+        allDayNotificationHour: '종일 일정의 알림 시간',
+        hasDailyScheduleSummary: '당일 일정 요약을 설정했는지 여부',
+        dailyScheduleSummary: '당일 일정 요약 시간',
+        hasWeeklyScheduleSummary: '주간 일정 요약을 설정했는지 여부',
+        weeklyScheduleSummaryHour: '주간 일정 요약 시간',
+        weeklyScheduleSummaryDayOfWeek: 'NO, MO, TU, WE, TH, FR, SA, SU',
+        newEventNotification: '새 일정 등록 시 메시지 노출 여부',
+        updatedEventNotification: '일정 업데이트 시 메시지 노출 여부',
+        cancelledEventNotification: '일정 취소 및 삭제 시 메시지 노출 여부',
+      },
+    },
   },
   /**
    * 연동 서비스 인증 삭제
@@ -81,7 +110,7 @@ export const initialModules = [
     data: true,
   },
 ];
-export const modules = (() => util.createModule(initialModules, 'googleCalendar'))();
+export const modules = (() => reduxModule.modules.create(initialModules, 'googleCalendar'))();
 export const initialState = {
   connects: [],
   teamsConnect: [],
