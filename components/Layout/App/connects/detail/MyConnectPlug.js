@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import React, {Fragment, useEffect, useState} from 'react';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { Input } from 'antd';
-import { modules as connectModules, updateStatus} from "../../../../../store/connect/connect";
+import { deleteConnect, modules as connectModules, updateStatus } from "../../../../../store/connect/connect";
 import {template1} from "../../../../../service/connect";
 import Router from "next/router";
 import {putTeamsGithubSetting} from "../../../../../api/connect/WebAdmin/Github/github";
@@ -19,10 +19,22 @@ const MyConnectPlug = (props) => {
 
   const allModules = template1.allModules();
 
+  /**
+   * 상세 페이지 이동
+   * @param data
+   */
   const handleClick = (data) => {
     // TODO: config path
     const prefix = '/app/connect';
-    Router.push(`${prefix}/${data.type}`, `${prefix}/${data.type}`);
+    Router.push(`${prefix}/${data.type}?id=${data.id}`, `${prefix}/${data.type}`);
+  };
+
+  /**
+   * 커넥트 삭제
+   * @param data
+   */
+  const handleClickDeleteConnect = (data) => {
+    dispatch(deleteConnect(data));
   };
 
   useEffect(() => {
@@ -36,12 +48,9 @@ const MyConnectPlug = (props) => {
     e.target.closest('.switch').classList.toggle('on');
     e.target.closest('tr').classList.toggle('disabled');
   };
-  const handleToggleStatus = (e, data) => {
-    //githubModules
-    dispatch(updateStatus(data));
-    // e.target.closest('.switch').classList.toggle('on');
-    // e.target.closest('tr').classList.toggle('disabled');
-  };
+
+  const handleToggleStatus = (data, e) => dispatch(updateStatus(data, e));
+
   /* (s) tooltipbox toggle */
   useEffect(() => {
     const tooltipBoxs = document.querySelectorAll('.tooltip-box');
@@ -118,7 +127,7 @@ const MyConnectPlug = (props) => {
                           <label className={dataConnect.statusClss} labefor="unit">
                             <span className='txt'>{dataConnect.statusText}</span>
                             <Input type="checkbox" id=""/>
-                            <a href="#none" className="slider" onClick={(e) => handleToggleStatus(e, dataConnect)}></a>
+                            <a href="#none" className="slider" onClick={(e) => handleToggleStatus(dataConnect, e)}></a>
                           </label>
                           <div className='btn-wrap tablet'>
                             <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span className='hidden'>열기</span></a>
@@ -131,7 +140,7 @@ const MyConnectPlug = (props) => {
                           </div>
                           <div className='btn-wrap pc'>
                             <button className='btn-icon' onClick={() => handleClick(dataConnect)}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
-                            <button className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
+                            <button className='btn-icon' onClick={() => handleClickDeleteConnect(dataConnect)}><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
                           </div>
                         </div>
                       </td>

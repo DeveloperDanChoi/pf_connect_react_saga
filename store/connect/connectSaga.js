@@ -18,6 +18,7 @@ import {util} from "../../service/util";
 import {modules as connectModules} from "../connect/connect";
 import {initValues as userInitValues, modules as userModules} from "../user/user";
 import { Router } from "next/router";
+import { getAuthenticationList } from "../../api/connect/Authentication/authentication";
 
 /**
  * 연결 상태 변경<br>
@@ -42,8 +43,10 @@ function* updateStatusSaga({ data, event }) {
   if (result.status === 200 && event) {
     // TODO: 여기서 해야 하는가?
     event.target.closest('.switch').classList.toggle('on');
+    if (event.target.closest('tr')) {
+      event.target.closest('tr').classList.toggle('disabled');
+    }
   }
-  console.log('TODO: myConnect update')
   console.log(result);
 }
 /**
@@ -53,12 +56,16 @@ function* updateStatusSaga({ data, event }) {
  */
 function* deleteConnectSaga({ data, router }) {
   // TODO: 개발 후 주석 풀 것
-  // const { teamId, id: connectId } = data;
+  const { teamId, id: connectId } = data;
   // const result = yield call(webAdmin[data.type].deleteTeams, {
   //   teamId,
   //   connectId,
   // });
   // console.log(result);
+
+  // TODO: 삭제가 정상적으로 처리되면 myConnect 데이터 업데이트 디테일한 처리 필요
+  yield put(connectModules.creators.getTeamsConnect(teamId));
+
   if (router) router.push('/app', '/app');
 }
 
