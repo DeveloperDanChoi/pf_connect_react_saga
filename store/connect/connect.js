@@ -57,7 +57,7 @@ export const updateStatus = (data, event) => ({ type: UPDATE_STATUS, data, event
  * @param data
  * @returns {{data, type: string}}
  */
-export const deleteConnect = (data) => ({ type: DELETE_CONNECT, data });
+export const deleteConnect = (data, router) => ({ type: DELETE_CONNECT, data, router });
 
 /**
  * connects 전체 서비스 배열

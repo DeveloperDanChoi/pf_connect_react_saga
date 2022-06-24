@@ -83,6 +83,14 @@ export const template1 = (() => {
     that.dispatch(that.status.call(null, input, e));
   }
 
+  /**
+   * 연결 삭제<br>
+   * @param data
+   */
+  function deleteConnect({ input }, router) {
+    that.dispatch(that.deleteConnect.call(null, input, router));
+  }
+
   function initialize(data, isList = true) {
     for (const item in data) {
       that[item] = data[item];
@@ -135,6 +143,7 @@ export const template1 = (() => {
     connect,
     set,
     status,
+    deleteConnect,
     allModules,
   };
 })();

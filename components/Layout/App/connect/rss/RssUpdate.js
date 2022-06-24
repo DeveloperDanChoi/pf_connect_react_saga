@@ -57,7 +57,7 @@ const RssUpdate = () => {
                 <Input type="checkbox" id=""/>
                 <a href="#none" className="slider" onClick={(e) => template1.status(e, rss)}></a>
               </label>
-              <button type='button' className='btn-icon' ><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
+              <button type='button' className='btn-icon' onClick={() => template1.deleteConnect(rss, router)}><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
             </div>
           </div>
         </div>

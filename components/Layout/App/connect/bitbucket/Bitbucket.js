@@ -14,7 +14,7 @@ const Bitbucket = () => {
     // return;
     if (!router.query.id) {
       const prefix = '/app/connect';
-      Router.push(`${prefix}/bitbucket?id=25093`, `${prefix}/bitbucket`);
+      Router.push(`${prefix}/bitbucket?id=25101`, `${prefix}/bitbucket`);
     }
   }, []);
 

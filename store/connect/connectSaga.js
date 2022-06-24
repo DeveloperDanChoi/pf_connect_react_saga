@@ -17,6 +17,7 @@ import { putTeamsGithubStatus } from '../../api/connect/WebAdmin/Github/github';
 import {util} from "../../service/util";
 import {modules as connectModules} from "../connect/connect";
 import {initValues as userInitValues, modules as userModules} from "../user/user";
+import { Router } from "next/router";
 
 /**
  * 연결 상태 변경<br>
@@ -50,13 +51,15 @@ function* updateStatusSaga({ data, event }) {
  * @param params
  * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<RT | RT | RT>>, void, *>}
  */
-function* deleteConnectSaga({ data }) {
-  const { teamId, id: connectId } = data;
-  const result = yield call(webAdmin[data.type]['deleteTeams'], {
-    teamId,
-    connectId,
-  });
-  console.log(result);
+function* deleteConnectSaga({ data, router }) {
+  // TODO: 개발 후 주석 풀 것
+  // const { teamId, id: connectId } = data;
+  // const result = yield call(webAdmin[data.type].deleteTeams, {
+  //   teamId,
+  //   connectId,
+  // });
+  // console.log(result);
+  if (router) router.push('/app', '/app');
 }
 
 /**

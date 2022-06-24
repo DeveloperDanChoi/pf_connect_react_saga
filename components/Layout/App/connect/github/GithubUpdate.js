@@ -104,7 +104,7 @@ const Github = () => {
                 <Input type="checkbox" id=""/>
                 <a href="#none" className="slider" onClick={(e) => template1.status(e, github)}></a>
               </label>
-              <button type='button' className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
+              <button type='button' className='btn-icon' onClick={() => template1.deleteConnect(github, router)}><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
             </div>
           </div>
         </div>

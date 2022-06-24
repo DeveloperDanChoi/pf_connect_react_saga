@@ -11,7 +11,7 @@ import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { searcher, searcherLanguage } from '../../../../../service/searcher';
 import { LANGUAGE2 } from '../../../../../constants/type';
-import { updateStatus } from "../../../../../store/connect/connect";
+import { deleteConnect, updateStatus } from "../../../../../store/connect/connect";
 
 const Bitbucket = () => {
   const connectType = 'bitbucket';
@@ -54,6 +54,7 @@ const Bitbucket = () => {
       list: creators.getTeamsToken,
       load: creators.getTeamsBitbucket,
       status: updateStatus,
+      deleteConnect,
       connect: [creators.postTeamsBitbucket, creators.putTeamsBitbucketSetting],
       set: creators.setInputBitbucket,
     }, false);
@@ -76,7 +77,7 @@ const Bitbucket = () => {
                 <Input type="checkbox" id=""/>
                 <a href="#none" className="slider" onClick={(e) => template1.status(e, bitbucket)}></a>
               </label>
-              <button type='button' className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
+              <button type='button' className='btn-icon' onClick={() => template1.deleteConnect(bitbucket, router)}><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
             </div>
           </div>
         </div>
