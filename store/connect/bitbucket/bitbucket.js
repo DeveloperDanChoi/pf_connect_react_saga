@@ -28,6 +28,12 @@ export const initialModules = [
     name: 'TEAMS_BITBUCKET',
     data: true,
     api: getTeamsBitbucket,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+        connectId: 'Connect ID',
+      },
+    },
   },
   {
     type: 'set',

@@ -10,6 +10,7 @@ import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { searcher, searcherLanguage } from '../../../../../service/searcher';
+import { updateStatus } from "../../../../../store/connect/connect";
 
 const Outgoing = () => {
   const connectType = 'outgoing';
@@ -35,6 +36,7 @@ const Outgoing = () => {
       modules,
       list: creators.getTeamsToken,
       load: creators.getTeamsOutgoing,
+      status: updateStatus,
       connect: [creators.postTeamsOutgoing, creators.putTeamsOutgoingSetting],
       set: creators.setInputOutgoing,
     });
@@ -54,7 +56,7 @@ const Outgoing = () => {
               <label className="switch on" labefor="unit">
                 <span className='txt'>작동중</span>
                 <Input type="checkbox" id=""/>
-                <a href="#none" className="slider"></a>
+                <a href="#none" className="slider" onClick={(e) => template1.status(e, outgoing)}></a>
               </label>
               <button type='button' className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
             </div>

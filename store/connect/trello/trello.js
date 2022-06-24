@@ -30,6 +30,12 @@ export const initialModules = [
     name: 'TEAMS_TRELLO',
     data: true,
     api: getTeamsTrello,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+        connectId: 'Connect ID',
+      },
+    },
   },
   {
     type: 'set',

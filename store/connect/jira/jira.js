@@ -28,6 +28,12 @@ export const initialModules = [
     name: 'TEAMS_JIRA',
     data: true,
     api: getTeamsJira,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+        connectId: 'Connect ID',
+      },
+    },
   },
   {
     type: 'set',

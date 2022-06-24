@@ -24,9 +24,9 @@ import {initValues as userInitValues, modules as userModules} from "../user/user
  * @param params
  * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<RT | RT | RT>>, void, *>}
  */
-function* updateStatusSaga({ data }) {
+function* updateStatusSaga({ data, event }) {
   const { teamId, id: connectId, status } = data;
-  const result = yield call(webAdmin[data.type]['putTeamsStatus'], {
+  const result = yield call(webAdmin[data.type].putTeamsStatus, {
     teamId,
     data: {
       connectId,
@@ -38,7 +38,10 @@ function* updateStatusSaga({ data }) {
   // yield put(setTeamsConnect(result.data));
   // yield put(setMyConnect(myConnect));
   // yield put(setValues({ key: 'myConnectCount', value: connectCount }));
-
+  if (result.status === 200 && event) {
+    // TODO: 여기서 해야 하는가?
+    event.target.closest('.switch').classList.toggle('on');
+  }
   console.log('TODO: myConnect update')
   console.log(result);
 }

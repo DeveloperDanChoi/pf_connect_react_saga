@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React, {
-  useEffect, useRef, Fragment,
+  useEffect, Fragment,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -35,6 +35,7 @@ const RssUpdate = () => {
       connectType: 'rss',
       modules,
       load: creators.getTeamsRss,
+      status: updateStatus,
       connect: [creators.postTeamsRss, creators.putTeamsRssSetting],
       set: creators.setInputRss,
     }, false);
@@ -54,7 +55,7 @@ const RssUpdate = () => {
               <label className={rss.input.statusClss} labefor="unit">
                 <span className='txt'>작동중</span>
                 <Input type="checkbox" id=""/>
-                <a href="#none" className="slider" ></a>
+                <a href="#none" className="slider" onClick={(e) => template1.status(e, rss)}></a>
               </label>
               <button type='button' className='btn-icon' ><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
             </div>

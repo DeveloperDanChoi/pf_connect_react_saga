@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React, {
-  useEffect, useRef, Fragment, useState,
+  useEffect, Fragment,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -13,6 +13,7 @@ import {
   searcher, searcherAuth, searcherLanguage, searcherBoard,
 } from '../../../../../service/searcher';
 import { LANGUAGE2 } from '../../../../../constants/type';
+import { updateStatus } from '../../../../../store/connect/connect';
 
 const Trello = () => {
   const connectType = 'trello';
@@ -23,7 +24,6 @@ const Trello = () => {
   } = useSelector((state) => state);
   const { creators } = modules;
 
-  /* custom checkbox */
   const onChangeCheckbox = (e) => {
     e.preventDefault();
     const target = e.currentTarget.querySelector('input');
@@ -48,6 +48,7 @@ const Trello = () => {
       modules,
       list: creators.getAuthenticationTrelloBoardsList,
       load: creators.getTeamsTrello,
+      status: updateStatus,
       connect: [creators.postTeamsTrello, creators.putTeamsTrelloSetting],
       disconnect: creators.deleteAuthentications,
       set: creators.setInputTrello,
@@ -78,10 +79,10 @@ const Trello = () => {
               <p>{trello.input.createdAt}에 생성됨</p>
             </div>
             <div className='connect-right-box'>
-              <label className="switch on" labefor="unit">
+              <label className={trello.input.statusClss} labefor="unit">
                 <span className='txt'>작동중</span>
                 <Input type="checkbox" id=""/>
-                <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                <a href="#none" className="slider" onClick={(e) => template1.status(e, trello)}></a>
               </label>
               <button type='button' className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
             </div>

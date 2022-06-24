@@ -10,6 +10,7 @@ import {
 import { getV1AdminTeamsMembers } from "../../../api/team/Admin/admin";
 import { util } from "../../../service/util";
 import { reduxModule } from "../../../service/reduxModule";
+import { converter } from "../../../service/converter";
 
 const { creators } = modules;
 export const saga = (() => ({
@@ -20,7 +21,13 @@ export const saga = (() => ({
    * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>|SimpleEffect<"PUT", PutEffectDescriptor<*>>, void, *>}
    */
   * getTeamsRss(data) {
-    const result = yield call(getTeamsRss, data.data);
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.params, { ...data.data, teamId: team.teamId });
+
+    const result = yield call(moduleData.api, moduleData.request);
     const resultMembers = yield call(getV1AdminTeamsMembers, result.data.teamId);
 
     for (const member of resultMembers.data.records) {
@@ -38,15 +45,7 @@ export const saga = (() => ({
     }
 
     yield put(creators.setInputRss({ key: 'createdAt', value: util.dateFormat(result.data.createdAt) }));
-    // yield put(creators.setInputRss({ key: 'botThumbnailFile', value: result.data.botThumbnailFile }));
-    // yield put(creators.setInputRss({ key: 'botName', value: result.data.botName }));
-    // yield put(creators.setInputRss({ key: 'roomId', value: result.data.roomId }));
-    // yield put(creators.setInputRss({ key: 'feedUrl', value: result.data.feedUrl }));
-    // yield put(creators.setInputRss({ key: 'thumbnail', value: result.data.botThumbnailFile }));
-    // yield put(creators.setInputRss({ key: 'memberName', value: 'abc' }));
-    // yield put(creators.setInputRss({ key: 'createAt', value: 'xxxx-xx-xx' }));
-    // yield put(creators.setInputRss({ key: 'status', value: result.data.status }));
-    // yield put(creators.setInputRss({ key: 'statusClss', value: result.data.status === 'enabled' ? 'switch on' : 'switch' }));
+    yield put(creators.setInputRss({ key: 'statusClss', value: converter.statusClss(result.data.status) }));
   },
   * clearTeamsRss(data) {
     yield put(creators.setTeamsRss(data.data));

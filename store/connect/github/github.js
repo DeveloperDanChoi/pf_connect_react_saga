@@ -31,6 +31,12 @@ export const initialModules = [
     name: 'TEAMS_GITHUB',
     data: true,
     api: getTeamsGithub,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+        connectId: 'Connect ID',
+      },
+    },
   },
   {
     type: 'set',

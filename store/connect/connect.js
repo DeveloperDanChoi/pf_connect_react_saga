@@ -51,7 +51,7 @@ export const initValues = (data) => ({ type: INIT_VALUES, data });
  * @param data
  * @returns {{data, type: string}}
  */
-export const updateStatus = (data) => ({ type: UPDATE_STATUS, data });
+export const updateStatus = (data, event) => ({ type: UPDATE_STATUS, data, event });
 /**
  * 연결 삭제<br>
  * @param data

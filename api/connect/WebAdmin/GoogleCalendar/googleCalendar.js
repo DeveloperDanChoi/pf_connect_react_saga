@@ -14,7 +14,7 @@ export const deleteTeamsGoogleCalendar = (data) => api.delete(`/connect-api/team
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const getTeamsGoogleCalendar = (data) => api.get(`/connect-api/teams/${data.teamId}/googleCalendar/${data.connectId}`, { version: 1 });
+export const getTeamsGoogleCalendar = ({ params }) => api.get(`/connect-api/teams/${params.teamId}/googleCalendar/${params.connectId}`, { version: 1 });
 
 /**
  * 구글 캘린더와 Connect 연동을 하는 API<br>

@@ -14,7 +14,7 @@ export const deleteTeamsRss = (data) => api.delete(`/connect-api/teams/${data.te
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const getTeamsRss = (data) => api.get(`/connect-api/teams/${data.teamId}/rss/${data.connectId}`, { version: 1 });
+export const getTeamsRss = ({ params }) => api.get(`/connect-api/teams/${params.teamId}/rss/${params.connectId}`, { version: 1 });
 
 /**
  * RSS Connect 설정 생성<br>

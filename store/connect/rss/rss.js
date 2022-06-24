@@ -17,6 +17,12 @@ export const initialModules = [
     name: 'TEAMS_RSS',
     data: true,
     api: getTeamsRss,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+        connectId: 'Connect ID',
+      },
+    },
   },
   {
     type: 'set',

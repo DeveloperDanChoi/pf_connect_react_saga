@@ -15,6 +15,7 @@ import {
 import { reduxModule } from "../../../service/reduxModule";
 import { getV1AdminTeamsMembers } from "../../../api/team/Admin/admin";
 import { util } from "../../../service/util";
+import { converter } from "../../../service/converter";
 
 const { creators } = modules;
 export const saga = (() => ({
@@ -35,9 +36,14 @@ export const saga = (() => ({
    * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>|SimpleEffect<"PUT", PutEffectDescriptor<*>>, void, *>}
    */
   * getTeamsGithub(data) {
-    const result = yield call(getTeamsGithub, data.data);
+    const { team,github } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.params, { ...data.data, teamId: team.teamId });
+
+    const result = yield call(moduleData.api, moduleData.request);
     const resultMembers = yield call(getV1AdminTeamsMembers, result.data.teamId);
-    const { github } = yield select((state) => state);
 
     for (const member of resultMembers.data.records) {
       if (member.id === result.data.memberId) {
@@ -66,6 +72,7 @@ export const saga = (() => ({
       key: 'selectedRepo',
       value: result.data.hookRepoName.replace(`${result.data.authenticationName}/`, ''),
     }));
+    yield put(creators.setInputGithub({ key: 'statusClss', value: converter.statusClss(result.data.status) }));
   },
   /**
    * Github Connect 설정 생성

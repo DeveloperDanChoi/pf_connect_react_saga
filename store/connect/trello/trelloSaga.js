@@ -1,6 +1,6 @@
 /* eslint-disable max-len,no-empty-function */
 import {
-  call, put,
+  call, put, select,
 } from 'redux-saga/effects';
 import { initialModules, modules } from './trello';
 import {
@@ -11,9 +11,10 @@ import {
   getTeamsTrello,
   postTeamsTrello, putTeamsTrelloSetting,
 } from '../../../api/connect/WebAdmin/Trello/trello';
-import { getV1AdminTeamsMembers } from "../../../api/team/Admin/admin";
-import { util } from "../../../service/util";
-import { reduxModule } from "../../../service/reduxModule";
+import { getV1AdminTeamsMembers } from '../../../api/team/Admin/admin';
+import { util } from '../../../service/util';
+import { reduxModule } from '../../../service/reduxModule';
+import { converter } from '../../../service/converter';
 
 const { creators } = modules;
 export const saga = (() => ({
@@ -31,8 +32,14 @@ export const saga = (() => ({
    * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>|SimpleEffect<"PUT", PutEffectDescriptor<*>>, void, *>}
    */
   * getTeamsTrello(data) {
-    const result = yield call(getTeamsTrello, data.data);
-    const resultMembers = yield call(getV1AdminTeamsMembers, result.data.teamId);
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.params, { ...data.data, teamId: team.teamId });
+
+    const result = yield call(moduleData.api, moduleData.request);
+    const resultMembers = yield call(getV1AdminTeamsMembers, team.teamId);
 
     for (const member of resultMembers.data.records) {
       if (member.id === result.data.memberId) {
@@ -49,6 +56,7 @@ export const saga = (() => ({
     }
 
     yield put(creators.setInputTrello({ key: 'createdAt', value: util.dateFormat(result.data.createdAt) }));
+    yield put(creators.setInputTrello({ key: 'statusClss', value: converter.statusClss(result.data.status) }));
   },
   /**
    * Connect Trello Service 생성<br>

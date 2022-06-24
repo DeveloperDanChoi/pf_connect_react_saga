@@ -1,6 +1,6 @@
 /* eslint-disable max-len,no-empty-function */
 import {
-  call, put,
+  call, put, select,
 } from 'redux-saga/effects';
 import { initialModules, modules } from './jira';
 import {
@@ -12,6 +12,7 @@ import { getTeamsToken } from '../../../api/connect/WebAdmin/webAdmin';
 import { getV1AdminTeamsMembers } from "../../../api/team/Admin/admin";
 import { util } from "../../../service/util";
 import { reduxModule } from "../../../service/reduxModule";
+import { converter } from "../../../service/converter";
 
 const { creators } = modules;
 export const saga = (() => ({
@@ -29,7 +30,13 @@ export const saga = (() => ({
    * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>|SimpleEffect<"PUT", PutEffectDescriptor<*>>, void, *>}
    */
   * getTeamsJira(data) {
-    const result = yield call(getTeamsJira, data.data);
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.params, { ...data.data, teamId: team.teamId });
+
+    const result = yield call(moduleData.api, moduleData.request);
     const resultMembers = yield call(getV1AdminTeamsMembers, result.data.teamId);
 
     for (const member of resultMembers.data.records) {
@@ -47,6 +54,7 @@ export const saga = (() => ({
     }
 
     yield put(creators.setInputJira({ key: 'createdAt', value: util.dateFormat(result.data.createdAt) }));
+    yield put(creators.setInputJira({ key: 'statusClss', value: converter.statusClss(result.data.status) }));
   },
   /**
    * Jira Connect 설정을 생성하는 API<br>

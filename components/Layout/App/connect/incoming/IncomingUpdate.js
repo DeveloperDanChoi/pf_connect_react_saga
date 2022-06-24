@@ -10,6 +10,7 @@ import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { searcher, searcherLanguage } from '../../../../../service/searcher';
+import { updateStatus } from "../../../../../store/connect/connect";
 
 const Incoming = () => {
   const connectType = 'incoming';
@@ -19,70 +20,6 @@ const Incoming = () => {
     team, incoming, user, connect,
   } = useSelector((state) => state);
   const { creators } = modules;
-
-  /* swiper */
-  const swiperRef = useRef(null);
-  const swiperOptions = {
-    navigation: true,
-    className: 'connect-swiper-container',
-    slidesPerView: 1,
-    observer: true,
-    observeParents: true,
-    spaceBetween: 50,
-    shouldSwiperUpdate: true,
-  };
-
-  /**
-   *
-   * @type {{change: change, disabled: disabled, toggle: toggle}}
-   */
-  const tab = (() => {
-    /**
-     *
-     * @param e
-     */
-    const change = (e) => {
-      if (swiperRef.current) {
-        setTimeout(() => swiperRef.current.swiper.update());
-      } // swiper observer
-      e.preventDefault();
-      const menu = document.querySelectorAll('.tab-menu li a');
-      const content = document.querySelectorAll('.tab-cont');
-
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < menu.length; i++) {
-        content[i].classList.remove('on');
-        menu[i].classList.remove('on');
-      }
-      content[e.currentTarget.id - 1].classList.add('on');
-      e.currentTarget.classList.add('on');
-    };
-    /**
-     *
-     */
-    const disabled = () => {
-      document.querySelector('.connect').classList.toggle('disabled');
-      document.querySelector('.full-btn').toggleAttribute('disabled');
-    };
-    /**
-     *
-     * @param e
-     */
-    const toggle = (e) => {
-      e.target.closest('.switch').classList.toggle('on');
-      disabled();
-    };
-    return { change, disabled, toggle };
-  })();
-
-  /* custom checkbox */
-  const onChangeCheckbox = (e) => {
-    if (e.target.localName !== 'label') return;
-
-    e.preventDefault();
-    const target = e.currentTarget.querySelector('input');
-    template1.set(target.name, !incoming.input[target.name]);
-  };
 
   useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
@@ -102,6 +39,7 @@ const Incoming = () => {
       modules,
       list: creators.getTeamsToken,
       load: creators.getTeamsIncoming,
+      status: updateStatus,
       connect: [creators.postTeamsIncoming, creators.putTeamsIncomingSetting],
       disconnect: creators.deleteAuthentications,
       set: creators.setInputIncoming,
@@ -123,7 +61,7 @@ const Incoming = () => {
               <label className="switch on" labefor="unit">
                 <span className='txt'>작동중</span>
                 <Input type="checkbox" id=""/>
-                <a href="#none" className="slider"></a>
+                <a href="#none" className="slider" onClick={(e) => template1.status(e, incoming)}></a>
               </label>
               <button type='button' className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
             </div>

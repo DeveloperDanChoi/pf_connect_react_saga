@@ -37,7 +37,7 @@ export const template1 = (() => {
    * @param connectId
    */
   function load(data, connectId) {
-    that.dispatch(data.call(null, { connectId, teamId: 279 }));
+    that.dispatch(data.call(null, { connectId }));
   }
 
   /**
@@ -73,6 +73,14 @@ export const template1 = (() => {
    */
   function set(key, value) {
     that.dispatch(that.set.call(null, { key, value }));
+  }
+
+  /**
+   * 상태 변경 enabled/disabled<br>
+   * @param data
+   */
+  function status(e, { input }) {
+    that.dispatch(that.status.call(null, input, e));
   }
 
   function initialize(data, isList = true) {
@@ -126,6 +134,7 @@ export const template1 = (() => {
     authorize,
     connect,
     set,
+    status,
     allModules,
   };
 })();

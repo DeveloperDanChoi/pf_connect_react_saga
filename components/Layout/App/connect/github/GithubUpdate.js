@@ -68,6 +68,7 @@ const Github = () => {
       modules,
       list: creators.getAuthenticationGithubReposList,
       load: creators.getTeamsGithub,
+      status: updateStatus,
       connect: [creators.postTeamsGithub, creators.putTeamsGithubSetting],
       disconnect: creators.deleteAuthentications,
       set: creators.setInputGithub,
@@ -101,7 +102,7 @@ const Github = () => {
               <label className="switch on" labefor="unit">
                 <span className='txt'>작동중</span>
                 <Input type="checkbox" id=""/>
-                <a href="#none" className="slider"></a>
+                <a href="#none" className="slider" onClick={(e) => template1.status(e, github)}></a>
               </label>
               <button type='button' className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
             </div>

@@ -11,6 +11,7 @@ import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { searcher, searcherLanguage } from '../../../../../service/searcher';
 import { LANGUAGE2 } from '../../../../../constants/type';
+import { updateStatus } from "../../../../../store/connect/connect";
 
 const Bitbucket = () => {
   const connectType = 'bitbucket';
@@ -52,6 +53,7 @@ const Bitbucket = () => {
       modules,
       list: creators.getTeamsToken,
       load: creators.getTeamsBitbucket,
+      status: updateStatus,
       connect: [creators.postTeamsBitbucket, creators.putTeamsBitbucketSetting],
       set: creators.setInputBitbucket,
     }, false);
@@ -72,7 +74,7 @@ const Bitbucket = () => {
               <label className="switch on" labefor="unit">
                 <span className='txt'>작동중</span>
                 <Input type="checkbox" id=""/>
-                <a href="#none" className="slider"></a>
+                <a href="#none" className="slider" onClick={(e) => template1.status(e, bitbucket)}></a>
               </label>
               <button type='button' className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
             </div>

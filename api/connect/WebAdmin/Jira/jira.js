@@ -14,7 +14,7 @@ export const deleteTeamsJira = (data) => api.delete(`/connect-api/teams/${data.t
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const getTeamsJira = (data) => api.get(`/connect-api/teams/${data.teamId}/jira/${data.connectId}`, { version: 1 });
+export const getTeamsJira = ({ params }) => api.get(`/connect-api/teams/${params.teamId}/jira/${params.connectId}`, { version: 1 });
 
 /**
  * Jira Connect 설정을 생성하는 API<br>

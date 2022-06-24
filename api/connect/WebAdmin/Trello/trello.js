@@ -14,7 +14,7 @@ export const deleteTeamsTrello = (data) => api.delete(`/connect-api/teams/${data
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const getTeamsTrello = (data) => api.get(`/connect-api/teams/${data.teamId}/trello/${data.connectId}`, { version: 1 });
+export const getTeamsTrello = ({ params }) => api.get(`/connect-api/teams/${params.teamId}/trello/${params.connectId}`, { version: 1 });
 
 /**
  * Connect Trello Service 생성<br>

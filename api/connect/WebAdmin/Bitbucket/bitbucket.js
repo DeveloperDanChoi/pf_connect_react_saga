@@ -14,7 +14,7 @@ export const deleteTeamsBitbucket = (data) => api.delete(`/connect-api/teams/${d
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const getTeamsBitbucket = (data) => api.get(`/connect-api/teams/${data.teamId}/bitbucket/${data.connectId}`, { version: 1 });
+export const getTeamsBitbucket = ({ params }) => api.get(`/connect-api/teams/${params.teamId}/bitbucket/${params.connectId}`, { version: 1 });
 
 /**
  * Bitbucket Connect 설정을 생성하는 API<br>

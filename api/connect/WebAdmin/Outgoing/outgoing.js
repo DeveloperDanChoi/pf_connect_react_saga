@@ -14,7 +14,7 @@ export const deleteTeamsOutgoing = (data) => api.delete(`/connect-api/teams/${da
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const getTeamsOutgoing = (data) => api.get(`/connect-api/teams/${data.teamId}/outgoing/${data.connectId}`, { version: 1 });
+export const getTeamsOutgoing = ({ params }) => api.get(`/connect-api/teams/${params.teamId}/outgoing/${params.connectId}`, { version: 1 });
 
 /**
  * Outgoing Webhook Connect 설정을 생성하는 API<br>

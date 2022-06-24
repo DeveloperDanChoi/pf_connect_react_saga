@@ -14,7 +14,7 @@ export const deleteTeamsGithub = (data) => api.delete(`/connect-api/teams/${data
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const getTeamsGithub = (data) => api.get(`/connect-api/teams/${data.teamId}/github/${data.connectId}`, { version: 1 });
+export const getTeamsGithub = ({ params }) => api.get(`/connect-api/teams/${params.teamId}/github/${params.connectId}`, { version: 1 });
 
 /**
  * Github Connect 설정 생성<br>

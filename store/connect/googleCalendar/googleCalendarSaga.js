@@ -1,6 +1,6 @@
 /* eslint-disable max-len,no-empty-function */
 import {
-  call, put,
+  call, put, select,
 } from 'redux-saga/effects';
 import { initialModules, modules } from './googleCalendar';
 import {
@@ -14,6 +14,7 @@ import {
 import { getV1AdminTeamsMembers } from '../../../api/team/Admin/admin';
 import { util } from '../../../service/util';
 import { reduxModule } from "../../../service/reduxModule";
+import { converter } from "../../../service/converter";
 
 const { creators } = modules;
 export const saga = (() => ({
@@ -31,7 +32,13 @@ export const saga = (() => ({
    * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>|SimpleEffect<"PUT", PutEffectDescriptor<*>>, void, *>}
    */
   * getTeamsGoogleCalendar(data) {
-    const result = yield call(getTeamsGoogleCalendar, data.data);
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.params, { ...data.data, teamId: team.teamId });
+
+    const result = yield call(moduleData.api, moduleData.request);
     const resultMembers = yield call(getV1AdminTeamsMembers, result.data.teamId);
 
     for (const member of resultMembers.data.records) {
@@ -47,8 +54,10 @@ export const saga = (() => ({
     for (const key in result.data) {
       yield put(creators.setInputGoogleCalendar({ key, value: result.data[key] }));
     }
+    yield put(creators.setInputGoogleCalendar({ key: 'type', value: 'googleCalendar' }));
 
     yield put(creators.setInputGoogleCalendar({ key: 'createdAt', value: util.dateFormat(result.data.createdAt) }));
+    yield put(creators.setInputGoogleCalendar({ key: 'statusClss', value: converter.statusClss(result.data.status) }));
   },
   /**
    * 구글 캘린더와 Connect 연동을 하는 API<br>

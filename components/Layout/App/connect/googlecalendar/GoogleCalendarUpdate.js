@@ -13,6 +13,7 @@ import {
   searcher, searcherAuth, searcherLanguage, searcherCal,
 } from '../../../../../service/searcher';
 import { LANGUAGE2 } from '../../../../../constants/type';
+import { updateStatus } from "../../../../../store/connect/connect";
 
 const GoogleCalendar = () => {
   const connectType = 'googleCalendar';
@@ -50,6 +51,7 @@ const GoogleCalendar = () => {
       modules,
       list: creators.getAuthenticationGoogleCalendarCalendarList,
       load: creators.getTeamsGoogleCalendar,
+      status: updateStatus,
       connect: [creators.postTeamsGoogleCalendar, creators.putTeamsGoogleCalendarSetting],
       disconnect: creators.deleteAuthentications,
       set: creators.setInputGoogleCalendar,
@@ -87,7 +89,7 @@ const GoogleCalendar = () => {
               <label className="switch on" labefor="unit">
                 <span className='txt'>작동중</span>
                 <Input type="checkbox" id=""/>
-                <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                <a href="#none" className="slider" onClick={(e) => template1.status(e, googleCalendar)}></a>
               </label>
               <button type='button' className='btn-icon'><i className="icon-ic-delete"></i><span className='hidden'>삭제하기</span></button>
             </div>
