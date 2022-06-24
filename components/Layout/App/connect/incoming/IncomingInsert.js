@@ -110,7 +110,7 @@ const Incoming = () => {
       connect: [creators.postTeamsIncoming, creators.putTeamsIncomingSetting],
       disconnect: creators.deleteAuthentications,
       set: creators.setInputIncoming,
-    });
+    }, false);
   }, []);
 
   return (<>
@@ -120,7 +120,7 @@ const Incoming = () => {
         <div className='inner'>
           { connect.connectsObj[connectType]
           && <div className='connect-info-box'>
-            <p className='img-box'><img src={connect.connectsObj[connectType].botThumbnail} alt="rss"></img></p>
+            <p className='img-box'><img src={connect.connectsObj[connectType].botThumbnail} alt="incoming"></img></p>
             <div className='info'>
               <strong>{connect.connectsObj[connectType].label}</strong>
               <p>{connect.connectsObj[connectType].category}</p>
@@ -132,13 +132,13 @@ const Incoming = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a href='#none' onClick={tab.change} id="1">서비스 소개</a></li>
             <li><a href='#none' onClick={tab.change} id="2">사용방법</a></li>
-            <li><a href='#none' onClick={tab.change} id="3">연동하기</a></li>
+            <li><a href='#none' onClick={tab.change} id="3" className='on'>연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
-          <div className='tab-cont on'>
+          <div className='tab-cont'>
             <div className='detail-content'>
               <div className='info-wrap'>
                 <img src={getPublicAssetPath('static/incoming/ko/info/img_info.png')} alt="서비스 소개"></img>{/* [D] : static/커넥트명/언어코드/img_info.png */}
@@ -227,7 +227,7 @@ const Incoming = () => {
               </Swiper>
             </div>
           </div>
-          <div className='tab-cont'>
+          <div className='tab-cont on'>
             <div className='detail-content connect'>
               <div className='connect-row-item'>
                 <div className='title'><strong>커넥트 설정</strong></div>
@@ -359,33 +359,32 @@ const Incoming = () => {
                 </div>
               </div>
             {/* [D] : 연동 추가하기 완료될 경우 노출 */}
-            <div className='connect-row-item webhook'>
-              <div className='title'><strong>Webhook URL 등록</strong></div>
-              <div className='content'>
-                <dl className='row'>
-                  <dt>
-                    <p className='tit'>Webhook URL</p>
-                    <p className='info'>생성된 웹훅 URL을 복사 후, 해당 서비스에 등록해주세요.</p>
-                  </dt>
-                  <dd>
-                    <div className='input-row'>
+            { incoming.input.webhookUrl !== '' && <>
+              <div className='connect-row-item webhook'>
+                <div className='title'><strong>Webhook URL 등록</strong></div>
+                <div className='content'>
+                  <dl className='row'>
+                    <dt>
+                      <p className='tit'>Webhook URL</p>
+                      <p className='info'>생성된 웹훅 URL을 복사 후, 해당 서비스에 등록해주세요.</p>
+                    </dt>
+                    <dd>
+                      <div className='input-row'>
                         <div className='input-copy-box mgr8'>
                           <i className='icon-ic-contact'></i>
-                          <Input type="text"
-                                 className='input-icon'
-                                 value={incoming.teamsToken.webhookUrl}
-                                 readOnly={true}>
-                          </Input>
+                          <Input type="text" className='input-icon' value={incoming.input.webhookUrl} readOnly></Input>
                         </div>
                         <button type='button'>복사</button>
-                    </div>
-                  </dd>
-                </dl>
+                      </div>
+                    </dd>
+                  </dl>
+                </div>
               </div>
-            </div>
-            {/* //[D] : 연동 추가하기 완료될 경우 노출 */}
-            <button type='button' className='full-btn' >연동 추가하기 (Webhook URL 생성하기)</button>
-            <button type='button' className='full-btn' disabled>생성 완료 (Webhook URL을 해당 서비스에 등록해주세요)</button>{/* [D] : 연동 추가하기 완료될 경우 */}
+              <button type='button' className='full-btn' onClick={(e) => template1.connect(e, incoming)}>생성 완료 (Webhook URL을 해당 서비스에 등록해주세요)</button>{/* [D] : 연동 추가하기 완료될 경우 */}
+            </> }
+            { incoming.input.webhookUrl === '' && <>
+              <button type='button' className='full-btn' onClick={() => template1.list(creators.getTeamsToken)}>연동 추가하기 (Webhook URL 생성하기)</button>
+            </> }
             </div>
           </div>
         </div>

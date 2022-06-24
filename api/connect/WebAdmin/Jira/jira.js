@@ -22,7 +22,7 @@ export const getTeamsJira = ({ params }) => api.get(`/connect-api/teams/${params
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const postTeamsJira = (data) => api.post(`/connect-api/teams/${data.teamId}/jira`, data.data, { version: 1 });
+export const postTeamsJira = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/jira`, body, { version: 1 });
 
 /**
  * Jira Connect 설정을 수정하는 API<br>

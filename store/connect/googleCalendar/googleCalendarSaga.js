@@ -65,30 +65,15 @@ export const saga = (() => ({
    * @returns {Generator<*, void, *>}
    */
   * postTeamsGoogleCalendar(data) {
-    const params = {
-      googleId: 'dan.choi@tosslab.com',
-      calendarId: 'dan.choi@tosslab.com',
-      calendarSummary: 'dan.choi@tosslab.com',
-      roomId: '20128232',
-      hasNotificationBefore: 'true',
-      notificationBefore: '15m',
-      hasAllDayNotification: 'true',
-      allDayNotificationBeforeDates: '0d',
-      allDayNotificationHour: '9',
-      hasDailyScheduleSummary: 'true',
-      dailyScheduleSummary: '9',
-      hasWeeklyScheduleSummary: 'true',
-      weeklyScheduleSummaryHour: '9',
-      weeklyScheduleSummaryDayOfWeek: 'MO',
-      newEventNotification: 'true',
-      updatedEventNotification: 'true',
-      cancelledEventNotification: 'true',
-      botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-googleCalendar.png',
-      botName: 'Google 캘린더',
-      defaultBotName: 'Google 캘린더',
-      lang: 'ko',
-    };
-    const result = yield call(postTeamsGoogleCalendar, { teamId: 279, data: params });
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.body, data.data);
+    // custom request data
+    moduleData.request.params.teamId = team.teamId;
+
+    const result = yield call(moduleData.api, moduleData.request);
   },
   /**
    * 구글 캘린더 Connect 연동 설정을 변경하는 API<br>

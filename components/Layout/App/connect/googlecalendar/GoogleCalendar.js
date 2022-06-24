@@ -11,7 +11,7 @@ const GoogleCalendar = () => {
 
   useEffect(() => {
     console.log( router.query.id )
-    // return;
+    return;
     if (!router.query.id) {
       const prefix = '/app/connect';
       Router.push(`${prefix}/googleCalendar?id=25085`, `${prefix}/googleCalendar`);

@@ -22,7 +22,7 @@ export const getTeamsBitbucket = ({ params }) => api.get(`/connect-api/teams/${p
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const postTeamsBitbucket = (data) => api.post(`/connect-api/teams/${data.teamId}/bitbucket`, data.data, { version: 1 });
+export const postTeamsBitbucket = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/bitbucket`, body, { version: 1 });
 
 /**
  * Bitbucket Connect 설정을 수정하는 API<br>

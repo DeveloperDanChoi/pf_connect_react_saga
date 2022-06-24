@@ -14,7 +14,7 @@ import { reduxModule } from '../../../service/reduxModule';
 
 export const initialModules = [
   /**
-   * 구글 캘린더에 등록된 캘린더 리스트를 반환하는 API
+   * 구글 캘린더에 등록된 캘린더 리스트를 반환하는 API<br>
    */
   {
     type: 'get',
@@ -24,7 +24,7 @@ export const initialModules = [
   },
   { type: 'set', name: 'AUTHENTICATION_GITHUB_REPOS_LIST', data: true },
   /**
-   * 단일 Github Connect 조회
+   * 단일 Github Connect 조회<br>
    */
   {
     type: 'get',
@@ -44,16 +44,34 @@ export const initialModules = [
     data: true,
   },
   /**
-   * Github Connect 설정 생성
+   * Github Connect 설정 생성<br>
    */
   {
     type: 'post',
     name: 'TEAMS_GITHUB',
     data: false,
     api: postTeamsGithub,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+      },
+      body: {
+        mode: 'Enum(\'authed\', \'unauthed\')',
+        roomId: 'Room ID',
+        botName: 'Bot name',
+        botThumbnailFile: '봇의 프로필 이미지',
+        lang: '커넥트 설정 언어',
+        authenticationId: '인증 ID',
+        hookRepoId: 'Github Repo ID',
+        hookRepoName: 'Github Repo 이름(full_name),format: owner/repo',
+        hookEvent: '연동할 Github webhook events 목록(Github 참고) push,commit_comment,create,delete',
+        hookBranch: '연동할 Branch 목록, master,develop,feature/connect',
+        webhookToken: 'Webhook Token String - webhook url 재생성 한 경우',
+      },
+    },
   },
   /**
-   * Github Connect 설정 수정
+   * Github Connect 설정 수정<br>
    */
   {
     type: 'put',
@@ -82,7 +100,7 @@ export const initialModules = [
     },
   },
   /**
-   * 연동 서비스 인증 삭제
+   * 연동 서비스 인증 삭제<br>
    */
   {
     type: 'delete',
@@ -91,7 +109,7 @@ export const initialModules = [
     api: deleteAuthentications,
   },
   /**
-   * 사용자 정의 데이터
+   * 사용자 정의 데이터<br>
    */
   {
     type: 'set',
@@ -99,7 +117,7 @@ export const initialModules = [
     data: true,
   },
   /**
-   * 사용자 정의 데이터
+   * 사용자 정의 데이터<br>
    */
   {
     type: 'set',

@@ -88,6 +88,8 @@ const Outgoing = () => {
   }, [user.rooms]);
 
   useEffect(() => {
+    if (team.teamId === 0) return;
+
     template1.initialize({
       dispatch,
       router,
@@ -98,7 +100,7 @@ const Outgoing = () => {
       connect: [creators.postTeamsOutgoing, creators.putTeamsOutgoingSetting],
       set: creators.setInputOutgoing,
     });
-  }, []);
+  }, [team.teamId]);
 
   return (<>
     {/* [D] : 연동하기 */}
@@ -117,9 +119,9 @@ const Outgoing = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a href='#none' onClick={tab.change} id="1">서비스 소개</a></li>
             <li><a href='#none' onClick={tab.change} id="2">사용방법</a></li>
-            <li><a href='#none' onClick={tab.change} id="3">연동하기</a></li>
+            <li><a href='#none' onClick={tab.change} id="3" className='on'>연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
@@ -135,7 +137,7 @@ const Outgoing = () => {
               </div>
             </div>
           </div>
-          <div className='tab-cont on'>
+          <div className='tab-cont'>
             <div className='detail-content type-swiper'>
               <Swiper
                   ref={swiperRef}
@@ -194,7 +196,7 @@ const Outgoing = () => {
               </Swiper>
             </div>
           </div>
-          <div className='tab-cont'>
+          <div className='tab-cont on'>
             <div className='detail-content connect'>
               <div className='connect-row-item'>
                 <div className='title'><strong>서비스 설정</strong></div>
@@ -223,10 +225,10 @@ const Outgoing = () => {
                     <dd>
                       <div className='input-row'>
                         <div className='input-copy-box mgr8'>
-                          <Input type="text" className='input-icon' value={'a7f1bf14120ce43ba9545ask45asd'} readOnly={true}></Input>
+                          <Input type="text" className='input-icon' value={outgoing.input.webhookUrl} readOnly></Input>
                         </div>
                         <button type='button' className='mgr8'>복사</button>
-                        <button type='button'>다시 생성하기</button>
+                        <button type='button' onClick={() => template1.list(creators.getTeamsToken)}>다시 생성하기</button>
                       </div>
                     </dd>
                   </dl>
@@ -377,7 +379,7 @@ const Outgoing = () => {
                   </dl>
                 </div>
               </div>
-              <button type='button' className='full-btn'>연동 추가하기</button>
+              <button type='button' className='full-btn' onClick={(e) => template1.connect(e, outgoing)}>연동 추가하기</button>
             </div>{/* //detail-wrapper */}
           </div>
         </div>

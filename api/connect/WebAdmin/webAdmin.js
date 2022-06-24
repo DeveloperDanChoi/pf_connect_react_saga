@@ -143,7 +143,7 @@ export const getTeamsConnect = (data) => api.get(`/connect-api/teams/${data}/con
  * https://tosslab.atlassian.net/wiki/spaces/API/pages/1113817375/GET+connect-api+teams+teamId+connectType+token<br>
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const getTeamsToken = (data) => api.get(`/connect-api/teams/${data.teamId}/${data.connectType}/token`, { version: 1 });
+export const getTeamsToken = ({ params }) => api.get(`/connect-api/teams/${params.teamId}/${params.connectType}/token`, { version: 1 });
 
 /**
  * Webhook용 Token을 요청하는 API<br>

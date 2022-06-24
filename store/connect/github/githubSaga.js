@@ -20,7 +20,7 @@ import { converter } from "../../../service/converter";
 const { creators } = modules;
 export const saga = (() => ({
   /**
-   * 인증된 GitHub 정보와 해당 유저의 repositories 리스트 조회
+   * 인증된 GitHub 정보와 해당 유저의 repositories 리스트 조회<br>
    */
   * getAuthenticationGithubReposList() {
     // TODO: 정보가 있을 경우에만 call
@@ -36,7 +36,7 @@ export const saga = (() => ({
    * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>|SimpleEffect<"PUT", PutEffectDescriptor<*>>, void, *>}
    */
   * getTeamsGithub(data) {
-    const { team,github } = yield select((state) => state);
+    const { team, github } = yield select((state) => state);
     // load initialModule
     const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
@@ -75,39 +75,24 @@ export const saga = (() => ({
     yield put(creators.setInputGithub({ key: 'statusClss', value: converter.statusClss(result.data.status) }));
   },
   /**
-   * Github Connect 설정 생성
-   * mode
-   * roomId
-   * botName
-   * botThumbnailFile
-   * lang
-   * authenticationId
-   * hookRepoId
-   * hookRepoName
-   * hookEvent
-   * hookBranch
-   * * webhookToken
+   * Github Connect 설정 생성<br>
    * @param data
    * @returns {Generator<*, void, *>}
    */
   * postTeamsGithub(data) {
-    const params = {
-      mode: 'authed',
-      authenticationId: 280,
-      botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-github.png',
-      botName: 'GitHub',
-      defaultBotName: 'GitHub',
-      lang: 'ko',
-      roomId: 20128232,
-      hookRepoId: 472152353,
-      hookRepoName: 'DeveloperDanChoi/devConnect',
-      hookEvent: 'push,commit_comment,pull_request,pull_request_review_comment,issues,issue_comment,pull_request_review',
-      hookBranch: '',
-    };
-    // const result = yield call(postTeamsGithub, { teamId: 279, data: params });
+    const { team, github } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.body, data.data);
+    // custom request data
+    moduleData.request.params.teamId = team.teamId;
+    moduleData.request.body.hookRepoName = `${github.authenticationGithubReposList.authenticationName}/${data.data.hookRepoName}`;
+
+    const result = yield call(moduleData.api, moduleData.request);
   },
   /**
-   * Github Connect 설정 수정
+   * Github Connect 설정 수정<br>
    * @param data
    * @returns {Generator<*, void, *>}
    */
@@ -127,7 +112,7 @@ export const saga = (() => ({
     }
   },
   /**
-   * 연동 서비스 인증 삭제
+   * 연동 서비스 인증 삭제<br>
    * @param data
    * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
    */
@@ -136,7 +121,7 @@ export const saga = (() => ({
     const result = yield call(deleteAuthentications, { authenticationId });
   },
   /**
-   * 사용자 정의 데이터
+   * 사용자 정의 데이터<br>
    * @param data
    * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
    */
@@ -144,7 +129,7 @@ export const saga = (() => ({
     yield put(creators.setInputGithubValue(data));
   },
   /**
-   * 사용자 정의 데이터
+   * 사용자 정의 데이터<br>
    * @param data
    * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
    */

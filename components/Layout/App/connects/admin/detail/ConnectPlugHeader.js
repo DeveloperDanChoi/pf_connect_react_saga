@@ -19,11 +19,6 @@ const ConnectPlugHeader = (props) => {
     { label: '커넥트', class: '' },
   ]);
 
-  useEffect(() => {
-    console.log('searchList')
-
-  }, []);
-
   /**
    * 검색 모듈
    * TODO: 1차 샘플링

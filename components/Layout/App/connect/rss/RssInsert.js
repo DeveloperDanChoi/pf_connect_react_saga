@@ -118,12 +118,12 @@ const RssInsert = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
-            <li><a href='#none' onClick={tab.change} id="2">연동하기</a></li>
+            <li><a href='#none' onClick={tab.change} id="1">서비스 소개</a></li>
+            <li><a href='#none' onClick={tab.change} id="2" className='on'>연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
-          <div className='tab-cont on'>
+          <div className='tab-cont'>
             <div className='detail-content'>
               <div className='info-wrap'>
                 <img src={getPublicAssetPath('static/rss/ko/info/img_info.png')} alt="서비스 소개"></img>{/* [D] : static/커넥트명/언어코드/img_info.png */}
@@ -135,7 +135,7 @@ const RssInsert = () => {
               </div>
             </div>
           </div>
-          <div className='tab-cont'>
+          <div className='tab-cont on'>
             <div className='detail-content connect'>
               <div className='connect-row-item'>
                 <div className='title'><strong>커넥트 설정</strong></div>
@@ -282,7 +282,7 @@ const RssInsert = () => {
                   </dl>
                 </div>
               </div>
-              <button type='button' className='full-btn' onClick={(e) => template1.connect(e, { rss })}>연동 추가하기</button>
+              <button type='button' className='full-btn' onClick={(e) => template1.connect(e, rss)}>연동 추가하기</button>
             </div>{/* //detail-wrapper */}
           </div>
         </div>

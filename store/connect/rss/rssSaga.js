@@ -61,17 +61,15 @@ export const saga = (() => ({
    * @returns {Generator<*, void, *>}
    */
   * postTeamsRss(data) {
-    const { team, user } = yield select((state) => state);
-    const { roomId, feedUrl, botName, thumbnail, lang = user.user.account.lang } = data.data.rss.input;
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.body, data.data);
+    // custom request data
+    moduleData.request.params.teamId = team.teamId;
 
-    const result = yield call(postTeamsRss, {
-      teamId: team.teamId,
-      data: {
-        roomId, feedUrl, botName, botThumbnailFile: thumbnail, lang
-      }
-    });
-
-    // TODO: main refresh
+    const result = yield call(moduleData.api, moduleData.request);
   },
   /**
    * RSS Connect 설정 수정<br>

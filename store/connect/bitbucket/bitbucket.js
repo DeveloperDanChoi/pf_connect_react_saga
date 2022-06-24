@@ -18,6 +18,12 @@ export const initialModules = [
     name: 'TEAMS_TOKEN',
     data: false,
     api: getTeamsToken,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+        connectType: 'Token을 연결할 Connect 종류',
+      },
+    },
   },
   { type: 'set', name: 'TEAMS_TOKEN', data: true },
   /**
@@ -48,6 +54,17 @@ export const initialModules = [
     name: 'TEAMS_BITBUCKET',
     data: false,
     api: postTeamsBitbucket,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+      },
+      body: {
+        roomId: 'Room ID',
+        webhookToken: 'Webhook Token String',
+        botName: 'Bot name',
+        botThumbnailFile: '봇의 프로필 이미지',
+      },
+    },
   },
   /**
    * Bitbucket Connect 설정을 수정하는 API<br>
@@ -94,6 +111,7 @@ export const initialState = {
   input: {
     roomId: '',
     webhookToken: '',
+    webhookUrl: '',
     botName: '',
     botThumbnailFile: '',
     lang: '',

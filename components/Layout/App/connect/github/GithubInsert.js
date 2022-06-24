@@ -125,6 +125,23 @@ const Github = () => {
     template1.set('selectedAuthentication', github.authenticationGithubReposList.authenticationName);
   }, [github.authenticationGithubReposList]);
 
+  useEffect(() => {
+    let events = [];
+    for (const hookEvent in github.input.hookEventChecked) {
+      if (github.input.hookEventChecked[hookEvent]) {
+        for (const item of github.getHookEventList) {
+          if (item.id === hookEvent) {
+            for (const evt of item.value) {
+              events = [...events, evt];
+            }
+            break;
+          }
+        }
+      }
+    }
+    template1.set('hookEvent', events);
+  }, [github.input.hookEventChecked]);
+
   return (<>
     {/* [D] : 연동하기 */}
     <div className='detail-container'>
@@ -145,12 +162,12 @@ const Github = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
-            <li><a href='#none' onClick={tab.change} id="2">연동하기</a></li>
+            <li><a href='#none' onClick={tab.change} id="1">서비스 소개</a></li>
+            <li><a href='#none' onClick={tab.change} id="2" className='on'>연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
-          <div className='tab-cont on'>
+          <div className='tab-cont'>
             <div className='detail-content'>
               <div className='info-wrap'>
                 <img src={getPublicAssetPath('static/github/ko/info/img_info.png')} alt="서비스 소개"></img>{/* [D] : static/커넥트명/언어코드/img_info.png */}
@@ -162,11 +179,11 @@ const Github = () => {
               </div>
             </div>
           </div>
-          <div className='tab-cont'>
+          <div className='tab-cont on'>
               <div className='detail-content connect'>
                 {/* [D] : 계정 인증 전 case */}
-                { github.input.authenticationId === ''
-                  && <div className='connect-row-item'>
+                { github.input.authenticationId === '' && <>
+                <div className='connect-row-item'>
                   <div className='title'><strong>계정 설정</strong></div>
                   <div className='content'>
                     <dl className='row'>
@@ -182,10 +199,10 @@ const Github = () => {
                     </dl>
                   </div>
                 </div>
-                }
+                </>}
                 {/* [D] : 계정 인증 후 case */}
-                {github.input.authenticationId !== ''
-                && <><div className='connect-row-item'>
+                {github.input.authenticationId !== '' && <>
+                <div className='connect-row-item'>
                   <div className='title'><strong>계정 설정</strong></div>
                   <div className='content'>
                     <dl className='row'>

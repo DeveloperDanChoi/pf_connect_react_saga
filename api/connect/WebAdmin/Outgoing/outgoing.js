@@ -22,7 +22,7 @@ export const getTeamsOutgoing = ({ params }) => api.get(`/connect-api/teams/${pa
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const postTeamsOutgoing = (data) => api.post(`/connect-api/teams/${data.teamId}/outgoing`, data.data, { version: 1 });
+export const postTeamsOutgoing = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/outgoing`, body, { version: 1 });
 
 /**
  * Outgoing Webhook Connect 설정을 수정하는 API<br>

@@ -22,7 +22,7 @@ export const getTeamsIncoming = ({ params }) => api.get(`/connect-api/teams/${pa
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const postTeamsIncoming = (data) => api.post(`/connect-api/teams/${data.teamId}/incoming`, data.data, { version: 2 });
+export const postTeamsIncoming = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/incoming`, body, { version: 2 });
 
 /**
  * Incoming Webhook Connect 설정을 수정하는 API<br>

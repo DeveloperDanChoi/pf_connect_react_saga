@@ -18,9 +18,20 @@ export const saga = (() => ({
   /**
    * Webhook용 Token을 요청하는 API<br>
    */
-  * getTeamsToken(data) {
-    const result = yield call(getTeamsToken, { connectType: 'outgoing', teamId: 279 });
+  * getTeamsToken(data, connectType = 'outgoing') {
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.params, { connectType, teamId: team.teamId });
+
+    const result = yield call(moduleData.api, moduleData.request);
+
     yield put(creators.setTeamsToken(result.data));
+
+    for (const key in result.data) {
+      yield put(creators.setInputOutgoing({ key, value: result.data[key] }));
+    }
   },
   /**
    * Outgoing Webhook Connect 설정을 단일 조회하는 API<br>
@@ -61,17 +72,15 @@ export const saga = (() => ({
    * @returns {Generator<*, void, *>}
    */
   * postTeamsOutgoing(data) {
-    const params = {
-      botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-outgoing.png',
-      botName: '2022 abcd',
-      defaultBotName: 'Webhook 발신 (Outgoing Webhook)',
-      lang: 'ko',
-      webhookUrl: 'https://script.google.com/macros/s/AKfycbxJhY0vRZ5o21BiGHCs6NUUJg2yca2op5azxsHAqWGnemsxCC9a56bg6xIrA8tw6N8Cfg/exec',
-      webhookToken: data.data.outgoing.teamsToken.webhookToken,
-      keyword: 'abcd',
-      roomId: 20128232,
-    };
-    const result = yield call(postTeamsOutgoing, { teamId: 279, data: params });
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.body, data.data);
+    // custom request data
+    moduleData.request.params.teamId = team.teamId;
+
+    const result = yield call(moduleData.api, moduleData.request);
   },
   /**
    * Outgoing Webhook Connect 설정을 수정하는 API<br>

@@ -50,6 +50,43 @@ export const initialModules = [
     name: 'TEAMS_TRELLO',
     data: false,
     api: postTeamsTrello,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+      },
+      body: {
+        botName: '봇 이름',
+        botThumbnailFile: '봇 이미지 파일',
+        authenticationId: 'authenticationId ID',
+        trelloBoardId: 'Trello Board ID',
+        trelloBoardName: 'Trello Board Name',
+        lang: '언어',
+        roomId: '룸 ID',
+        showBoardListFromMoved: 'Board List From Moved',
+        showBoardListToMoved: 'Board List To Moved', // check!!
+        showBoardMemberCreated: 'Board Membe rCreated',
+        showBoardRenamed: 'Board Renamed',
+        showCardArchived: 'Card Archived',
+        showCardAttachmentCreated: 'Card Attachment Created',
+        showCardChecklistCreated: 'Card Checklist Created',
+        showCardChecklistItemCreated: 'Card Checklist Item Created',
+        showCardChecklistItemUpdated: 'Card Checklist Item State Updated',
+        showCardCommentCreated: 'Card Comment Created',
+        showCardCreated: 'Card Created',
+        showCardDescriptionUpdated: 'Card Description Updated',
+        showCardDueDateUpdated: 'Card Due Date Updated',
+        showCardLabelCreated: 'Card Label Created',
+        showCardLabelDeleted: 'Card Label Deleted', // check!!
+        showCardMemberCreated: 'Card Member Created',
+        showCardMoved: 'Card Moved',
+        showCardRenamed: 'Card Renamed',
+        showCardUnarchived: 'Card Unarchived',
+        showListArchived: 'List Archived',
+        showListCreated: 'List Created',
+        showListRenamed: 'List Renamed',
+        showListUnarchived: 'List Unarchived', // check!!
+      },
+    },
   },
   /**
    * Connect Trello Service 설정 변경<br>
@@ -126,6 +163,8 @@ export const initialModules = [
 export const modules = (() => reduxModule.modules.create(initialModules, 'trello'))();
 export const initialState = {
   authenticationTrelloBoardsList: {
+    authenticationId: '',
+    authenticationName: '',
     boards: [],
   },
   teamsTrello: {
@@ -140,7 +179,7 @@ export const initialState = {
     lang: '',
     roomId: '',
     showBoardListFromMoved: false,
-    showBoardListToMoved: '',
+    showBoardListToMoved: false, //
     showBoardMemberCreated: false,
     showBoardRenamed: false,
     showCardArchived: false,
@@ -153,15 +192,15 @@ export const initialState = {
     showCardDescriptionUpdated: false,
     showCardDueDateUpdated: false,
     showCardLabelCreated: false,
-    showCardLabelDeleted: '',
+    showCardLabelDeleted: false, //
     showCardMemberCreated: false,
     showCardMoved: false,
     showCardRenamed: false,
-    showCardUnarchived: '',
+    showCardUnarchived: false, //
     showListArchived: false,
     showListCreated: false,
     showListRenamed: false,
-    showListUnarchived: '',
+    showListUnarchived: false, //
     langText: '한국어',
     searchBoardText: '',
     selectedAuthentication: '',

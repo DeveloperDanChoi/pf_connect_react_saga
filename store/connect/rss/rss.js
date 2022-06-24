@@ -37,6 +37,18 @@ export const initialModules = [
     name: 'TEAMS_RSS',
     data: false,
     api: postTeamsRss,
+    request: {
+      params: {
+        teamId: 'Jandi Team ID',
+      },
+      body: {
+        roomId: 'Room ID',
+        feedUrl: 'RSS feed URL',
+        botName: 'Bot name',
+        botThumbnailFile: '봇의 프로필 이미지',
+        lang: 'Language',
+      },
+    },
   },
   /**
    * RSS Connect 설정 수정<br>

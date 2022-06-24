@@ -13,7 +13,6 @@ import {putTeamsGithubSetting} from "../../../../../api/connect/WebAdmin/Github/
 const MyConnectPlug = (props) => {
   const dispatch = useDispatch();
   const { connect, team, user } = useSelector((state) => {
-    console.log('state !!', state);
     return state;
   });
 

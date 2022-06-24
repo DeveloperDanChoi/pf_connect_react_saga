@@ -103,7 +103,7 @@ const Jira = () => {
       load: creators.getTeamsJira,
       connect: [creators.postTeamsJira, creators.putTeamsJiraSetting],
       set: creators.setInputJira,
-    });
+    }, false);
   }, []);
 
   return (<>
@@ -123,9 +123,9 @@ const Jira = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a href='#none' onClick={tab.change} id="1">서비스 소개</a></li>
             <li><a href='#none' onClick={tab.change} id="2">사용방법</a></li>
-            <li><a href='#none' onClick={tab.change} id="3">연동하기</a></li>
+            <li><a href='#none' onClick={tab.change} id="3" className='on'>연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
@@ -142,7 +142,7 @@ const Jira = () => {
               </div>
             </div>
           </div>
-          <div className='tab-cont on'>
+          <div className='tab-cont'>
             <div className='detail-content type-swiper'>
                <Swiper
                 ref={swiperRef}
@@ -187,8 +187,8 @@ const Jira = () => {
               </Swiper>
             </div>
           </div>
-          <div className='tab-cont'>
-            <div className='detail-정content connect'>
+          <div className='tab-cont on'>
+            <div className='detail-content connect'>
               <div className='connect-row-item'>
                 <div className='title'><strong>커넥트 설정</strong></div>
                 <div className='content'>
@@ -353,6 +353,7 @@ const Jira = () => {
                 </div>
               </div>
               {/* [D] : 연동 추가하기 완료될 경우 노출 */}
+              { jira.input.webhookUrl !== '' && <>
               <div className='connect-row-item webhook'>
                 <div className='title'><strong>Webhook URL 등록</strong></div>
                 <div className='content'>
@@ -363,23 +364,21 @@ const Jira = () => {
                     </dt>
                     <dd>
                       <div className='input-row'>
-                          <div className='input-copy-box mgr8'>
-                            <i className='icon-ic-contact'></i>
-                            <Input type="text"
-                                   className='input-icon'
-                                   value={jira.teamsToken.webhookUrl}
-                                   readOnly={true}>
-                            </Input>
-                          </div>
-                          <button type='button'>복사</button>
+                        <div className='input-copy-box mgr8'>
+                          <i className='icon-ic-contact'></i>
+                          <Input type="text" className='input-icon' value={jira.input.webhookUrl} readOnly></Input>
+                        </div>
+                        <button type='button'>복사</button>
                       </div>
                     </dd>
                   </dl>
                 </div>
               </div>
-              {/* //[D] : 연동 추가하기 완료될 경우 노출 */}
-              <button type='button' className='full-btn' >연동 추가하기 (Webhook URL 생성하기)</button>
-              <button type='button' className='full-btn' disabled>생성 완료 (Webhook URL을 해당 서비스에 등록해주세요)</button>{/* [D] : 연동 추가하기 완료될 경우 */}
+              <button type='button' className='full-btn' onClick={(e) => template1.connect(e, jira)}>생성 완료 (Webhook URL을 해당 서비스에 등록해주세요)</button>{/* [D] : 연동 추가하기 완료될 경우 */}
+              </> }
+              { jira.input.webhookUrl === '' && <>
+              <button type='button' className='full-btn' onClick={() => template1.list(creators.getTeamsToken)}>연동 추가하기 (Webhook URL 생성하기)</button>
+              </> }
             </div>{/* //detail-wrapper */}
           </div>
         </div>

@@ -238,8 +238,8 @@ export const searcherCal = (() => {
     //   [name]: target.innerText,
     // });
     searcher.set('selectedCal', target.innerText);
-    // searcher.set('hookRepoId', data.id);
-    // searcher.set('hookRepoName', data.name);
+    searcher.set('calendarId', data.id);
+    searcher.set('calendarSummary', data.summary);
 
     selectLists.forEach((list) => list.classList.remove('on'));
     target.classList.toggle('on');
@@ -459,8 +459,8 @@ export const searcherBoard = (() => {
     //   [name]: target.innerText,
     // });
     searcher.set('selectedBoard', target.innerText);
-    // searcher.set('hookRepoId', data.id);
-    // searcher.set('hookRepoName', data.name);
+    searcher.set('trelloBoardId', data.id);
+    searcher.set('trelloBoardName', data.name);
 
     selectLists.forEach((list) => list.classList.remove('on'));
     target.classList.toggle('on');
@@ -525,12 +525,12 @@ export const searcherAuth = (() => {
     const selectLists = target.closest('.select-list').querySelectorAll('li a');
     const { name } = target.closest('.select-box').firstChild;
 
-    // selects[1]({
-    //   ...selects[0],
-    //   [name]: target.innerText,
-    // });
     searcher.set('selectedAuthentication', target.innerText);
-    searcher.set('connectId', data.connectId);
+    if (data.authenticationName) {
+      searcher.set('googleId', data.authenticationName);
+    } else {
+      searcher.set('connectId', data.connectId);
+    }
 
     selectLists.forEach((list) => list.classList.remove('on'));
     target.classList.toggle('on');

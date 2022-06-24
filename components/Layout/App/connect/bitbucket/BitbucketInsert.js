@@ -146,13 +146,13 @@ const Bitbucket = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a href='#none' onClick={tab.change} id="1">서비스 소개</a></li>
             <li><a href='#none' onClick={tab.change} id="2">사용방법</a></li>
-            <li><a href='#none' onClick={tab.change} id="3">연동하기</a></li>
+            <li><a href='#none' onClick={tab.change} id="3" className='on'>연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
-          <div className='tab-cont on'>
+          <div className='tab-cont'>
             <div className='detail-content'>
               <div className='info-wrap'>
                 <img src={getPublicAssetPath('static/bitbucket/ko/info/img_info.png')} alt="서비스 소개"></img>{/* [D] : static/커넥트명/언어코드/img_info.png */}
@@ -203,7 +203,7 @@ const Bitbucket = () => {
               </Swiper>
             </div>
           </div>
-          <div className='tab-cont'>
+          <div className='tab-cont on'>
             <div className='detail-content connect'>
               <div className='connect-row-item'>
                 <div className='title'><strong>커넥트 설정</strong></div>
@@ -370,6 +370,7 @@ const Bitbucket = () => {
                 </div>
               </div>
               {/* [D] : 연동 추가하기 완료될 경우 노출 */}
+              { bitbucket.input.webhookUrl !== '' && <>
               <div className='connect-row-item webhook'>
                 <div className='title'><strong>Webhook URL 등록</strong></div>
                 <div className='content'>
@@ -380,19 +381,21 @@ const Bitbucket = () => {
                     </dt>
                     <dd>
                       <div className='input-row'>
-                          <div className='input-copy-box mgr8'>
-                            <i className='icon-ic-contact'></i>
-                            <Input type="text" className='input-icon' value={'https://wh.jandi.com/connectd/webhoKE3asfewaqs'} readOnly={true}></Input>
-                          </div>
-                          <button type='button'>복사</button>
+                        <div className='input-copy-box mgr8'>
+                          <i className='icon-ic-contact'></i>
+                          <Input type="text" className='input-icon' value={bitbucket.input.webhookUrl} readOnly></Input>
+                        </div>
+                        <button type='button'>복사</button>
                       </div>
                     </dd>
                   </dl>
                 </div>
               </div>
-              {/* //[D] : 연동 추가하기 완료될 경우 노출 */}
-              <button type='button' className='full-btn' onClick={onClick}>연동 추가하기 (Webhook URL 생성하기)</button>
-              <button type='button' className='full-btn' onClick={onClick} disabled>생성 완료 (Webhook URL을 해당 서비스에 등록해주세요)</button>{/* [D] : 연동 추가하기 완료될 경우 */}
+              <button type='button' className='full-btn' onClick={(e) => template1.connect(e, bitbucket)}>생성 완료 (Webhook URL을 해당 서비스에 등록해주세요)</button>{/* [D] : 연동 추가하기 완료될 경우 */}
+              </> }
+              { bitbucket.input.webhookUrl === '' && <>
+              <button type='button' className='full-btn' onClick={() => template1.list(creators.getTeamsToken)}>연동 추가하기 (Webhook URL 생성하기)</button>
+              </> }
             </div>{/* //detail-wrapper */}
           </div>
         </div>

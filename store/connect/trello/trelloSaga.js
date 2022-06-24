@@ -15,6 +15,7 @@ import { getV1AdminTeamsMembers } from '../../../api/team/Admin/admin';
 import { util } from '../../../service/util';
 import { reduxModule } from '../../../service/reduxModule';
 import { converter } from '../../../service/converter';
+import { template1 } from "../../../service/connect";
 
 const { creators } = modules;
 export const saga = (() => ({
@@ -23,7 +24,10 @@ export const saga = (() => ({
    */
   * getAuthenticationTrelloBoardsList() {
     const result = yield call(getAuthenticationTrelloBoardsList);
+
     yield put(creators.setAuthenticationTrelloBoardsList(result.data));
+    yield put(creators.setInputTrello({ key: 'authenticationId', value: result.data.authenticationId }));
+    yield put(creators.setInputTrello({ key: 'selectedAuthentication', value: result.data.authenticationName }));
   },
   /**
    * Connect Trello Service 조회<br>
@@ -64,42 +68,15 @@ export const saga = (() => ({
    * @returns {Generator<*, void, *>}
    */
   * postTeamsTrello(data) {
-    const { authenticationTrelloBoardsList } = data.data.trello;
-    const params = {
-      authenticationId: authenticationTrelloBoardsList.authenticationId,
-      botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-trello.png',
-      botName: 'Trello',
-      defaultBotName: 'Trello',
-      lang: 'ko',
-      showBoardRenamed: false,
-      showCardAttachmentCreated: true,
-      showCardChecklistCreated: true,
-      showCardChecklistItemCreated: true,
-      showCardChecklistItemUpdated: true,
-      showCardCommentCreated: true,
-      showCardCreated: true,
-      showCardDescriptionUpdated: false,
-      showCardDueDateUpdated: false,
-      showCardMemberCreated: false,
-      showCardMoved: true,
-      showCardRenamed: false,
-      showListCreated: true,
-      showListRenamed: false,
-      showBoardMemberCreated: false,
-      showCardLabelCreated: false,
-      showCardLabelDeleted: false,
-      showListArchived: false,
-      showListUnarchived: false,
-      showCardArchived: false,
-      showCardUnarchived: false,
-      // TODO: why ?? error
-      showBoardListFromMoved: true,
-      showBoardListToMoved: false,
-      roomId: 20128232,
-      trelloBoardId: authenticationTrelloBoardsList.boards[0].id,
-      trelloBoardName: 'first',
-    };
-    const result = yield call(postTeamsTrello, { teamId: 279, data: params });
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.body, data.data);
+    // custom request data
+    moduleData.request.params.teamId = team.teamId;
+
+    const result = yield call(moduleData.api, moduleData.request);
   },
   /**
    * Connect Trello Service 설정 변경<br>
@@ -107,41 +84,6 @@ export const saga = (() => ({
    * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
    */
   * putTeamsTrelloSetting(data) {
-    // const params = {
-    //   connectId: Number(data.data.connectId),
-    //   botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-trello.png',
-    //   botName: 'Trello',
-    //   defaultBotName: 'Trello',
-    //   lang: 'ko',
-    //   showBoardRenamed: false,
-    //   showCardAttachmentCreated: true,
-    //   showCardChecklistCreated: true,
-    //   showCardChecklistItemCreated: true,
-    //   showCardChecklistItemUpdated: true,
-    //   showCardCommentCreated: true,
-    //   showCardCreated: true,
-    //   showCardDescriptionUpdated: false,
-    //   showCardDueDateUpdated: false,
-    //   showCardMemberCreated: false,
-    //   showCardMoved: true,
-    //   showCardRenamed: false,
-    //   showListCreated: true,
-    //   showListRenamed: false,
-    //   showBoardMemberCreated: false,
-    //   showCardLabelCreated: false,
-    //   showCardLabelDeleted: false,
-    //   showListArchived: false,
-    //   showListUnarchived: false,
-    //   showCardArchived: false,
-    //   showCardUnarchived: false,
-    //   // TODO: why ?? error
-    //   showBoardListFromMoved: false,
-    //   showBoardListToMoved: false,
-    //   roomId: 20128232,
-    //   trelloBoardId: authenticationTrelloBoardsList.boards[0].id,
-    //   trelloBoardName: 'first',
-    // };
-    // load initialModule
     const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
     reduxModule.modules.sets(moduleData.request.body, data.data);
@@ -168,6 +110,8 @@ export const saga = (() => ({
   * deleteAuthentications(data) {
     const { authenticationId } = data.data;
     const result = yield call(deleteAuthentications, { authenticationId });
+    yield put(creators.setInputTrello({ key: 'authenticationId', value: '' }));
+    yield put(creators.setInputTrello({ key: 'selectedAuthentication', value: '' }));
   },
   /**
    * 사용자 정의 데이터v

@@ -22,7 +22,7 @@ export const getTeamsRss = ({ params }) => api.get(`/connect-api/teams/${params.
  * @param data
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const postTeamsRss = (data) => api.post(`/connect-api/teams/${data.teamId}/rss`, data.data, { version: 1 });
+export const postTeamsRss = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/rss`, body, { version: 1 });
 
 /**
  * RSS Connect 설정 수정<br>

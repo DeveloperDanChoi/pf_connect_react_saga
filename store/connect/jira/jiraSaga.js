@@ -19,9 +19,20 @@ export const saga = (() => ({
   /**
    * Webhook용 Token을 요청하는 API<br>
    */
-  * getTeamsToken(data) {
-    const result = yield call(getTeamsToken, { connectType: 'jira', teamId: 279 });
+  * getTeamsToken(data, connectType = 'jira') {
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.params, { connectType, teamId: team.teamId });
+
+    const result = yield call(moduleData.api, moduleData.request);
+
     yield put(creators.setTeamsToken(result.data));
+
+    for (const key in result.data) {
+      yield put(creators.setInputJira({ key, value: result.data[key] }));
+    }
   },
   /**
    * Jira Connect 설정을 단일 조회하는 API<br>
@@ -62,14 +73,15 @@ export const saga = (() => ({
    * @returns {Generator<*, void, *>}
    */
   * postTeamsJira(data) {
-    const params = {
-      botName: 'Jira_OK',
-      defaultBotName: 'Jira',
-      lang: 'ko',
-      webhookToken: data.data.jira.teamsToken.webhookToken,
-      roomId: 20128232,
-    };
-    const result = yield call(postTeamsJira, { teamId: 279, data: params });
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.body, data.data);
+    // custom request data
+    moduleData.request.params.teamId = team.teamId;
+
+    const result = yield call(moduleData.api, moduleData.request);
   },
   /**
    * Jira Connect 설정을 수정하는 API<br>

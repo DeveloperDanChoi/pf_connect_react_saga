@@ -19,9 +19,20 @@ export const saga = (() => ({
   /**
    * Webhook용 Token을 요청하는 API<br>
    */
-  * getTeamsToken(data) {
-    const result = yield call(getTeamsToken, { connectType: 'incoming', teamId: 279 });
+  * getTeamsToken(data, connectType = 'incoming') {
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.params, { connectType, teamId: team.teamId });
+
+    const result = yield call(moduleData.api, moduleData.request);
+
     yield put(creators.setTeamsToken(result.data));
+
+    for (const key in result.data) {
+      yield put(creators.setInputIncoming({ key, value: result.data[key] }));
+    }
   },
   /**
    * Incoming Webhook Connect 설정을 단일 조회하는 API<br>
@@ -62,15 +73,15 @@ export const saga = (() => ({
    * @returns {Generator<*, void, *>}
    */
   * postTeamsIncoming(data) {
-    const params = {
-      botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-incoming.png',
-      botName: 'Webhook 수신 (Incoming Webhook)',
-      // defaultBotName: 'Webhook 수신 (Incoming Webhook)',
-      // lang: 'ko',
-      webhookToken: data.data.incoming.teamsToken.webhookToken,
-      roomId: 20128232,
-    };
-    const result = yield call(postTeamsIncoming, { teamId: 279, data: params });
+    const { team } = yield select((state) => state);
+    // load initialModule
+    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // set request data
+    reduxModule.modules.sets(moduleData.request.body, data.data);
+    // custom request data
+    moduleData.request.params.teamId = team.teamId;
+
+    const result = yield call(moduleData.api, moduleData.request);
   },
   /**
    * Incoming Webhook Connect 설정을 수정하는 API<br>
