@@ -5,7 +5,7 @@ import { Input } from 'antd';
 import { getPublicAssetPath } from '../../../../../../lib/assetHelper';
 import Router, {useRouter} from "next/router";
 import {modules as teamModules} from "../../../../../../store/team/team";
-import {modules as connectModules} from "../../../../../../store/connect/connect";
+import { deleteConnect, modules as connectModules, updateStatus } from "../../../../../../store/connect/connect";
 import ConnectPlugHeader from "./ConnectPlugHeader";
 
 const ConnectPlug = (props) => {
@@ -15,15 +15,29 @@ const ConnectPlug = (props) => {
   const [connectType, setConnectType] = useState('');
 
   /**
-   * 편집 페이지 이동
+   * 상세 페이지 이동
    * @param data
    */
   const handleClick = (data) => {
     // TODO: config path
     const prefix = '/app/connect';
     Router.push(`${prefix}/${data.type}?id=${data.id}`, `${prefix}/${data.type}`);
-    // Router.push(`/${data.type}?id=${data.id}`, `/${data.type}`);
+  };
 
+  /**
+   * 커넥트 enabled/disabled<br>
+   * @param data
+   * @param e
+   * @returns {{data, type: string}}
+   */
+  const handleToggleStatus = (data, e) => dispatch(updateStatus(data, e));
+
+  /**
+   * 커넥트 삭제<br>
+   * @param data
+   */
+  const handleClickDeleteConnect = (data) => {
+    dispatch(deleteConnect(data));
   };
 
   /**
@@ -53,6 +67,7 @@ const ConnectPlug = (props) => {
     e.target.closest('.switch').classList.toggle('on');
     e.target.closest('tr').classList.toggle('disabled');
   };
+
   /* custom selectbox  */
   const onSelect = (e) => {
     // e.stopPropagation();
@@ -185,7 +200,7 @@ const ConnectPlug = (props) => {
                         <label className={dataConnect.statusClss} labefor="">
                           <span className='txt'>{dataConnect.statusText}</span>
                           <Input type="checkbox" id=""/>
-                          <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                          <a href="#none" className="slider" onClick={(e) => handleToggleStatus(dataConnect, e)}></a>
                         </label>
                         <div className='btn-wrap tablet'>
                           <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span
@@ -198,10 +213,8 @@ const ConnectPlug = (props) => {
                           </div>
                         </div>
                         <div className='btn-wrap pc'>
-                          <button className='btn-icon' onClick={() => handleClick(dataConnect)}><i className="icon-ic-edit"></i><span className='hidden'>편집</span>
-                          </button>
-                          <button className='btn-icon'><i className="icon-ic-delete"></i><span
-                              className='hidden'>삭제</span></button>
+                          <button className='btn-icon' onClick={() => handleClick(dataConnect)}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                          <button className='btn-icon' onClick={() => handleClickDeleteConnect(dataConnect)}><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
                         </div>
                       </div>
                     </td>

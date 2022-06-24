@@ -14,13 +14,12 @@ const AdminConnectPlug = (props) => {
   });
 
   /**
-   * 상세 페이지 이동
+   * 어드민 상세 페이지 이동
    * @param data
    */
   const handleClick = (data) => {
-    console.log( data )
     // TODO: DEV
-    Router.push('/app/connects/admin/detail', '/app/connects/admin/detail?' + data);
+    Router.push('/app/connects/admin/detail', `/app/connects/admin/detail?${data}`);
   };
 
   /**
@@ -34,10 +33,10 @@ const AdminConnectPlug = (props) => {
     let names = data[0].member.name;
 
     for (let i = 1; i < 3; i++) {
-      names = names + ',' + data[i].member.name;
+      names = `${names},${data[i].member.name}`;
     }
 
-    return names + ' 외 ' + (length - 3) + '인';
+    return `${names} 외 ${length - 3}인`;
   };
 
   /**
@@ -87,33 +86,43 @@ const AdminConnectPlug = (props) => {
             <div className='connect-etc-box'>
               <span><i className='icon-ic-plug'></i>{connect.teamsConnect[data].length}개 연동중</span>
               <div className='profile-box'>
-                {
-                  connect.teamsConnect[data].length > 3 && connect.teamsConnect[data].map((connectData, j) => {
-                    return (
-                        j < 3 ? <div key={j} className='item'><img src={connectData.member.photoUrl} alt={connectData.member.name}></img></div> :
-                        j === 3 ?
-                            <Fragment key={j}>
-                              <div className='item'><div className='etc-profile'><i className='icon-ic-more'></i></div></div>
-                              <div className='tooltip'><span>{connectMemberNames(connect.teamsConnect[data], connect.teamsConnect[data].length)}</span></div>
-                            </Fragment>
-                            : <Fragment key={j}></Fragment>
-                    )
-                  })
-                }
-                {
-                  connect.teamsConnect[data].length < 4 && connect.teamsConnect[data].map((connectData, j) => (
-                      <div key={j} className='item'><img src={connectData.member.photoUrl} alt={connectData.member.name}></img></div>)
-                  )
-                }
-                {
-                    connect.teamsConnect[data].length === 0 && <div className='item'><div className='etc-profile'><i className='icon-ic-more'></i></div></div>
-                }
+                {(() => {
+                  switch (connect.teamsConnect[data].length) {
+                    case 0:
+                      // 연결 커넥트가 없을 경우
+                      return (<div className='item'><div className='etc-profile'><i className='icon-ic-more'></i></div></div>);
+                    case 1: case 2: case 3:
+                      // 연결 커넥트가 3개 이하
+                      return (<>{
+                        connect.teamsConnect[data].map((connectData, j) => (
+                          <div key={j} className='item'><img src={connectData.member.photoUrl} alt={connectData.member.name}></img></div>
+                        ))
+                      }</>);
+                    default:
+                      // 연결 커넥트 3개 초과 툴팁 표시
+                      return (<>{
+                        connect.teamsConnect[data].map((connectData, j) => (<Fragment key={j}>{
+                          (() => {
+                            switch (j) {
+                              case 0: case 1: case 2:
+                                return (<div className='item'><img src={connectData.member.photoUrl} alt={connectData.member.name}></img></div>);
+                              case 3:
+                                return (<>
+                                  <div className='item'><div className='etc-profile'><i className='icon-ic-more'></i></div></div>
+                                  <div className='tooltip'><span>{connectMemberNames(connect.teamsConnect[data], connect.teamsConnect[data].length)}</span></div>
+                                </>);
+                              default: return (<></>);
+                            }
+                          })()
+                        }</Fragment>))
+                      }</>);
+                  }
+                })()}
               </div>
             </div>
           </a>
         ))}
       </div>
-
 
       <p>----- 퍼블</p>
       <div className='connect-admin-wrap'>

@@ -42,9 +42,13 @@ function* updateStatusSaga({ data, event }) {
   // yield put(setValues({ key: 'myConnectCount', value: connectCount }));
   if (result.status === 200 && event) {
     // TODO: 여기서 해야 하는가?
-    event.target.closest('.switch').classList.toggle('on');
+    // 리스트 페이지
     if (event.target.closest('tr')) {
-      event.target.closest('tr').classList.toggle('disabled');
+      // TODO: 디테일한 제어할 수 있게 개선
+      yield put(connectModules.creators.getTeamsConnect(teamId));
+      // event.target.closest('tr').classList.toggle('disabled');
+    } else {
+      event.target.closest('.switch').classList.toggle('on');
     }
   }
   console.log(result);

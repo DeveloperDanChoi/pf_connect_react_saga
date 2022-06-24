@@ -30,7 +30,15 @@ const MyConnectPlug = (props) => {
   };
 
   /**
-   * 커넥트 삭제
+   * 커넥트 enabled/disabled<br>
+   * @param data
+   * @param e
+   * @returns {{data, type: string}}
+   */
+  const handleToggleStatus = (data, e) => dispatch(updateStatus(data, e));
+
+  /**
+   * 커넥트 삭제<br>
    * @param data
    */
   const handleClickDeleteConnect = (data) => {
@@ -48,8 +56,6 @@ const MyConnectPlug = (props) => {
     e.target.closest('.switch').classList.toggle('on');
     e.target.closest('tr').classList.toggle('disabled');
   };
-
-  const handleToggleStatus = (data, e) => dispatch(updateStatus(data, e));
 
   /* (s) tooltipbox toggle */
   useEffect(() => {

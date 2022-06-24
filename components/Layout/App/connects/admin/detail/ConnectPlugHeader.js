@@ -175,7 +175,7 @@ const ConnectPlugHeader = (props) => {
                 onChange={searcher.change}></Input>
             <button type="button"
                     className="search-btn"
-                    disabled={searcher.value() === ''}
+                    // disabled={searcher.value() === ''}
                     onClick={searcher.search}
             >검색</button>
           </div>
