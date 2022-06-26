@@ -14,6 +14,7 @@ import {
   searcher, searcherAuth, searcherLanguage, searcherCal,
 } from '../../../../../service/searcher';
 import { LANGUAGE2 } from '../../../../../constants/type';
+import {Toast} from "../../../../ui/Toast/Toast";
 
 const GoogleCalendar = () => {
   const connectType = 'googleCalendar';
@@ -46,6 +47,8 @@ const GoogleCalendar = () => {
      * @param e
      */
     const change = (e) => {
+      dispatch(Toast.show({msg:'alksjdlkfjasfljk', type: 'error'}))
+
       if (swiperRef.current) {
         setTimeout(() => swiperRef.current.swiper.update());
       } // swiper observer
@@ -111,7 +114,24 @@ const GoogleCalendar = () => {
       set: creators.setInputGoogleCalendar,
       elements: googleCalendar.input,
     });
+
+    window.popupDone = function() {
+      console.log('callback !!!!')
+    }
+    window.addEventListener('popupDone', () => {
+      console.log('callback good !!')
+    });
+    window.onunload = function() {
+      console.log('..............');
+    }
+
+    template1.set('win', window);
+    template1.set('pp', {});
   }, []);
+
+  useEffect(() => {
+    console.log(googleCalendar.input);
+  }, [googleCalendar.input.pp]);
 
   useEffect(() => {
     if (googleCalendar.authenticationGoogleCalendarCalendarList.length === 0) return;
@@ -233,7 +253,7 @@ const GoogleCalendar = () => {
                                       </li>
                                       ))
                                     }
-                                      <li><a href="#none" onClick={template1.authorize}><span className='icon-ic-user-add'>계정 추가하기</span></a></li>
+                                      <li><a href="#none" onClick={(e) => template1.authorize(e, googleCalendar)}><span className='icon-ic-user-add'>계정 추가하기</span></a></li>
                                   </ul>
                                 </div>
                               </div>
