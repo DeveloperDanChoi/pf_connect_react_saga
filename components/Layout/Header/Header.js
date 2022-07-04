@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter, withRouter } from 'next/router';
+
 const Header = (props) => {
   const router = useRouter();
 

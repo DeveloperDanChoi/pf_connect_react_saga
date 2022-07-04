@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-len
 /* eslint-disable react/jsx-props-no-spreading,react-hooks/rules-of-hooks,import/no-extraneous-dependencies */
-import React, {useEffect, useRef} from 'react';
+import React, { useRef } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import { useDispatch } from 'react-redux';

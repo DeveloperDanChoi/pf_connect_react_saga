@@ -1,10 +1,10 @@
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { Portal } from '../../modal/Portal';
 import ImageCropper from '../../modal/cropper/ImageCropper';
-import {getPublicAssetPath} from "../../../lib/assetHelper";
-import {template1} from "../../../service/connect";
+// import {getPublicAssetPath} from "../../../lib/assetHelper";
+// import {template1} from "../../../service/connect";
 
 const Thumbnail = ({ state, parent }) => {
   const dispatch = useDispatch();

@@ -1,9 +1,7 @@
-/* eslint-disable max-len,import/no-unresolved */
+/* eslint-disable max-len,import/no-unresolved,no-unused-vars,no-param-reassign,prefer-template,no-useless-concat,arrow-body-style,operator-linebreak,space-in-parens,keyword-spacing,no-plusplus,no-restricted-syntax,radix,prefer-const,consistent-return,comma-spacing,default-case,no-use-before-define,indent,quote-props,spaced-comment,object-curly-spacing,function-paren-newline,padded-blocks,comma-dangle,semi,array-bracket-spacing,no-undef,quotes */
 import React, {useEffect, useRef, useState} from 'react';
-import {connect_api} from "../../../../api/_call";
+import axios from 'axios';
 import {getCookie} from "../../../../service/cookie";
-import axios from "axios";
-import getConfig from "next/config";
 import {modules as themeModules} from "../../../../store/theme/theme";
 
 const cssWrapper = {

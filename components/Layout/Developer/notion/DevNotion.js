@@ -1,10 +1,6 @@
-/* eslint-disable max-len,import/no-unresolved */
-import React, {useEffect, useRef, useState} from 'react';
-import {connect_api} from "../../../../api/_call";
-import {getCookie} from "../../../../service/cookie";
-import axios from "axios";
-import getConfig from "next/config";
-import {modules as themeModules} from "../../../../store/theme/theme";
+/* eslint-disable max-len,import/no-unresolved,no-unused-vars,no-param-reassign,prefer-template,no-useless-concat,arrow-body-style,operator-linebreak,space-in-parens,keyword-spacing,no-plusplus,no-restricted-syntax,radix,prefer-const,consistent-return,comma-spacing,default-case,no-use-before-define,indent,quote-props,spaced-comment,object-curly-spacing,function-paren-newline,padded-blocks */
+import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 
 const cssWrapper = {
   width: '100vw',
@@ -21,7 +17,7 @@ const cssMenu = {
   position: 'absolute',
   top: 0,
   width: '100%',
-  padding: '1rem'
+  padding: '1rem',
 };
 const cssHistoryTab = {
   position: 'absolute',
@@ -55,12 +51,12 @@ const DevNotion = () => {
    */
   const getToken = async () => {
     const result = await axios.get('http://localhost:8080/notion/token',
-        {
-          headers: {
-            'connect-type': 'application/json;charset=UTF-8',
-            'accept': 'application/vnd.tosslab.jandi-v1+json',
-          },
+      {
+        headers: {
+          'connect-type': 'application/json;charset=UTF-8',
+          accept: 'application/vnd.tosslab.jandi-v1+json',
         },
+      },
     ).catch((err) => console.error(err));
 
     setToken(result.data);
@@ -75,23 +71,22 @@ const DevNotion = () => {
    */
   useEffect(() => {
     if (!token) return;
-    console.log( token )
+    console.log(token);
     // apiUrl({type: 'get', url: 'https://api.notion.com/v1/blocks/cdd93a05c84845b5ba9d33962b1caa67/children'});
   }, [token]);
 
   const handleClick = () => {
-    window.open('https://api.notion.com/v1/oauth/authorize?' +
-        ['response_type=code',
-          'client_id=1a291f86-bd7f-4573-84bd-2a46c9c5dcc7',
-          'redirect_uri=http://localhost:8080/notionCallback',
-          // 'redirect_uri=http://05a0-58-151-209-130.ngrok.io/notionCallback',
-          // 'redirect_uri=https://zapier.com/dashboard/auth/oauth/return/NotionCLIAPI',
-          'owner=user',
-          // 'state=1648084461.251121828443',
-          ''
-        ].join('&')
-    );
-  }
+    window.open(`https://api.notion.com/v1/oauth/authorize?${
+      ['response_type=code',
+        'client_id=1a291f86-bd7f-4573-84bd-2a46c9c5dcc7',
+        'redirect_uri=http://localhost:8080/notionCallback',
+        // 'redirect_uri=http://05a0-58-151-209-130.ngrok.io/notionCallback',
+        // 'redirect_uri=https://zapier.com/dashboard/auth/oauth/return/NotionCLIAPI',
+        'owner=user',
+        // 'state=1648084461.251121828443',
+        '',
+      ].join('&')}`);
+  };
 
   /**
    * 객체
@@ -179,7 +174,7 @@ const DevNotion = () => {
    * @param data
    */
   const view = (data) => {
-    const el = document.getElementById('view-result')
+    const el = document.getElementById('view-result');
     let content = addElement('', data);
     // for (const item in data) {
     //   content += '<div>' + item + '</div>';
@@ -190,9 +185,9 @@ const DevNotion = () => {
       _el.addEventListener('click', (e) => {
         const type = (() => {
           switch(e.target.dataset.target) {
-            case "page":
+            case 'page':
               return 'blocks/';
-            case "user":
+            case 'user':
               return 'users/';
           }
         })();
@@ -268,7 +263,7 @@ const DevNotion = () => {
             >history{i}</div>
         )) }
       </div>
-      <div id={"view-result"} style={cssResult}></div>
+      <div id={'view-result'} style={cssResult}/>
     </div>
   </>);
 };

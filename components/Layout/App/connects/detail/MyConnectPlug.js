@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable max-len,import/no-unresolved,no-unused-vars,no-param-reassign,prefer-template,no-useless-concat,arrow-body-style,operator-linebreak,space-in-parens,keyword-spacing,no-plusplus,no-restricted-syntax,radix,prefer-const,consistent-return,comma-spacing,default-case,no-use-before-define,indent,quote-props,spaced-comment,object-curly-spacing,function-paren-newline,padded-blocks,comma-dangle,semi,array-bracket-spacing,no-undef,quotes,import/order,react/jsx-no-duplicate-props */
 import {useDispatch, useSelector} from 'react-redux';
 import React, {Fragment, useEffect, useState} from 'react';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
@@ -7,8 +7,6 @@ import { deleteConnect, modules as connectModules, updateStatus } from "../../..
 import {template1} from "../../../../../service/connect";
 import Router from "next/router";
 import {putTeamsGithubSetting} from "../../../../../api/connect/WebAdmin/Github/github";
-
-
 
 const MyConnectPlug = (props) => {
   const dispatch = useDispatch();

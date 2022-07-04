@@ -1,11 +1,11 @@
-import React,{useState, useEffect} from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {Router, useRouter, withRouter} from 'next/router';
+import { Router, useRouter, withRouter } from 'next/router';
 import Link from 'next/link';
 import { banner } from '../../../service/banner';
 
-
-const Left = (props) => {
+const Left = () => {
   const router = useRouter();
   const { team, user } = useSelector((state) => state);
   const mainURL = '/app';
@@ -21,7 +21,8 @@ const Left = (props) => {
     e.preventDefault();
     e.currentTarget.classList.toggle('on');
     document.querySelector('.menu-wrap').classList.toggle('block');
-  }
+  };
+
   useEffect(() => {
     document.querySelector('body').addEventListener('click', (e) => {
       e.preventDefault();
@@ -31,8 +32,8 @@ const Left = (props) => {
     });
   }, []);
   return (<>
-    { (isMain || isMy || isAdm) &&
-     <div className='menu-container'>
+    { (isMain || isMy || isAdm)
+     && <div className='menu-container'>
        <div className='tablet-menu'>
          <a href='#none' className='icon-ic-plug btn-open' onClick={openMenu}><span className='hidden'>메뉴 열기</span></a>
        </div>

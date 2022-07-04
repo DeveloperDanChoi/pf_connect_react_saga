@@ -13,7 +13,14 @@ export const close = () => ({ type: CLOSE });
 export const showToast = (modalComponent, modalProps) => ({
   type: "show_toast",
   data: { modalComponent, modalProps },
-})
+});
+
+export const sliceToast = (toastArr) => ({
+  type: "slice_toast",
+  data: toastArr,
+});
+
+export const hideToast = () => ({ type: "hide_toast" });
 
 const initialState = {
   open: false,
@@ -45,6 +52,16 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
 
       draft.modalComponent = action.data.modalComponent;
       draft.modalProps = { toastArr: JSON.parse(JSON.stringify(_toastArr)) }
+      break;
+    case "slice_toast":
+      let filtering = _.filter(state.modalProps.toastArr, (toast)=>toast.timestamp !== action.data)
+      draft.modalProps = { toastArr: filtering }
+      break;
+    case "hide_toast":
+      draft.modalComponent = null;
+      draft.modalProps = {
+        toastArr: []
+      }
       break;
     default:
       break;

@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-props-no-spreading,react-hooks/rules-of-hooks */
+/* eslint-disable react/jsx-props-no-spreading,react-hooks/rules-of-hooks,no-unused-vars */
 import React, { useEffect, useState } from 'react';
 
 import { useDispatch } from 'react-redux';
