@@ -1,4 +1,4 @@
-/* eslint-disable no-nested-ternary */
+/* eslint-disable no-unused-vars */
 const Dotenv = require('dotenv-webpack');
 const withPlugins = require('next-compose-plugins');
 const withImages = require('next-images');
@@ -51,7 +51,7 @@ const publicRuntimeConfig = {
     alpha: 'https://alpha-cdn.jandi.io',
     development: 'https://cdn.jandi.io',
     oprs: 'https://www.gamevilcom2us.net',
-    local: 'https://cdn.jandi.io'
+    local: 'https://cdn.jandi.io',
   }),
   ASSET_DIR: getAddress2({
     production: 'https://cdn.jandi.io/admin',
@@ -86,7 +86,7 @@ const publicRuntimeConfig = {
   /**
    * @deprecated
    */
-  dev: process.env.NODE_ENV === 'development' ? process.env : {}
+  dev: process.env.NODE_ENV === 'development' ? process.env : {},
 };
 
 const nextConfig = {
@@ -115,16 +115,12 @@ const nextConfig = {
     config.plugins.push(new Dotenv({ silent: true }));
 
     if (isProd && config.optimization.splitChunks && config.optimization.splitChunks.cacheGroups) {
-      const cacheGroups = config.optimization.splitChunks.cacheGroups
+      const { cacheGroups } = config.optimization.splitChunks;
       if (cacheGroups && cacheGroups.lib) {
-        cacheGroups.lib = Object.assign({}, cacheGroups.lib, {
-          enforce: true
-        });
+        cacheGroups.lib = { ...cacheGroups.lib, enforce: true };
       }
       if (cacheGroups && cacheGroups.lib) {
-        cacheGroups.commons = Object.assign({}, cacheGroups.commons, {
-          enforce: true
-        });
+        cacheGroups.commons = { ...cacheGroups.commons, enforce: true };
       }
     }
 

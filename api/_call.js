@@ -1,8 +1,8 @@
 // import getConfig from 'next/config';
 import axios from 'axios';
 
-import { getAccessToken } from 'lib/cookie';
-import ServerSideHelper from 'lib/helpers/serverSideHelper';
+import { getAccessToken } from '../lib/cookie';
+import ServerSideHelper from '../lib/helpers/serverSideHelper';
 
 import { config } from '../lib/config';
 
@@ -19,7 +19,7 @@ const { getAccessToken: getAccessTokenFromServer } = ServerSideHelper;
  * @param uri
  * @param headersInfo
  * @param data
- * @returns {Promise<AxiosResponse<any> | void>|Promise<AxiosResponse<any>>}
+ * @returns
  */
 const call = (target, method, uri, headersInfo, data = null) => {
   const setUrl = () => {
@@ -47,7 +47,7 @@ const call = (target, method, uri, headersInfo, data = null) => {
   if (headersInfo?.responseType === 'arraybuffer') {
     return axios.get(url, {
       headers,
-      responseType: headersInfo.responseType
+      responseType: headersInfo.responseType,
     });
   }
 
@@ -77,6 +77,8 @@ const call = (target, method, uri, headersInfo, data = null) => {
       console.error('error');
     }
   }
+
+  return undefined;
 };
 const call2 = (target, method, uri, headersInfo, data = null) => {
   const setUrl = () => {
@@ -104,7 +106,7 @@ const call2 = (target, method, uri, headersInfo, data = null) => {
   if (headersInfo?.responseType === 'arraybuffer') {
     return axios.get(url, {
       headers,
-      responseType: headersInfo.responseType
+      responseType: headersInfo.responseType,
     });
   }
 
@@ -134,6 +136,8 @@ const call2 = (target, method, uri, headersInfo, data = null) => {
       console.error('error');
     }
   }
+
+  return undefined;
 };
 
 export const api = {
@@ -143,6 +147,7 @@ export const api = {
   delete: (uri, data, headersInfo) => call('api', 'delete', uri, headersInfo, data),
 };
 
+// eslint-disable-next-line camelcase
 export const connect_api = {
   get: (uri, headersInfo) => call2('CONNECT_API_URL', 'get', uri, headersInfo),
   post: (uri, data, headersInfo) => call2('CONNECT_API_URL', 'post', uri, headersInfo, data),

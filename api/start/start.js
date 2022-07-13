@@ -2,7 +2,7 @@ import { api, l10n } from '../_call';
 /**
  * Start API: 별도의 윈도로 뜨는 앱들을 위한 Account and Member 데이터<br>
  * https://tosslab.atlassian.net/wiki/spaces/API/pages/2256535553/GET+start-api+v4+teams+teamId+me<br>
- * @returns {Promise<AxiosResponse<any>>}
+ * @returns
  */
 export const getAccountV4TeamsMe = (data) => api.get(`/start-api/v4/teams/${data}/me`, { version: 4 });
 

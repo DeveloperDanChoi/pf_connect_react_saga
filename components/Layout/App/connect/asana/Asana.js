@@ -2,8 +2,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Router, { useRouter } from 'next/router';
-import AsanaInsert from "../asana/AsanaInsert";
-import AsanaUpdate from "../asana/AsanaUpdate";
+import AsanaInsert from "./AsanaInsert";
+import AsanaUpdate from "./AsanaUpdate";
 
 const Asana = () => {
   const dispatch = useDispatch();

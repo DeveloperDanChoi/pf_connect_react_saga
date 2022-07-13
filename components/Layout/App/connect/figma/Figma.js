@@ -2,8 +2,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Router, { useRouter } from 'next/router';
-import FigmaInsert from "../figma/FigmaInsert";
-import FigmaUpdate from "../figma/FigmaUpdate";
+import FigmaInsert from "./FigmaInsert";
+import FigmaUpdate from "./FigmaUpdate";
 
 const Figma = () => {
   const dispatch = useDispatch();

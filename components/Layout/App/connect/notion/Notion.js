@@ -2,8 +2,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Router, { useRouter } from 'next/router';
-import NotionInsert from "../notion/NotionInsert";
-import NotionUpdate from "../notion/NotionUpdate";
+import NotionInsert from "./NotionInsert";
+import NotionUpdate from "./NotionUpdate";
 
 const Notion = () => {
   const dispatch = useDispatch();

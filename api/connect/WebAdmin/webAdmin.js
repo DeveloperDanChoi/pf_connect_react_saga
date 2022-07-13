@@ -1,4 +1,4 @@
-import {api, connect_api} from '../../_call';
+import { api } from '../../_call';
 import {
   deleteTeamsBitbucket,
   getTeamsBitbucket,
@@ -118,14 +118,14 @@ export const webAdmin = (() => ({
 /**
  * 외부에서 Connect에 값을 넘기기 위한 Webhook API<br>
  * https://tosslab.atlassian.net/wiki/spaces/API/pages/1113817387/POST+connect-api+webhook+teamId+token<br>
- * @returns {Promise<AxiosResponse<any>>}
+ * @returns
  */
 export const postWebhook = (data) => api.post(`/connect-api/webhook/${data.teamId}/${data.token}`, data.data, { version: 1 });
 
 /**
  * Connect 공통 정보를 요청하는 API<br>
  * https://tosslab.atlassian.net/wiki/spaces/API/pages/1113817654/GET+connect-api+connect<br>
- * @returns {Promise<AxiosResponse<any>>}
+ * @returns
  */
 export const getConnect = () => api.get('/connect-api/connect', { version: 1 });
 // export const getConnect = () => connect_api.get('/connect-api/connect', { version: 1 });
@@ -134,21 +134,21 @@ export const getConnect = () => api.get('/connect-api/connect', { version: 1 });
  * 팀에 연결된 모든 Connect 정보를 요청하는 API<br>
  * https://tosslab.atlassian.net/wiki/spaces/API/pages/1113817586/GET+connect-api+teams+teamId+connect<br>
  * @param data
- * @returns {Promise<AxiosResponse<any>>}
+ * @returns
  */
 export const getTeamsConnect = (data) => api.get(`/connect-api/teams/${data}/connect`, { version: 1 });
 
 /**
  * Webhook용 Token을 요청하는 API<br>
  * https://tosslab.atlassian.net/wiki/spaces/API/pages/1113817375/GET+connect-api+teams+teamId+connectType+token<br>
- * @returns {Promise<AxiosResponse<any>>}
+ * @returns
  */
 export const getTeamsToken = ({ params }) => api.get(`/connect-api/teams/${params.teamId}/${params.connectType}/token`, { version: 1 });
 
 /**
  * Webhook용 Token을 요청하는 API<br>
  * https://tosslab.atlassian.net/wiki/spaces/API/pages/1120344377/PUT+connect-api+teams+teamId+connectType+token<br>
- * @returns {Promise<AxiosResponse<any>>}
+ * @returns
  */
 export const putTeamsToken = (data) => api.put(`/connect-api/teams/${data.teamId}/${data.connectType}/token`, data.data, { version: 1 });
 
