@@ -13,6 +13,17 @@ export const template1 = (() => {
    */
   // function authorize(e, obj) {
   function authorize() {
+    // const url = `http://local.jandi.io:6001/connect/auth/${that.connectType}?callbackEventName=popupDone`;
+    // const url = `https://www.jandi.io/connect/auth/${that.connectType}?callbackEventName=popupDone`;
+    const url = `https://www.jandi.io/connect/auth/${that.connectType}?callbackEventName=popupDone`;
+    const target = that.connectType === 'googleCalendar' ? 'googleAuth' : 'connectAuth';
+    // TODO: popupDone callback ??
+    // const popup
+    window.open(
+        url,
+        target,
+        'resizable=no, scrollbars=1, toolbar=no, menubar=no, status=no, directories=no, width=1024, height=768',
+    );
     // let { win, pp } = obj.input;
     // const url = `https://www.jandi.io/connect/auth/${that.connectType}?callbackEventName=popupDone`;
     // const target = that.connectType === 'googleCalendar' ? 'googleAuth' : 'connectAuth';

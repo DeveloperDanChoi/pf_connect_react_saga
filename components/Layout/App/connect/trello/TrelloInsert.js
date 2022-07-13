@@ -145,12 +145,12 @@ const Trello = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1">서비스 소개</a></li>
-            <li><a href='#none' onClick={tab.change} id="2" className='on'>연동하기</a></li>
+            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a href='#none' onClick={tab.change} id="2">연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
-          <div className='tab-cont'>
+          <div className='tab-cont on'>
             <div className='detail-content'>
               <div className='info-wrap'>
                 <img src={getPublicAssetPath('static/trello/ko/info/img_info.png')} alt="서비스 소개"></img>{/* [D] : static/커넥트명/언어코드/img_info.png */}
@@ -162,7 +162,7 @@ const Trello = () => {
               </div>
             </div>
           </div>
-          <div className='tab-cont on'>
+          <div className='tab-cont'>
             <div className='detail-content connect'>
               {
                 (() => {

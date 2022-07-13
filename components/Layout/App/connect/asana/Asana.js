@@ -2,12 +2,25 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Router, { useRouter } from 'next/router';
+import AsanaInsert from "../asana/AsanaInsert";
+import AsanaUpdate from "../asana/AsanaUpdate";
 
 const Asana = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  useEffect(() => {
+    console.log( router.query.id )
+    return;
+    if (!router.query.id) {
+      const prefix = '/app/connect';
+      Router.push(`${prefix}/github?id=25092`, `${prefix}/asana`);
+    }
+  }, []);
+
   return (<>
+    { !router.query.id && <AsanaInsert /> }
+    { router.query.id && router.query.id !== '' && <AsanaUpdate /> }
   </>);
 };
 

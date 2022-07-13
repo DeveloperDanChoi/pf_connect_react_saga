@@ -5,8 +5,12 @@ import {
 import authorizeSaga from './authority/authoritySaga';
 import connectSaga, { saga as connectActions } from './connect/connectSaga';
 import { modules as connectModules } from './connect/connect';
+import asanaSaga, { saga as asanaActions } from './connect/asana/asanaSaga';
+import { modules as asanaModules } from './connect/asana/asana';
 import bitbucketSaga, { saga as bitbucketActions } from './connect/bitbucket/bitbucketSaga';
 import { modules as bitbucketModules } from './connect/bitbucket/bitbucket';
+import figmaSaga, { saga as figmaActions } from './connect/figma/figmaSaga';
+import { modules as figmaModules } from './connect/figma/figma';
 import githubSaga, { saga as githubActions } from './connect/github/githubSaga';
 import { modules as githubModules } from './connect/github/github';
 import googleCalendarSaga, { saga as googleCalendarActions } from './connect/googleCalendar/googleCalendarSaga';
@@ -15,6 +19,8 @@ import incomingSaga, { saga as incomingActions } from './connect/incoming/incomi
 import { modules as incomingModules } from './connect/incoming/incoming';
 import jiraSaga, { saga as jiraActions } from './connect/jira/jiraSaga';
 import { modules as jiraModules } from './connect/jira/jira';
+import notionSaga, { saga as notionActions } from './connect/notion/notionSaga';
+import { modules as notionModules } from './connect/notion/notion';
 import outgoingSaga, { saga as outgoingActions } from './connect/outgoing/outgoingSaga';
 import { modules as outgoingModules } from './connect/outgoing/outgoing';
 import rssSaga, { saga as rssActions } from './connect/rss/rssSaga';
@@ -52,11 +58,14 @@ export default function* rootSaga() {
     fork(authorizeSaga),
     fork(connectSaga), handler(connectModules, connectActions),
 
+    fork(asanaSaga), handler(asanaModules, asanaActions),
     fork(bitbucketSaga), handler(bitbucketModules, bitbucketActions),
+    fork(figmaSaga), handler(figmaModules, figmaActions),
     fork(githubSaga), handler(githubModules, githubActions),
     fork(googleCalendarSaga), handler(googleCalendarModules, googleCalendarActions),
     fork(incomingSaga), handler(incomingModules, incomingActions),
     fork(jiraSaga), handler(jiraModules, jiraActions),
+    fork(notionSaga), handler(notionModules, notionActions),
     fork(outgoingSaga), handler(outgoingModules, outgoingActions),
     fork(rssSaga), handler(rssModules, rssActions),
     fork(trelloSaga), handler(trelloModules, trelloActions),

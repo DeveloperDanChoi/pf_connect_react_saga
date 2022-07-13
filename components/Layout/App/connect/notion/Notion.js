@@ -2,12 +2,25 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Router, { useRouter } from 'next/router';
+import NotionInsert from "../notion/NotionInsert";
+import NotionUpdate from "../notion/NotionUpdate";
 
 const Notion = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  useEffect(() => {
+    console.log( router.query.id )
+    return;
+    if (!router.query.id) {
+      const prefix = '/app/connect';
+      Router.push(`${prefix}/github?id=25092`, `${prefix}/github`);
+    }
+  }, []);
+
   return (<>
+    { !router.query.id && <NotionInsert /> }
+    { router.query.id && router.query.id !== '' && <NotionUpdate /> }
   </>);
 };
 

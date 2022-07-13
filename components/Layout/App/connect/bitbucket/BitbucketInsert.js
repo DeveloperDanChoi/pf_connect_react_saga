@@ -146,9 +146,9 @@ const Bitbucket = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1">서비스 소개</a></li>
+            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
             <li><a href='#none' onClick={tab.change} id="2">사용방법</a></li>
-            <li><a href='#none' onClick={tab.change} id="3" className='on'>연동하기</a></li>
+            <li><a href='#none' onClick={tab.change} id="3">연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
@@ -164,7 +164,7 @@ const Bitbucket = () => {
               </div>
             </div>
           </div>
-          <div className='tab-cont'>
+          <div className='tab-cont on'>
             <div className='detail-content type-swiper'>
               <Swiper
                 ref={swiperRef}
@@ -203,7 +203,7 @@ const Bitbucket = () => {
               </Swiper>
             </div>
           </div>
-          <div className='tab-cont on'>
+          <div className='tab-cont'>
             <div className='detail-content connect'>
               <div className='connect-row-item'>
                 <div className='title'><strong>커넥트 설정</strong></div>
