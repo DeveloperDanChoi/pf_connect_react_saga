@@ -1,12 +1,13 @@
 /* eslint-disable max-len,import/no-unresolved,no-unused-vars,no-param-reassign,prefer-template,no-useless-concat,arrow-body-style,operator-linebreak,space-in-parens,keyword-spacing,no-plusplus,no-restricted-syntax,radix,prefer-const,consistent-return,comma-spacing,default-case,no-use-before-define,indent,quote-props,spaced-comment,object-curly-spacing,function-paren-newline,padded-blocks,comma-dangle,semi,array-bracket-spacing,no-undef,quotes,import/order,no-shadow,object-curly-newline,object-property-newline,no-multiple-empty-lines */
 import {useDispatch, useSelector} from 'react-redux';
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import { Input } from 'antd';
 import { getPublicAssetPath } from '../../../../../../lib/assetHelper';
 import Router, {useRouter} from "next/router";
-import {modules as teamModules} from "../../../../../../store/team/team";
-import { deleteConnect, modules as connectModules, updateStatus } from "../../../../../../store/connect/connect";
+import {modules as teamModules} from '../../../../../../store/team/team';
+import { deleteConnect, modules as connectModules, updateStatus } from '../../../../../../store/connect/connect';
 import ConnectPlugHeader from "./ConnectPlugHeader";
+import {all} from "redux-saga/effects";
 
 const ConnectPlug = (props) => {
   const dispatch = useDispatch();
@@ -45,6 +46,8 @@ const ConnectPlug = (props) => {
    * TODO: 공통화
    */
   useEffect(() => {
+    // dispatch(connectModules.creators.setTeamsConnectDetail([]));
+
     if (router.asPath.indexOf('?') === -1) {
       Router.push('/app', '/app');
     }
@@ -138,8 +141,46 @@ const ConnectPlug = (props) => {
     if (connectType === '' || Object.keys(connect.connectsObj).length === 0) return;
     if (team.teamId === 0) return;
 
-    dispatch(connectModules.creators.setTeamsConnectDetail(connect.teamsConnect[connectType]));
-  }, [connect.teamsConnect]);
+    // 앱별 상세 데이터
+    // const connectDetail = connectModules.creators.getTeamsConnectDetail();
+    // console.log( connectDetail )
+    // TODO: 다시 페이지에 진입했을 때 이전 상태 유지?
+    const thisDetail = connect.teamsConnectDetail[connectType] || {};
+
+    console.log( thisDetail )
+
+    const allData = connect.teamsConnect[connectType];
+
+    const obj = (() => {
+      const interval = 13;
+      const count = allData.length;
+      const current = 0;
+      const page = Math.floor(allData.length / 13);
+      const datas = [];
+      let currentIndex = 0;
+
+      for (let i = 0; i < page + 1; i++) {
+        if (i === page) {
+          datas.push([...allData].slice(currentIndex, count));
+        } else {
+          datas.push([...allData].slice(currentIndex, currentIndex + interval));
+        }
+        currentIndex = currentIndex + interval;
+      }
+
+      return {
+        interval,
+        count,
+        current,
+        page,
+        datas,
+      }
+    })();
+
+    console.log( obj )
+
+    dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+  }, [connect.teamsConnect[connectType]]);
 
   return (<>
         <div className='detail-container'>
@@ -168,7 +209,7 @@ const ConnectPlug = (props) => {
                 <tbody>
                 {/* [D]: 13개 이상부터 페이징 처리 필요 */}
                 {
-                  connect.teamsConnectDetail && connect.teamsConnectDetail.map((dataConnect, i) => (
+                  connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].datas.length > 0 && connect.teamsConnectDetail[connectType].datas[connect.teamsConnectDetail[connectType].current].map((dataConnect, i) => (
                   <tr key={i} className={dataConnect.status}>
                     {
                       dataConnect.bot &&
@@ -234,26 +275,61 @@ const ConnectPlug = (props) => {
             </div>
             {/* //connect-table-wrap */}
             <div className='pagination-wrap'>
-              <button type='button' className='btn-paging first icon-ic-double-angle-left-02'><span
-                  className='hidden'>맨끝</span></button>
-              <button type='button' className='btn-paging prev icon-ic-mini-left'><span className='hidden'>이전</span>
+              <button type='button' className='btn-paging first icon-ic-double-angle-left-02' disabled={connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].current === 0 ? 'disabled' : ''} onClick={() => {
+                const obj = {...connect.teamsConnectDetail[connectType]};
+                obj.current = 0;
+                dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+              }}>
+                <span className='hidden'>맨끝</span>
+              </button>
+              <button type='button' className='btn-paging prev icon-ic-mini-left' disabled={connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].current === 0 ? 'disabled' : ''} onClick={() => {
+                const obj = {...connect.teamsConnectDetail[connectType]};
+                obj.current = obj.current === 0 ? 0 : obj.current - 1;
+                dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+              }}>
+                <span className='hidden'>이전</span>
               </button>
               <div className='page-num'>
-                <strong>1</strong>
-                <a href='#none'>2</a>
-                <a href='#none'>3</a>
+                {
+                    connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].datas.map((d, i) => (
+                        <Fragment key={i}>
+                          { i === connect.teamsConnectDetail[connectType].current && <strong onClick={() => {
+                            const obj = {...connect.teamsConnectDetail[connectType]};
+                            obj.current = i;
+                            // dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+                          }
+                          }>{i+1}</strong> }
+                          { i !== connect.teamsConnectDetail[connectType].current && <a href='#none' onClick={() => {
+                            const obj = {...connect.teamsConnectDetail[connectType]};
+                            obj.current = i;
+                            dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+                          }
+                          }>{i+1}</a> }
+                        </Fragment>
+                    ))
+                }
               </div>
-              <button type='button' className='btn-paging next icon-ic-mini-right'><span className='hidden'>다음</span>
+              <button type='button' className='btn-paging next icon-ic-mini-right' disabled={connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].current === connect.teamsConnectDetail[connectType].page ? 'disabled' : ''} onClick={() => {
+                const obj = {...connect.teamsConnectDetail[connectType]};
+                obj.current = obj.current === obj.page ? obj.current : obj.current + 1;
+                dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+              }}>
+                <span className='hidden'>다음</span>
               </button>
-              <button type='button' className='btn-paging last icon-ic-double-angle-right-02' disabled><span
-                  className='hidden'>맨뒤</span></button>
+              <button type='button' className='btn-paging last icon-ic-double-angle-right-02' disabled={connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].current === connect.teamsConnectDetail[connectType].page ? 'disabled' : ''} onClick={() => {
+                const obj = {...connect.teamsConnectDetail[connectType]};
+                obj.current = obj.page;
+                dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+              }}>
+                <span className='hidden'>맨뒤</span>
+              </button>
             </div>
             {/* //pagination-wrap */}
           </div>
 
 
-          <p>--- 퍼블</p>
-          <div className='detail-wrapper'>
+          {/*<p>--- 퍼블</p>*/}
+          <div className='detail-wrapper' style={{display: 'none'}}>
             <div className='connect-table-wrap'>
               <table>
                 <caption></caption>
@@ -553,7 +629,7 @@ const ConnectPlug = (props) => {
 };
 export default ConnectPlug;
 /**
- * TODO: 페이징
+ * TODO: 페이징 refactor
  * TODO: 이미지 radius
  * TODO: 토픽명 매핑
  * TODO: not found messages

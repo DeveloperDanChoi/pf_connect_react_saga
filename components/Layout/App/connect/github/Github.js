@@ -4,19 +4,13 @@ import { useDispatch } from 'react-redux';
 import Router, { useRouter } from 'next/router';
 import GithubInsert from './GithubInsert';
 import GithubUpdate from './GithubUpdate';
+import { util } from '../../../../../service/util';
 
 const Github = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  useEffect(() => {
-    console.log( router.query.id )
-    return;
-    if (!router.query.id) {
-      const prefix = '/app/connect';
-      Router.push(`${prefix}/github?id=25092`, `${prefix}/github`);
-    }
-  }, []);
+  useEffect(() => util.devCase1(router, "github", "25461", true), []);
 
   return (<>
     { !router.query.id && <GithubInsert /> }

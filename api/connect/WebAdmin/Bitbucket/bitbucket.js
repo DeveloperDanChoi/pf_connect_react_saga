@@ -1,4 +1,5 @@
-import { api } from '../../../_call';
+import { api, upload } from '../../../_call';
+import { util } from '../../../../service/util';
 
 /**
  * Bitbucket Connect 설정을 삭제하는 API<br>
@@ -22,7 +23,7 @@ export const getTeamsBitbucket = ({ params }) => api.get(`/connect-api/teams/${p
  * @param data
  * @returns
  */
-export const postTeamsBitbucket = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/bitbucket`, body, { version: 1 });
+export const postTeamsBitbucket = ({ params, body }) => upload.post(`/connect-api/teams/${params.teamId}/bitbucket`, util.convertFormData(body), { version: 1 });
 
 /**
  * Bitbucket Connect 설정을 수정하는 API<br>
@@ -30,7 +31,7 @@ export const postTeamsBitbucket = ({ params, body }) => api.post(`/connect-api/t
  * @param data
  * @returns
  */
-export const putTeamsBitbucketSetting = ({ params, body }) => api.put(`/connect-api/teams/${params.teamId}/bitbucket/setting`, body, { version: 1 });
+export const putTeamsBitbucketSetting = ({ params, body }) => upload.put(`/connect-api/teams/${params.teamId}/bitbucket/setting`, util.convertFormData(body), { version: 1 });
 
 /**
  * Bitbucket Connect 설정을 활성/비활성하는 API<br>

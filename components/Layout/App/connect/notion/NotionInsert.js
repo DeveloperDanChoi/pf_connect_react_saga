@@ -79,18 +79,8 @@ const Notion = () => {
     return { change, disabled, toggle };
   })();
 
-  /* custom checkbox */
-  const onChangeCheckbox = (e) => {
-    e.preventDefault();
-    const target = e.currentTarget.querySelector('input');
-    template1.set('hookEventChecked', {
-      ...notion.input.hookEventChecked,
-      [target.name]: !target.checked,
-    });
-  };
-
   useEffect(() => {
-    if (user.rooms.chats.length === 0) return;
+    // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
       dispatch, document, team, user, notion, connectType, set: creators.setInputNotion,
     });
@@ -105,11 +95,36 @@ const Notion = () => {
       router,
       connectType: 'notion',
       modules,
+      list: creators.getAuthenticationNotionList,
       load: creators.getTeamsNotion,
       connect: [creators.postTeamsNotion, creators.putTeamsNotionSetting],
       disconnect: creators.deleteAuthentications,
       set: creators.setInputNotion,
-    }, false);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(creators)
+    searcherAuth.initialize({
+      dispatch, document, team, user, notion, connectType, set: creators.setInputNotion,
+    });
+
+    template1.set('authenticationId', notion.authenticationNotionList.ID);
+    template1.set('selectedAuthentication', notion.authenticationNotionList.ACCESS_TOKEN);
+  }, [notion.authenticationNotionList]);
+
+  useEffect(() => {
+    window.addEventListener("message", receiveMessage, false);
+
+    function receiveMessage({ origin, data }) {
+      if (origin === 'http://localhost:6001' && data === 'popupDone') {
+        template1.list(creators.getAuthenticationNotionList);
+      }
+    }
+
+    return () => {
+      window.removeEventListener('message', receiveMessage);
+    };
   }, []);
 
   return (<>
@@ -152,7 +167,7 @@ const Notion = () => {
           <div className='tab-cont'>
               <div className='detail-content connect'>
                 {/* [D] : 계정 인증 전 case */}
-                { notion.input.authenticationId === '' && <>
+                { ( notion.input.authenticationId === '' || notion.input.authenticationId === 0 ) && <>
                 <div className='connect-row-item'>
                   <div className='title'><strong>계정 설정</strong></div>
                   <div className='content'>
@@ -164,6 +179,7 @@ const Notion = () => {
                       <dd>
                         <div className='input-row single-type'>
                           <button type='button' onClick={template1.authorize}>계정 인증하기</button>
+                          <button type='button' className='full-btn' onClick={(e) => template1.connect(e, notion)}>연동 추가하기</button>
                         </div>
                       </dd>
                     </dl>
@@ -171,7 +187,7 @@ const Notion = () => {
                 </div>
                 </>}
                 {/* [D] : 계정 인증 후 case */}
-                {notion.input.authenticationId !== '' && <>
+                {( notion.input.authenticationId !== '' && notion.input.authenticationId !== 0 ) && <>
                 <div className='connect-row-item'>
                   <div className='title'><strong>계정 설정</strong></div>
                   <div className='content'>

@@ -23,8 +23,6 @@ const Bitbucket = () => {
   const { creators } = modules;
 
   useEffect(() => {
-    // if (user.rooms.chats.length === 0) return;
-
     searcher.initialize({
       dispatch,
       document,
@@ -49,7 +47,7 @@ const Bitbucket = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'bitbucket',
+      connectType,
       modules,
       list: creators.getTeamsToken,
       load: creators.getTeamsBitbucket,

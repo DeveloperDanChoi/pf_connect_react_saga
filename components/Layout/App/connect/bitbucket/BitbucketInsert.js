@@ -91,8 +91,6 @@ const Bitbucket = () => {
   };
 
   useEffect(() => {
-    // if (user.rooms.chats.length === 0) return;
-
     searcher.initialize({
       dispatch,
       document,
@@ -117,7 +115,7 @@ const Bitbucket = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'bitbucket',
+      connectType,
       modules,
       list: creators.getTeamsToken,
       load: creators.getTeamsBitbucket,
@@ -152,7 +150,7 @@ const Bitbucket = () => {
           </ul>
         </div>
         <div className='tab-content'>
-          <div className='tab-cont'>
+          <div className='tab-cont on'>
             <div className='detail-content'>
               <div className='info-wrap'>
                 <img src={getPublicAssetPath('static/bitbucket/ko/info/img_info.png')} alt="서비스 소개"></img>{/* [D] : static/커넥트명/언어코드/img_info.png */}
@@ -164,7 +162,7 @@ const Bitbucket = () => {
               </div>
             </div>
           </div>
-          <div className='tab-cont on'>
+          <div className='tab-cont'>
             <div className='detail-content type-swiper'>
               <Swiper
                 ref={swiperRef}

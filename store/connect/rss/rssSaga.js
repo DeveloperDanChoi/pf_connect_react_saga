@@ -23,11 +23,11 @@ export const saga = (() => ({
   * getTeamsRss(data) {
     const { team } = yield select((state) => state);
     // load initialModule
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.params, { ...data.data, teamId: team.teamId });
+    reduxModule.modules.sets(request.params, { ...data.data, teamId: team.teamId });
 
-    const result = yield call(moduleData.api, moduleData.request);
+    const result = yield call(api, request);
     const resultMembers = yield call(getV1AdminTeamsMembers, result.data.teamId);
 
     for (const member of resultMembers.data.records) {
@@ -44,6 +44,7 @@ export const saga = (() => ({
       yield put(creators.setInputRss({ key, value: result.data[key] }));
     }
 
+    yield put(creators.setInputRss({ key: 'type', value: 'rss' }));
     yield put(creators.setInputRss({ key: 'createdAt', value: util.dateFormat(result.data.createdAt) }));
     yield put(creators.setInputRss({ key: 'statusClss', value: converter.statusClss(result.data.status) }));
   },
@@ -63,13 +64,14 @@ export const saga = (() => ({
   * postTeamsRss(data) {
     const { team } = yield select((state) => state);
     // load initialModule
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.body, data.data);
+    reduxModule.modules.sets(request.body, data.data);
     // custom request data
-    moduleData.request.params.teamId = team.teamId;
+    request.params.teamId = team.teamId;
+    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailUrl);
 
-    const result = yield call(moduleData.api, moduleData.request);
+    const result = yield call(api, request);
   },
   /**
    * RSS Connect 설정 수정<br>
@@ -78,21 +80,19 @@ export const saga = (() => ({
    */
   * putTeamsRssSetting(data) {
     // load initialModule
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.body, data.data);
-    moduleData.request.body.connectId = data.data.id;
-    moduleData.request.params.teamId = data.data.teamId;
+    reduxModule.modules.sets(request.body, data.data);
+    request.body.connectId = data.data.id;
+    request.params.teamId = data.data.teamId;
+    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailUrl);
 
-    const result = yield call(moduleData.api, moduleData.request);
+    yield call(api, request);
 
-    if (result.status !== 200) {
-      console.error('update fail !!');
-      yield put(creators.getTeamsRss({
-        connectId: moduleData.request.body.connectId,
-        teamId: moduleData.request.params.teamId,
-      }));
-    }
+    yield put(creators.getTeamsRss({
+      connectId: request.body.connectId,
+      teamId: request.params.teamId,
+    }));
   },
   /**
    * 사용자 정의 데이터<br>

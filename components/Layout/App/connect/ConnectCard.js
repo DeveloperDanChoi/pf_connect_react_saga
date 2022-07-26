@@ -71,7 +71,8 @@ const ConnectCard = () => {
         <h2>커넥트 목록</h2>
       </div>
       <div className='connect-card-wrap type_list'>
-        { connect.connects && connect.connects.map((data, i) => (
+        {
+          connect.connects && connect.connects.map((data, i) => (
             <div className='connect-card' key={i} >
               <div className='inner'>
                 <img src={data.botThumbnail} className='img'></img>
@@ -80,11 +81,12 @@ const ConnectCard = () => {
                 <button onClick={() => handleClick(data)}>연동하기</button>
               </div>
             </div>
-        )) }
+          ))
+        }
       </div>
-      <p>아래는 퍼블</p>
+      {/*<p>아래는 퍼블</p>*/}
       {/* [D] : 로고 이미지 변경 필요 */}
-      <div className='connect-card-wrap type_list'>
+      <div className='connect-card-wrap type_list' style={{display: 'none'}}>
         <div className='connect-card'>
           <div className='inner'>
             <img src={getPublicAssetPath('static/icon_google.png')} alt="googleCalendar" className='img'></img>

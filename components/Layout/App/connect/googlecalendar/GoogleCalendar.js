@@ -4,19 +4,13 @@ import { useDispatch } from 'react-redux';
 import Router, { useRouter } from 'next/router';
 import GoogleCalendarInsert from './GoogleCalendarInsert';
 import GoogleCalendarUpdate from './GoogleCalendarUpdate';
+import { util } from '../../../../../service/util';
 
 const GoogleCalendar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  useEffect(() => {
-    console.log( router.query.id )
-    return;
-    if (!router.query.id) {
-      const prefix = '/app/connect';
-      Router.push(`${prefix}/googleCalendar?id=25085`, `${prefix}/googleCalendar`);
-    }
-  }, []);
+  useEffect(() => util.devCase1(router, "googleCalendar", "25452", true), []);
 
   return (<>
     { !router.query.id && <GoogleCalendarInsert /> }

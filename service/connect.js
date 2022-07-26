@@ -14,61 +14,14 @@ export const template1 = (() => {
   // function authorize(e, obj) {
   function authorize() {
     // const url = `http://local.jandi.io:6001/connect/auth/${that.connectType}?callbackEventName=popupDone`;
-    // const url = `https://www.jandi.io/connect/auth/${that.connectType}?callbackEventName=popupDone`;
     const url = `https://www.jandi.io/connect/auth/${that.connectType}?callbackEventName=popupDone`;
     const target = that.connectType === 'googleCalendar' ? 'googleAuth' : 'connectAuth';
-    // TODO: popupDone callback ??
-    // const popup
+
     window.open(
         url,
         target,
         'resizable=no, scrollbars=1, toolbar=no, menubar=no, status=no, directories=no, width=1024, height=768',
     );
-    // let { win, pp } = obj.input;
-    // const url = `https://www.jandi.io/connect/auth/${that.connectType}?callbackEventName=popupDone`;
-    // const target = that.connectType === 'googleCalendar' ? 'googleAuth' : 'connectAuth';
-    // TODO: popupDone callback ??
-    // const popup
-    //
-    // console.log( obj, win, pp )
-    //
-    // win.popupDone = function() {
-    //   console.log('asdkfakljslkjaslkejaflksejf')
-    // }
-    // win.addEventListener('popupDone', () => {
-    //   console.log('asdkfakljslkjaslkejaflksejf')
-    // })
-    // pp = win.open(
-    //   url,
-    //   'http://local.jandi.io:6001/connect/callback/googleCalendar?callbackEventName=popupDone',
-    //   target,
-    // eslint-disable-next-line max-len
-    //   'resizable=no, scrollbars=1, toolbar=no, menubar=no, status=no, directories=no, width=1024, height=768',
-    // );
-
-    // 열려 있으면 popup.location.replace(_getFullUrl(url, options.data));
-    // pp.onclose = (a,b,c) => {
-    //   console.log(' ok callback !! ', a, b, c)
-    // }
-    // 열려 있으면 popup.location.replace(_getFullUrl(url, options.data));
-    // pp.onbeforeunload = function(){
-    //   console.log('................')
-    // };
-    // 열려 있으면 popup.location.replace(_getFullUrl(url, options.data));
-    // pp.addEventListener('beforeunload', function() {
-    //   console.log('beforeunload !!!')
-    // });
-    // https://accounts.google.com/signin/oauth/consent?authuser=2&part=AJi8hAMPCleb14bS7gQgCztlgrfkWrsea69U27sZVAxFP6Vgtj3r4VSZLiQN9bVXSMSR-lUw2oEulm7RvN4BkG6fNMTRAukY35gRW41kXLyxWkNlUVO-xoQ1baK9aW8QJPxNfG79j_5Y5CjO06sO-gzmHS5_zDLJKI9Z2cKr_fcpJGM-k12jD_PvH_v2is7zVqGt6Ym3IJqc4ziReOuWCk0g2nMjasXyvnRTT1oVI-bkIXDsd1EOpKzbkbDGMm-K2Om1uDlith9HkIG7Hr6UxgvF-giJiLPhXQZDtl-byUjYbGNPEW5cDtwhHf3GCNauVDqSbLWBF-GXsOWCtSdxU2u8Ia1nzPjIh0MhayGDBDGu4S8aBCLBfNBu2PKCALWCtgEkLVu5C3ngH-Ut9hkaVwLXTOsyF1TpAF8dTg-Q7aSEx4ngh9_PtaG3Pd7zGOWYxJxDpIDITxkIai8S3nzO970lZByAYDGBL--Blp3-nhxSyS0mrXtBLqfQ_8fJie4oDdx8MZDHQJA_A_-5lZDPqPwb_f0Zy1iG93lSqKVQbQ_Ce12k3WI8RxsIBeBbhUGNdikxJ3sq1k5Hj0gj3LtcZmVRg4AzQKMo_4yUo6AWOPhwXuq4Tcx7wtNZ1qEnBsFdQr9KSQEOH-J7_eHz_1NIWwS0YKZgOx65qY0C52o4F_4XxxHq4WGeKlmv7lh1OqFVH2lVtYQqPvsrIfVKCUyrYMZ8kYbcrkzd1iJL8iyMHOdBC9FnfivaaKy5sVORGXlbLTNWHBdR3AbQ8OhnICyj2i5jeNfXhryt-10CcUQHVTPXIzf1mBSR7ZhOm2pEoxcdt_YOD_szWLAGX0l3WgQRFhVl1IpBW9U8VT6h5m0v7jvNIzVJmcXxCGApdyY_y-Y89Xa9XfRSfXEO&hl=ko&as=S939580868%3A1656082347393867&client_id=805411559439-tl7driil8hrv7pdo4953vek3opb56orb.apps.googleusercontent.com&rapt=AEjHL4OOPYxW0W_tpqLjQoka1_fyhw_43kdV-cTTvKfH2f9jecHJ6BSWArs7YW6yzgs3bs8p6t2NFNMdaytOdvQx7GETkLJQdg#
-    // pp.onbeforeunload = function() {
-    //   console.log('asdkfakljslkjaslkejaflksejf')
-    // }
-    // pp.focus();
-    // template1.set('pp', pp);
-
-    // popupDone = () => {
-    //   console.log('test !!')
-    // }
-
   }
 
   /**

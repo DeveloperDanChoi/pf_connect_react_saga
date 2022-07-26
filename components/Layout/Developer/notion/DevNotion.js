@@ -50,7 +50,7 @@ const DevNotion = () => {
    * @returns {Promise<void>}
    */
   const getToken = async () => {
-    const result = await axios.get('http://localhost:8080/notion/token',
+    const result = await axios.get('http://localhost:8082/notion/token',
       {
         headers: {
           'connect-type': 'application/json;charset=UTF-8',
@@ -75,11 +75,11 @@ const DevNotion = () => {
     // apiUrl({type: 'get', url: 'https://api.notion.com/v1/blocks/cdd93a05c84845b5ba9d33962b1caa67/children'});
   }, [token]);
 
-  const handleClick = () => {
+  const handleClickAuth = () => {
     window.open(`https://api.notion.com/v1/oauth/authorize?${
       ['response_type=code',
         'client_id=1a291f86-bd7f-4573-84bd-2a46c9c5dcc7',
-        'redirect_uri=http://localhost:8080/notionCallback',
+        'redirect_uri=http://localhost:8082/notionCallback',
         // 'redirect_uri=http://05a0-58-151-209-130.ngrok.io/notionCallback',
         // 'redirect_uri=https://zapier.com/dashboard/auth/oauth/return/NotionCLIAPI',
         'owner=user',
@@ -176,9 +176,7 @@ const DevNotion = () => {
   const view = (data) => {
     const el = document.getElementById('view-result');
     let content = addElement('', data);
-    // for (const item in data) {
-    //   content += '<div>' + item + '</div>';
-    // }
+
     el.innerHTML = content;
 
     el.querySelectorAll('.clicked').forEach((_el,i) => {
@@ -208,7 +206,7 @@ const DevNotion = () => {
   };
 
   const handleClickReq = async (data) => {
-    const result = await axios.post('http://localhost:8080/notion/dynamic/request',
+    const result = await axios.post('http://localhost:8082/notion/dynamic/request',
         data,
         {
           headers: {
@@ -219,7 +217,7 @@ const DevNotion = () => {
           },
         },
     ).catch((err) => console.error(err));
-    //secret_Mrh7rbN1yleMynoBWcg7wX7jdv7EHl3ELzauseialhi
+    //secret_vc7vniZS7K6zVRdBxlpq2q8iebIPQb9mDxy9tvar75G
 
     console.log( result );
     if (result) {
@@ -249,10 +247,10 @@ const DevNotion = () => {
   return (<>
     <div style={cssWrapper}>
       <div style={cssMenu}>
-        <button style={cssButton} onClick={handleClick}>인증하기</button>
+        <button style={cssButton} onClick={handleClickAuth}>인증하기</button>
         <button style={cssButton} onClick={() => apiUrl({type: 'post', url: 'https://api.notion.com/v1/search'})}>search</button>
         <button style={cssButton} onClick={() => apiUrl({type: 'get', url: 'https://api.notion.com/v1/users'})}>users</button>
-        <button style={cssButton} onClick={() => apiUrl2({type: 'get', url: 'https://api.notion.com/v1/pages'})}>pages</button>
+        <button style={cssButton} onClick={() => apiUrl2({type: 'get', url: 'https://api.notion.com/v1/pages'})}>pages(p)</button>
         <button style={cssButton} onClick={() => apiUrl3({type: 'get', url: 'https://api.notion.com/v1/blocks/{block_id}'})}>blocks</button>
         <button style={cssButton} onClick={() => apiUrl3({type: 'get', url: 'https://api.notion.com/v1/blocks/{block_id}/children'})}>blocks children</button>
         <input style={cssButton} placeholder="id" value={idInput} onChange={(e) => setIdInput(e.target.value)} />

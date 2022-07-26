@@ -21,8 +21,6 @@ import '../styles/globals.scss';
 /* swiper */
 // import 'swiper/swiper.scss';
 // import 'swiper/components/navigation/navigation.scss';
-
-import _ from 'lodash';
 import FixedMeta from '../components/FixedMeta/FixedMeta';
 import Layout from '../components/Layout/Layout';
 import PcAddOnComponent from '../components/PcAddOnComponent';
@@ -63,7 +61,7 @@ const App = ({ Component, pageProps }) => {
    */
   useEffect(() => {
     // eslint-disable-next-line no-restricted-globals
-    dispatch(authorize(_.split(location.hostname, '.')[0]));
+    dispatch(authorize(location.hostname.split('.')[0]));
   }, []);
 
   return (

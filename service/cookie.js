@@ -1,8 +1,9 @@
 import { STORAGE_PREFIX } from '../constants/value';
 
 export const getCookie = (cookie, name) => {
-  name = STORAGE_PREFIX + name;
+  if (!cookie) return undefined;
 
+  name = STORAGE_PREFIX + name;
   const matches = cookie.match(new RegExp(
       "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
   ));

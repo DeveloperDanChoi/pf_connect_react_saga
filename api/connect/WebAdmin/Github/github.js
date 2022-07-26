@@ -1,4 +1,5 @@
-import { api } from '../../../_call';
+import { api, upload } from '../../../_call';
+import { util } from '../../../../service/util';
 
 /**
  * Github Connect 설정 삭제<br>
@@ -22,7 +23,7 @@ export const getTeamsGithub = ({ params }) => api.get(`/connect-api/teams/${para
  * @param data
  * @returns
  */
-export const postTeamsGithub = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/github`, body, { version: 1 });
+export const postTeamsGithub = ({ params, body }) => upload.post(`/connect-api/teams/${params.teamId}/github`, util.convertFormData(body), { version: 1 });
 
 /**
  * Github Connect 설정 수정<br>
@@ -30,7 +31,7 @@ export const postTeamsGithub = ({ params, body }) => api.post(`/connect-api/team
  * @param data
  * @returns
  */
-export const putTeamsGithubSetting = ({ params, body }) => api.put(`/connect-api/teams/${params.teamId}/github/setting`, body, { version: 1 });
+export const putTeamsGithubSetting = ({ params, body }) => upload.put(`/connect-api/teams/${params.teamId}/github/setting`, util.convertFormData(body), { version: 1 });
 
 /**
  * Github Connect 상태 수정<br>

@@ -4,19 +4,13 @@ import { useDispatch } from 'react-redux';
 import Router, { useRouter } from 'next/router';
 import OutgoingInsert from './OutgoingInsert';
 import OutgoingUpdate from './OutgoingUpdate';
+import { util } from '../../../../../service/util';
 
 const Outgoing = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  useEffect(() => {
-    console.log( router.query.id )
-    return;
-    if (!router.query.id) {
-      const prefix = '/app/connect';
-      Router.push(`${prefix}/outgoing?id=2821`, `${prefix}/outgoing`);
-    }
-  }, []);
+  useEffect(() => util.devCase1(router, "outgoing", "25467", true), []);
 
   return (<>
     { !router.query.id && <OutgoingInsert /> }

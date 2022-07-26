@@ -90,12 +90,23 @@ const GoogleCalendar = () => {
   };
 
   useEffect(() => {
-    // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
-      dispatch, document, team, user, googleCalendar, connectType, set: creators.setInputGoogleCalendar,
+      dispatch,
+      document,
+      team,
+      user,
+      googleCalendar,
+      connectType,
+      set: creators.setInputGoogleCalendar,
     });
     searcherLanguage.initialize({
-      dispatch, document, team, user, googleCalendar, connectType, set: creators.setInputGoogleCalendar,
+      dispatch,
+      document,
+      team,
+      user,
+      googleCalendar,
+      connectType,
+      set: creators.setInputGoogleCalendar,
     });
   }, [user.rooms]);
 
@@ -103,7 +114,7 @@ const GoogleCalendar = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'googleCalendar',
+      connectType,
       modules,
       list: creators.getAuthenticationGoogleCalendarCalendarList,
       load: creators.getTeamsGoogleCalendar,
@@ -112,24 +123,7 @@ const GoogleCalendar = () => {
       set: creators.setInputGoogleCalendar,
       elements: googleCalendar.input,
     });
-
-    window.popupDone = function() {
-      console.log('callback !!!!')
-    }
-    window.addEventListener('popupDone', () => {
-      console.log('callback good !!')
-    });
-    window.onunload = function() {
-      console.log('..............');
-    }
-
-    template1.set('win', window);
-    template1.set('pp', {});
   }, []);
-
-  useEffect(() => {
-    console.log(googleCalendar.input);
-  }, [googleCalendar.input.pp]);
 
   useEffect(() => {
     if (googleCalendar.authenticationGoogleCalendarCalendarList.length === 0) return;
@@ -145,6 +139,22 @@ const GoogleCalendar = () => {
     template1.set('selectedAuthentication', googleCalendar.authenticationGoogleCalendarCalendarList[0].authenticationName);
     template1.set('selectedCal', googleCalendar.authenticationGoogleCalendarCalendarList[0].list[0].summary);
   }, [googleCalendar.authenticationGoogleCalendarCalendarList]);
+
+  useEffect(() => {
+    window.addEventListener("message", receiveMessage, false);
+
+    // TODO: configurate
+    function receiveMessage({ origin, data }) {
+      if ((origin === 'http://localhost:6001' || origin === 'https://www.jandi.io') &&
+          data === 'popupDone') {
+        template1.list(creators.getAuthenticationGoogleCalendarCalendarList);
+      }
+    }
+
+    return () => {
+      window.removeEventListener('message', receiveMessage);
+    };
+  }, []);
 
   return (<>
     {/* [D] : 연동하기 */}

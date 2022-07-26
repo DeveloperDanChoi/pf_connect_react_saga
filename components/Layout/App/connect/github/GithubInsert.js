@@ -92,10 +92,22 @@ const Github = () => {
   useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
-      dispatch, document, team, user, github, connectType, set: creators.setInputGithub,
+      dispatch,
+      document,
+      team,
+      user,
+      github,
+      connectType,
+      set: creators.setInputGithub,
     });
     searcherLanguage.initialize({
-      dispatch, document, team, user, github, connectType, set: creators.setInputGithub,
+      dispatch,
+      document,
+      team,
+      user,
+      github,
+      connectType,
+      set: creators.setInputGithub,
     });
   }, [user.rooms]);
 
@@ -103,7 +115,7 @@ const Github = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'github',
+      connectType,
       modules,
       list: creators.getAuthenticationGithubReposList,
       load: creators.getTeamsGithub,
@@ -141,6 +153,22 @@ const Github = () => {
     }
     template1.set('hookEvent', events);
   }, [github.input.hookEventChecked]);
+
+  useEffect(() => {
+    window.addEventListener("message", receiveMessage, false);
+
+    // TODO: configurate
+    function receiveMessage({ origin, data }) {
+      if ((origin === 'http://localhost:6001' || origin === 'https://www.jandi.io') &&
+          data === 'popupDone') {
+        template1.list(creators.getAuthenticationGithubReposList);
+      }
+    }
+
+    return () => {
+      window.removeEventListener('message', receiveMessage);
+    };
+  }, []);
 
   return (<>
     {/* [D] : 연동하기 */}

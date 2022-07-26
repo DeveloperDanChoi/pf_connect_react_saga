@@ -6,10 +6,23 @@ import {
   postTeamsNotion,
   putTeamsNotionSetting,
 } from '../../../api/connect/WebAdmin/Notion/notion';
+import {
+  getAuthenticationNotionList,
+} from '../../../api/connect/Authentication/authentication';
 import { getTeamsToken } from '../../../api/connect/WebAdmin/webAdmin';
 import { reduxModule } from '../../../service/reduxModule';
 
 export const initialModules = [
+  /**
+   * 노션 토큰<br>
+   */
+  {
+    type: 'get',
+    name: 'AUTHENTICATION_NOTION_LIST',
+    data: false,
+    api: getAuthenticationNotionList,
+  },
+  { type: 'set', name: 'AUTHENTICATION_NOTION_LIST', data: true },
   /**
    * Webhook용 Token을 요청하는 API<br>
    */
@@ -60,7 +73,7 @@ export const initialModules = [
       },
       body: {
         roomId: 'Room ID',
-        webhookToken: 'Webhook Token String',
+        authenticationId: 'authenticationId',
         botName: 'Bot name',
         botThumbnailFile: '봇의 프로필 이미지',
       },
@@ -108,6 +121,10 @@ export const initialState = {
   teamsNotion: {
     id: 0,
   },
+  authenticationNotionList: {
+    ID: 0,
+    ACCESS_TOKEN: '',
+  },
   input: {
     authenticationId: '',
     roomId: '',
@@ -118,6 +135,7 @@ export const initialState = {
     lang: '',
     langText: '한국어',
     searchText: '',
+    selectedAuthentication: 'asf',
     selectedTopic: 'JANDI',
     searchRooms: [],
     searchFilters: [],
@@ -130,6 +148,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
     case types.SET_TEAMS_TOKEN:
     case types.SET_TEAMS_NOTION:
+    case types.SET_AUTHENTICATION_NOTION_LIST:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
       break;
     case types.SET_INPUT_NOTION_VALUE:

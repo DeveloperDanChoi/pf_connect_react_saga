@@ -22,7 +22,13 @@ const modalWarapper = ({ content, mainClassName, overlayBg }) => {
   };
 
   return (<>
-    <div id="modalWrapper" onClick={() => dispatch(close())}>
+    <div id="modalWrapper" style={{
+      position: 'absolute',
+      zIndex: 9,
+      top: 0,
+      height: 'inherit',
+      background: 'white',
+    }}>
       <div>
         <div><button onClick={handleClose}>X</button></div>
         <div className="modal-content">

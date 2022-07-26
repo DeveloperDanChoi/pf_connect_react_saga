@@ -46,14 +46,14 @@ const DevFigma = () => {
   const [figmaUrl, setFigmaUrl] = useState('');
   const [hisTab, setHisTab] = useState([]);
   const [hisTabNm, setHisTabNm] = useState([]);
-  const figmaFav = 'https://www.figma.com/oauth?client_id=IZ1eQO3vEbhj2z9sUJbqSH&redirect_uri=http://localhost:8080/authroize&scope=file_read&state=state&response_type=code';
+  const figmaFav = 'https://www.figma.com/oauth?client_id=IZ1eQO3vEbhj2z9sUJbqSH&redirect_uri=http://localhost:8082/authroize&scope=file_read&state=state&response_type=code';
 
   /**
    * 토큰 정보
    * @returns {Promise<void>}
    */
   const getToken = async () => {
-    const result = await axios.get('http://localhost:8080/notion/token',
+    const result = await axios.get('http://localhost:8082/notion/token',
         {
           headers: {
             'connect-type': 'application/json;charset=UTF-8',
@@ -82,7 +82,7 @@ const DevFigma = () => {
     window.open('https://www.figma.com/oauth?' +
         [ 'client_id=IZ1eQO3vEbhj2z9sUJbqSH',
           'response_type=code',
-          'redirect_uri=http://localhost:8080/figmaCallback',
+          'redirect_uri=http://localhost:8082/figmaCallback',
           'scope=file_read',
           'state=state',
         ].join('&')
@@ -215,7 +215,7 @@ const DevFigma = () => {
    * @returns {Promise<void>}
    */
   const localLoad = async (data) => {
-    const result = await axios.get('http://localhost:8080/figma/token',
+    const result = await axios.get('http://localhost:8082/figma/token',
         data,
         {
           headers: {
@@ -232,7 +232,7 @@ const DevFigma = () => {
   };
 
   const handleClickReq = async (data, e) => {
-    const result = await axios.post('http://localhost:8080/figma/dynamic/request',
+    const result = await axios.post('http://localhost:8082/figma/dynamic/request',
         data,
         {
           headers: {

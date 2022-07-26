@@ -3,10 +3,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import React, {Fragment, useEffect, useState} from 'react';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { Input } from 'antd';
-import { deleteConnect, modules as connectModules, updateStatus } from "../../../../../store/connect/connect";
+import { deleteConnect, modules as connectModules, updateStatus } from '../../../../../store/connect/connect';
+import { modules as userModules } from '../../../../../store/user/user';
 import {template1} from "../../../../../service/connect";
 import Router from "next/router";
 import {putTeamsGithubSetting} from "../../../../../api/connect/WebAdmin/Github/github";
+import {put} from "redux-saga/effects";
 
 const MyConnectPlug = (props) => {
   const dispatch = useDispatch();
@@ -54,6 +56,7 @@ const MyConnectPlug = (props) => {
     e.target.closest('tr').classList.toggle('disabled');
   };
 
+  // TODO: removeEventLister
   /* (s) tooltipbox toggle */
   useEffect(() => {
     const tooltipBoxs = document.querySelectorAll('.tooltip-box');
@@ -80,7 +83,7 @@ const MyConnectPlug = (props) => {
   /* (e) tooltipbox toggle */
   return (
   <>
-    { user.myConnectCount !== '' &&
+    { user.myConnectCount >= 0 &&
     <div className='connect-container'>
       <div className='title-wrap'>
         <h2>나의 잔디 커넥트</h2>
@@ -97,7 +100,7 @@ const MyConnectPlug = (props) => {
                   <strong className="info-tit">{data.label}</strong>
                   <p>{data.name}</p>
                 </div>
-                <div className='connect-etc-box'><span><i className='icon-ic-plug'></i>{user.myConnect[data.name].length}개 연동중</span></div>
+                <div className='connect-etc-box'><span><i className='icon-ic-plug'></i>{user.myConnect[data.name].count}개 연동중</span></div>
               </div>
               <table>
                 <caption></caption>
@@ -117,7 +120,7 @@ const MyConnectPlug = (props) => {
                 </thead>
                 <tbody>
                 {
-                  user.myConnect[data.name].map((dataConnect, i2) => (
+                  user.myConnect[data.name].data.map((dataConnect, i2) => (
                     <tr key={i2} className={dataConnect.status}>
                       <td>
                         <span className='img-box'><img src={dataConnect.bot.thumbnailUrl} alt={data.name}></img></span>
@@ -152,6 +155,38 @@ const MyConnectPlug = (props) => {
                 }
                 </tbody>
               </table>
+              {
+                user.myConnect[data.name].count > 3 && user.myConnect[data.name].count !== user.myConnect[data.name].data.length && (
+                  <div className='table-bottom'>
+                    {/*<div className='loader'><span></span></div>*/}
+                    <button type='button' onClick={() => {
+                      const obj = {...user.myConnect};
+                      const obj2 = {...obj[data.name]};
+                      const sta = obj2.initCount + (obj2.current * obj2.interval);
+                      const end = obj2.initCount + (obj2.current * obj2.interval) + obj2.interval;
+
+                      if (obj2.count < end) {
+                        obj2.data = obj2.data.concat(obj2.datas.slice(
+                            sta,
+                        ));
+                      } else {
+                        obj2.data = obj2.data.concat(obj2.datas.slice(
+                            sta,
+                            end,
+                        ));
+                      }
+
+                      obj2.current = obj2.current + 1;
+
+                      obj[data.name] = obj2;
+
+                      dispatch(userModules.creators.setMyConnect(obj));
+                    }}>
+                      더보기<i className='icon-ic-b-arrow-down'></i>
+                    </button>
+                  </div>
+                )
+              }
             </div>
             )
           }
@@ -160,8 +195,8 @@ const MyConnectPlug = (props) => {
       {/* ******************************* */}
       {/* ******************************* */}
       {/* ******************************* */}
-      <p>---퍼블</p>
-      <div className='connect-table-wrap'>
+      {/*<p>---퍼블</p>*/}
+      <div className='connect-table-wrap' style={{display: 'none'}}>
         <div className='connect-info-box'>
           <p className='img-box'><img src={getPublicAssetPath('static/icon_jira.png')} alt="jira"></img></p>
           <div className='info'>
@@ -449,7 +484,7 @@ const MyConnectPlug = (props) => {
       </div>
       {/* //connect-table-wrap */}
 
-      <div className='connect-table-wrap'>
+      <div className='connect-table-wrap' style={{display: 'none'}}>
         <div className='connect-info-box'>
           <p className='img-box'><img src={getPublicAssetPath('static/icon_jira.png')} alt="jira"></img></p>
           <div className='info'>

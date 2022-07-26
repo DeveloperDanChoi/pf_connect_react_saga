@@ -83,7 +83,13 @@ const Outgoing = () => {
   useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
-      dispatch, document, team, user, outgoing, connectType, set: creators.setInputOutgoing,
+      dispatch,
+      document,
+      team,
+      user,
+      outgoing,
+      connectType,
+      set: creators.setInputOutgoing,
     });
   }, [user.rooms]);
 
@@ -93,7 +99,7 @@ const Outgoing = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'outgoing',
+      connectType,
       modules,
       list: creators.getTeamsToken,
       load: creators.getTeamsOutgoing,

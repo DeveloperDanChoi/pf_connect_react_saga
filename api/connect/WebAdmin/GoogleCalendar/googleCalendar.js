@@ -1,4 +1,5 @@
-import { api } from '../../../_call';
+import { api, upload } from '../../../_call';
+import { util } from '../../../../service/util';
 
 /**
  * 구글 캘린더 Connect 연동을 해제하는 API<br>
@@ -22,7 +23,7 @@ export const getTeamsGoogleCalendar = ({ params }) => api.get(`/connect-api/team
  * @param data
  * @returns
  */
-export const postTeamsGoogleCalendar = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/googleCalendar`, body, { version: 1 });
+export const postTeamsGoogleCalendar = ({ params, body }) => upload.post(`/connect-api/teams/${params.teamId}/googleCalendar`, util.convertFormData(body), { version: 1 });
 
 /**
  * 구글 캘린더 Connect 연동 설정을 변경하는 API<br>
@@ -30,7 +31,7 @@ export const postTeamsGoogleCalendar = ({ params, body }) => api.post(`/connect-
  * @param data
  * @returns
  */
-export const putTeamsGoogleCalendarSetting = ({ params, body }) => api.put(`/connect-api/teams/${params.teamId}/googleCalendar/setting`, body, { version: 1 });
+export const putTeamsGoogleCalendarSetting = ({ params, body }) => upload.put(`/connect-api/teams/${params.teamId}/googleCalendar/setting`, util.convertFormData(body), { version: 1 });
 
 /**
  * 구글 캘린더 Connect 연동을 enable/disable하는 API<br>

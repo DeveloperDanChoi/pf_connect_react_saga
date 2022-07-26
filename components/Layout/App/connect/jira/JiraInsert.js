@@ -84,12 +84,23 @@ const Jira = () => {
   })();
 
   useEffect(() => {
-    // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
-      dispatch, document, team, user, jira, connectType, set: creators.setInputJira,
+      dispatch,
+      document,
+      team,
+      user,
+      jira,
+      connectType,
+      set: creators.setInputJira,
     });
     searcherLanguage.initialize({
-      dispatch, document, team, user, jira, connectType, set: creators.setInputJira,
+      dispatch,
+      document,
+      team,
+      user,
+      jira,
+      connectType,
+      set: creators.setInputJira,
     });
   }, [user.rooms]);
 
@@ -97,7 +108,7 @@ const Jira = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'jira',
+      connectType,
       modules,
       list: creators.getTeamsToken,
       load: creators.getTeamsJira,

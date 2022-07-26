@@ -46,14 +46,14 @@ const DevAsana = () => {
   const [figmaUrl, setFigmaUrl] = useState('');
   const [hisTab, setHisTab] = useState([]);
   const [hisTabNm, setHisTabNm] = useState([]);
-  const figmaFav = 'https://www.figma.com/oauth?client_id=IZ1eQO3vEbhj2z9sUJbqSH&redirect_uri=http://localhost:8080/authroize&scope=file_read&state=state&response_type=code';
+  const figmaFav = 'https://www.figma.com/oauth?client_id=IZ1eQO3vEbhj2z9sUJbqSH&redirect_uri=http://localhost:8082/authroize&scope=file_read&state=state&response_type=code';
 
   /**
    * 토큰 정보
    * @returns {Promise<void>}
    */
   const getToken = async () => {
-    const result = await axios.get('http://localhost:8080/notion/token',
+    const result = await axios.get('http://localhost:8082/notion/token',
         {
           headers: {
             'connect-type': 'application/json;charset=UTF-8',
@@ -83,7 +83,7 @@ const DevAsana = () => {
     window.open('app.asana.com/-/oauth_authorize?' +
         [ 'client_id=1202387977719401',
           'response_type=code',
-          'redirect_uri=http://localhost:8080/asanaCallback',
+          'redirect_uri=http://localhost:8082/asanaCallback',
           'state=state',
         ].join('&')
     );
@@ -220,7 +220,7 @@ const DevAsana = () => {
    * @returns {Promise<void>}
    */
   const localLoad = async (data) => {
-    const result = await axios.get('http://localhost:8080/asana/token',
+    const result = await axios.get('http://localhost:8082/asana/token',
         data,
         {
           headers: {
@@ -237,7 +237,7 @@ const DevAsana = () => {
   };
 
   const handleClickReq = async (data, e) => {
-    const result = await axios.post('http://localhost:8080/asana/dynamic/request',
+    const result = await axios.post('http://localhost:8082/asana/dynamic/request',
         data,
         {
           headers: {

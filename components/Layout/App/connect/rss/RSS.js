@@ -4,19 +4,13 @@ import { useDispatch } from 'react-redux';
 import Router, { useRouter } from 'next/router';
 import RssInsert from './RssInsert';
 import RssUpdate from './RssUpdate';
+import { util } from '../../../../../service/util';
 
 const RSS = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  useEffect(() => {
-    console.log( router.query.id )
-    return;
-    if (!router.query.id) {
-      const prefix = '/app/connect';
-      Router.push(`${prefix}/rss?id=3184`, `${prefix}/rss`);
-    }
-  }, []);
+  useEffect(() => util.devCase1(router, "rss", "25468", false), []);
 
   return (<>
     { !router.query.id && <RssInsert /> }

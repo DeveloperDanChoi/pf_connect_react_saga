@@ -1,5 +1,12 @@
 import { api } from '../../_call';
 import {
+  deleteTeamsNotion,
+  getTeamsNotion,
+  postTeamsNotion,
+  putTeamsNotionSetting,
+  putTeamsNotionStatus,
+} from './Notion/notion';
+import {
   deleteTeamsBitbucket,
   getTeamsBitbucket,
   postTeamsBitbucket,
@@ -57,6 +64,13 @@ import {
 } from './Trello/trello';
 
 export const webAdmin = (() => ({
+  notion: {
+    deleteTeams: deleteTeamsNotion,
+    getTeams: getTeamsNotion,
+    postTeams: postTeamsNotion,
+    putTeamsSetting: putTeamsNotionSetting,
+    putTeamsStatus: putTeamsNotionStatus,
+  },
   bitbucket: {
     deleteTeams: deleteTeamsBitbucket,
     getTeams: getTeamsBitbucket,

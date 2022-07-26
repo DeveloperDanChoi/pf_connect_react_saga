@@ -34,11 +34,11 @@ export const saga = (() => ({
   * getTeamsGoogleCalendar(data) {
     const { team } = yield select((state) => state);
     // load initialModule
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.params, { ...data.data, teamId: team.teamId });
+    reduxModule.modules.sets(request.params, { ...data.data, teamId: team.teamId });
 
-    const result = yield call(moduleData.api, moduleData.request);
+    const result = yield call(api, request);
     const resultMembers = yield call(getV1AdminTeamsMembers, result.data.teamId);
 
     for (const member of resultMembers.data.records) {
@@ -55,7 +55,6 @@ export const saga = (() => ({
       yield put(creators.setInputGoogleCalendar({ key, value: result.data[key] }));
     }
     yield put(creators.setInputGoogleCalendar({ key: 'type', value: 'googleCalendar' }));
-
     yield put(creators.setInputGoogleCalendar({ key: 'createdAt', value: util.dateFormat(result.data.createdAt) }));
     yield put(creators.setInputGoogleCalendar({ key: 'statusClss', value: converter.statusClss(result.data.status) }));
   },
@@ -67,13 +66,14 @@ export const saga = (() => ({
   * postTeamsGoogleCalendar(data) {
     const { team } = yield select((state) => state);
     // load initialModule
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.body, data.data);
+    reduxModule.modules.sets(request.body, data.data);
     // custom request data
-    moduleData.request.params.teamId = team.teamId;
+    request.params.teamId = team.teamId;
+    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailUrl);
 
-    const result = yield call(moduleData.api, moduleData.request);
+    const result = yield call(api, request);
   },
   /**
    * 구글 캘린더 Connect 연동 설정을 변경하는 API<br>
@@ -82,19 +82,21 @@ export const saga = (() => ({
    */
   * putTeamsGoogleCalendarSetting(data) {
     // load initialModule
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.body, data.data);
-    moduleData.request.body.connectId = data.data.id;
-    moduleData.request.params.teamId = data.data.teamId;
+    reduxModule.modules.sets(request.body, data.data);
+    // custom request data
+    request.body.connectId = data.data.id;
+    request.params.teamId = data.data.teamId;
+    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailUrl);
 
-    const result = yield call(moduleData.api, moduleData.request);
+    const result = yield call(api, request);
 
     if (result.status !== 200) {
       console.error('update fail !!');
       yield put(creators.getTeamsGoogleCalendar({
-        connectId: moduleData.request.body.connectId,
-        teamId: moduleData.request.params.teamId,
+        connectId: request.body.connectId,
+        teamId: request.params.teamId,
       }));
     }
   },
@@ -106,6 +108,8 @@ export const saga = (() => ({
   * deleteAuthentications(data) {
     const { authenticationId } = data.data;
     const result = yield call(deleteAuthentications, { authenticationId });
+
+    yield put(creators.getAuthenticationGoogleCalendarCalendarList());
   },
   /**
    * 사용자 정의 데이터<br>

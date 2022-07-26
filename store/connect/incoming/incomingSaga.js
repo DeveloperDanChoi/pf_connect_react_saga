@@ -22,11 +22,11 @@ export const saga = (() => ({
   * getTeamsToken(data, connectType = 'incoming') {
     const { team } = yield select((state) => state);
     // load initialModule
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.params, { connectType, teamId: team.teamId });
+    reduxModule.modules.sets(request.params, { connectType, teamId: team.teamId });
 
-    const result = yield call(moduleData.api, moduleData.request);
+    const result = yield call(api, request);
 
     yield put(creators.setTeamsToken(result.data));
 
@@ -43,11 +43,11 @@ export const saga = (() => ({
   * getTeamsIncoming(data) {
     const { team } = yield select((state) => state);
     // load initialModule
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.params, { ...data.data, teamId: team.teamId });
+    reduxModule.modules.sets(request.params, { ...data.data, teamId: team.teamId });
 
-    const result = yield call(moduleData.api, moduleData.request);
+    const result = yield call(api, request);
     const resultMembers = yield call(getV1AdminTeamsMembers, result.data.teamId);
 
     for (const member of resultMembers.data.records) {
@@ -64,6 +64,7 @@ export const saga = (() => ({
       yield put(creators.setInputIncoming({ key, value: result.data[key] }));
     }
 
+    yield put(creators.setInputIncoming({ key: 'type', value: 'incoming' }));
     yield put(creators.setInputIncoming({ key: 'createdAt', value: util.dateFormat(result.data.createdAt) }));
     yield put(creators.setInputIncoming({ key: 'statusClss', value: converter.statusClss(result.data.status) }));
   },
@@ -75,13 +76,14 @@ export const saga = (() => ({
   * postTeamsIncoming(data) {
     const { team } = yield select((state) => state);
     // load initialModule
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.body, data.data);
+    reduxModule.modules.sets(request.body, data.data);
     // custom request data
-    moduleData.request.params.teamId = team.teamId;
+    request.params.teamId = team.teamId;
+    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailUrl);
 
-    const result = yield call(moduleData.api, moduleData.request);
+    const result = yield call(api, request);
   },
   /**
    * Incoming Webhook Connect 설정을 수정하는 API<br>
@@ -90,19 +92,20 @@ export const saga = (() => ({
    */
   * putTeamsIncomingSetting(data) {
     // load initialModule
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.body, data.data);
-    moduleData.request.body.connectId = data.data.id;
-    moduleData.request.params.teamId = data.data.teamId;
+    reduxModule.modules.sets(request.body, data.data);
+    request.body.connectId = data.data.id;
+    request.params.teamId = data.data.teamId;
+    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailUrl);
 
-    const result = yield call(moduleData.api, moduleData.request);
+    const result = yield call(api, request);
 
     if (result.status !== 200) {
       console.error('update fail !!');
       yield put(creators.getTeamsIncoming({
-        connectId: moduleData.request.body.connectId,
-        teamId: moduleData.request.params.teamId,
+        connectId: request.body.connectId,
+        teamId: request.params.teamId,
       }));
     }
   },

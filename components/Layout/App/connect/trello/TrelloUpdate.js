@@ -33,10 +33,22 @@ const Trello = () => {
   useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
-      dispatch, document, team, user, trello, connectType, set: creators.setInputTrello,
+      dispatch,
+      document,
+      team,
+      user,
+      trello,
+      connectType,
+      set: creators.setInputTrello,
     });
     searcherLanguage.initialize({
-      dispatch, document, team, user, trello, connectType, set: creators.setInputTrello,
+      dispatch,
+      document,
+      team,
+      user,
+      trello,
+      connectType,
+      set: creators.setInputTrello,
     });
   }, [user.rooms]);
 
@@ -44,7 +56,7 @@ const Trello = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'trello',
+      connectType,
       modules,
       list: creators.getAuthenticationTrelloBoardsList,
       load: creators.getTeamsTrello,

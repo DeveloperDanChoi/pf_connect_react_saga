@@ -162,6 +162,7 @@ export const web = {
 
 export const upload = {
   put: (uri, data, headersInfo) => call('upload', 'put', uri, headersInfo, data),
+  post: (uri, data, headersInfo) => call('upload', 'post', uri, headersInfo, data),
 };
 
 export const l10n = {

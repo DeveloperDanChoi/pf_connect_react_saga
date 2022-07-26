@@ -448,12 +448,13 @@ export const searcherBoard = (() => {
    * @param data
    */
   function select(e, data) {
+    console.log(0, e, data)
     e.stopPropagation();
     e.preventDefault();
     const target = e.currentTarget;
     const selectLists = target.closest('.select-list').querySelectorAll('li a');
     const { name } = target.closest('.select-box').firstChild;
-
+console.log(1)
     // selects[1]({
     //   ...selects[0],
     //   [name]: target.innerText,
@@ -461,10 +462,11 @@ export const searcherBoard = (() => {
     searcher.set('selectedBoard', target.innerText);
     searcher.set('trelloBoardId', data.id);
     searcher.set('trelloBoardName', data.name);
-
+    console.log(2)
     selectLists.forEach((list) => list.classList.remove('on'));
     target.classList.toggle('on');
     target.closest('.select-box').classList.toggle('on');
+    console.log(3)
   }
 
   function initialize(data) {

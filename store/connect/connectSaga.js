@@ -96,7 +96,7 @@ const teamsConnectConvert = (() => {
         break;
       }
     }
-    console.log('name >>>>' , topicName)
+    // console.log('name >>>>' , topicName)
     return topicName;
   };
   /**
@@ -126,6 +126,7 @@ const teamsConnectConvert = (() => {
         item.createdAt = util.dateFormat(item.createdAt);
         // item.roomName = getTopicName(item.roomId);
         item.member = getMember(item.memberId);
+        // item.roomName = "roomName";
       }
     }
     return result;
@@ -152,7 +153,6 @@ export const saga = (() => ({
     const memberId = user.user.member.id;
     const result = teamsConnectConvert.initialize(yield call(getTeamsConnect, data.data), team);
     let connectTotalCount = 0;
-    const myConnectInfo = {};
     const myConnect = ((data) => {
       // TODO: 나의 잔디 커넥트 api 필요
       // filter myConnect
@@ -161,19 +161,17 @@ export const saga = (() => ({
         let connectCount = 0;
         for (const item of data[connectType]) {
           if ( item.memberId === memberId) {
-            myConn[connectType] = myConn[connectType] || [];
-            myConnectInfo[connectType] = myConnectInfo[connectType] || { count: 0, current: 0 };
+            myConn[connectType] = myConn[connectType] || { data: [], datas: [], current: 0, page: 0, interval: 10, initCount: 3, count: 0 };
             connectTotalCount++;
             connectCount++;
             if (connectCount > 3) {
               item.display = 'none';
             }
-            // TODO: DEV
-            for (let i = 0; i < 10; i++) {
-              // myConn[connectType].push(item);
+            if (connectCount <= myConn[connectType].initCount) {
+              myConn[connectType].data.push(item);
             }
-            myConn[connectType].push(item);
-            myConnectInfo[connectType].count = connectCount;
+            myConn[connectType].datas.push(item);
+            myConn[connectType].count = connectCount;
           }
         }
       }
@@ -184,7 +182,6 @@ export const saga = (() => ({
     yield put(connectCreators.setTeamsConnect(result.data));
     yield put(userCreators.setMyConnect(myConnect));
     yield put(userCreators.setMyConnectCount(connectTotalCount));
-    yield put(userCreators.setMyConnectInfo(myConnectInfo));
   },
 }))();
 

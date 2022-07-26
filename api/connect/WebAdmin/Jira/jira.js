@@ -1,4 +1,5 @@
-import { api } from '../../../_call';
+import { api, upload } from '../../../_call';
+import { util } from '../../../../service/util';
 
 /**
  * Jira Connect 설정을 삭제하는 API<br>
@@ -22,7 +23,7 @@ export const getTeamsJira = ({ params }) => api.get(`/connect-api/teams/${params
  * @param data
  * @returns
  */
-export const postTeamsJira = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/jira`, body, { version: 1 });
+export const postTeamsJira = ({ params, body }) => upload.post(`/connect-api/teams/${params.teamId}/jira`, util.convertFormData(body), { version: 1 });
 
 /**
  * Jira Connect 설정을 수정하는 API<br>
@@ -30,7 +31,7 @@ export const postTeamsJira = ({ params, body }) => api.post(`/connect-api/teams/
  * @param data
  * @returns
  */
-export const putTeamsJiraSetting = ({ params, body }) => api.put(`/connect-api/teams/${params.teamId}/jira/setting`, body, { version: 1 });
+export const putTeamsJiraSetting = ({ params, body }) => upload.put(`/connect-api/teams/${params.teamId}/jira/setting`, util.convertFormData(body), { version: 1 });
 
 /**
  * JIRA Connect 설정을 활성/비활성하는 API<br>

@@ -27,18 +27,12 @@ export const initialModules = [
    */
   { type: 'get', name: 'MY_CONNECT_COUNT', data: false },
   { type: 'set', name: 'MY_CONNECT_COUNT', data: true },
-  /**
-   * 팀에 연결된 나의 Connect 더보기 Count<br>
-   */
-  { type: 'get', name: 'MY_CONNECT_INFO', data: false },
-  { type: 'set', name: 'MY_CONNECT_INFO', data: true },
 ];
 export const modules = (() => reduxModule.modules.create(initialModules, 'user'))();
 
 const initialState = {
   myConnect: [],
-  myConnectCount: '',
-  myConnectInfo: {},
+  myConnectCount: -1,
   rooms: {
     bots: [],
     chats: [],

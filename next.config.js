@@ -26,6 +26,7 @@ const publicRuntimeConfig = {
     production: 'http://local.jandi.io:8080',
     alpha: 'http://local.jandi.io:8080',
     development: 'http://local.jandi.io:8080',
+    // development: 'https://danconn85.loca.lt',
     oprs: 'http://local.jandi.io:8080',
   }),
   WEB_URL: getAddress({

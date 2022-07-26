@@ -1,4 +1,5 @@
-import { api } from '../../../_call';
+import { api, upload } from '../../../_call';
+import { util } from '../../../../service/util';
 
 /**
  * Outgoing Webhook Connect 설정을 삭제하는 API<br>
@@ -22,7 +23,7 @@ export const getTeamsOutgoing = ({ params }) => api.get(`/connect-api/teams/${pa
  * @param data
  * @returns
  */
-export const postTeamsOutgoing = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/outgoing`, body, { version: 1 });
+export const postTeamsOutgoing = ({ params, body }) => upload.post(`/connect-api/teams/${params.teamId}/outgoing`, util.convertFormData(body), { version: 1 });
 
 /**
  * Outgoing Webhook Connect 설정을 수정하는 API<br>
@@ -30,7 +31,7 @@ export const postTeamsOutgoing = ({ params, body }) => api.post(`/connect-api/te
  * @param data
  * @returns
  */
-export const putTeamsOutgoingSetting = ({ params, body }) => api.put(`/connect-api/teams/${params.teamId}/outgoing/setting`, body, { version: 1 });
+export const putTeamsOutgoingSetting = ({ params, body }) => upload.put(`/connect-api/teams/${params.teamId}/outgoing/setting`, util.convertFormData(body), { version: 1 });
 
 /**
  * Outgoing Webhook Connect 설정을 활성/비활성하는 API<br>

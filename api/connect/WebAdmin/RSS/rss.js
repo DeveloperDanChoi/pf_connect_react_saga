@@ -1,4 +1,5 @@
-import { api } from '../../../_call';
+import { api, upload } from '../../../_call';
+import { util } from '../../../../service/util';
 
 /**
  * RSS Connect 설정을 삭제<br>
@@ -22,7 +23,7 @@ export const getTeamsRss = ({ params }) => api.get(`/connect-api/teams/${params.
  * @param data
  * @returns
  */
-export const postTeamsRss = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/rss`, body, { version: 1 });
+export const postTeamsRss = ({ params, body }) => upload.post(`/connect-api/teams/${params.teamId}/rss`, util.convertFormData(body), { version: 1 });
 
 /**
  * RSS Connect 설정 수정<br>
@@ -30,7 +31,7 @@ export const postTeamsRss = ({ params, body }) => api.post(`/connect-api/teams/$
  * @param data
  * @returns
  */
-export const putTeamsRssSetting = ({ params, body }) => api.put(`/connect-api/teams/${params.teamId}/rss/setting`, body, { version: 1 });
+export const putTeamsRssSetting = ({ params, body }) => upload.put(`/connect-api/teams/${params.teamId}/rss/setting`, util.convertFormData(body), { version: 1 });
 
 /**
  * RSS Connect 활성/비활성<br>

@@ -53,10 +53,22 @@ const Github = () => {
   useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
-      dispatch, document, team, user, github, connectType, set: creators.setInputGithub,
+      dispatch,
+      document,
+      team,
+      user,
+      github,
+      connectType,
+      set: creators.setInputGithub,
     });
     searcherLanguage.initialize({
-      dispatch, document, team, user, github, connectType, set: creators.setInputGithub,
+      dispatch,
+      document,
+      team,
+      user,
+      github,
+      connectType,
+      set: creators.setInputGithub,
     });
   }, [user.rooms]);
 
@@ -64,7 +76,7 @@ const Github = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'github',
+      connectType,
       modules,
       list: creators.getAuthenticationGithubReposList,
       load: creators.getTeamsGithub,

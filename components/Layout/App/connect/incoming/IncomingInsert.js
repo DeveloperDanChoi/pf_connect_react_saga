@@ -90,12 +90,23 @@ const Incoming = () => {
   };
 
   useEffect(() => {
-    // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
-      dispatch, document, team, user, incoming, connectType, set: creators.setInputIncoming,
+      dispatch,
+      document,
+      team,
+      user,
+      incoming,
+      connectType,
+      set: creators.setInputIncoming,
     });
     searcherLanguage.initialize({
-      dispatch, document, team, user, incoming, connectType, set: creators.setInputIncoming,
+      dispatch,
+      document,
+      team,
+      user,
+      incoming,
+      connectType,
+      set: creators.setInputIncoming,
     });
   }, [user.rooms]);
 
@@ -103,7 +114,7 @@ const Incoming = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'incoming',
+      connectType,
       modules,
       list: creators.getTeamsToken,
       load: creators.getTeamsIncoming,

@@ -4,19 +4,13 @@ import { useDispatch } from 'react-redux';
 import Router, { useRouter } from 'next/router';
 import TrelloInsert from './TrelloInsert';
 import TrelloUpdate from './TrelloUpdate';
+import { util } from '../../../../../service/util';
 
 const Trello = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  useEffect(() => {
-    console.log( router.query.id )
-    return;
-    if (!router.query.id) {
-      const prefix = '/app/connect';
-      Router.push(`${prefix}/trello?id=25099`, `${prefix}/trello`);
-    }
-  }, []);
+  useEffect(() => util.devCase1(router, "trello", "25471", true), []);
 
   return (<>
     { !router.query.id && <TrelloInsert /> }

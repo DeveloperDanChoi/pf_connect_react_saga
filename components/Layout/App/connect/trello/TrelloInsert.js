@@ -89,10 +89,22 @@ const Trello = () => {
   useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
-      dispatch, document, team, user, trello, connectType, set: creators.setInputTrello,
+      dispatch,
+      document,
+      team,
+      user,
+      trello,
+      connectType,
+      set: creators.setInputTrello,
     });
     searcherLanguage.initialize({
-      dispatch, document, team, user, trello, connectType, set: creators.setInputTrello,
+      dispatch,
+      document,
+      team,
+      user,
+      trello,
+      connectType,
+      set: creators.setInputTrello,
     });
   }, [user.rooms]);
 
@@ -100,7 +112,7 @@ const Trello = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'trello',
+      connectType,
       modules,
       list: creators.getAuthenticationTrelloBoardsList,
       load: creators.getTeamsTrello,
@@ -127,6 +139,22 @@ const Trello = () => {
       dispatch, document, team, user, trello, connectType, set: creators.setInputTrello,
     });
   }, [trello.authenticationTrelloBoardsList]);
+
+  useEffect(() => {
+    window.addEventListener("message", receiveMessage, false);
+
+    // TODO: configurate
+    function receiveMessage({ origin, data }) {
+      if ((origin === 'http://localhost:6001' || origin === 'https://www.jandi.io') &&
+          data === 'popupDone') {
+        template1.list(creators.getAuthenticationGoogleCalendarCalendarList);
+      }
+    }
+
+    return () => {
+      window.removeEventListener('message', receiveMessage);
+    };
+  }, []);
 
   return (<>
     {/* [D] : 연동하기 */}
@@ -227,7 +255,7 @@ const Trello = () => {
                                 <div className="select-list account-type">
                                   <ul>
                                     <li>
-                                      <a href="#none"><span className='icon-ic-user-white'>{trello.authenticationTrelloBoardsList.authenticationName}</span></a>
+                                      <a onClick={(e) => searcherAuth.select(e, trello.authenticationTrelloBoardsList)}><span className='icon-ic-user-white'>{trello.authenticationTrelloBoardsList.authenticationName}</span></a>
                                       <button type='button' className='btn-delete icon-ic-close' onClick={(e) => template1.disconnect(e, trello.input)}></button>
                                     </li>
                                   </ul>

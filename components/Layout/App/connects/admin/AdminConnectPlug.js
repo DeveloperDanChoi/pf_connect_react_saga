@@ -124,8 +124,8 @@ const AdminConnectPlug = (props) => {
         ))}
       </div>
 
-      <p>----- 퍼블</p>
-      <div className='connect-admin-wrap'>
+      {/* --- 퍼블 */}
+      <div className='connect-admin-wrap' style={{display: 'none'}}>
         <a href="#none" className='connect-info-box'>
           <p className='img-box'><img src={getPublicAssetPath('static/icon_google.png')} alt="Google 캘린더"></img></p>
           <div className='info'>

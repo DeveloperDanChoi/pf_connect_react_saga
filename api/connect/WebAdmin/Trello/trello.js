@@ -1,4 +1,5 @@
-import { api } from '../../../_call';
+import { api, upload } from '../../../_call';
+import { util } from '../../../../service/util';
 
 /**
  * Connect Trello Service 삭제<br>
@@ -22,7 +23,7 @@ export const getTeamsTrello = ({ params }) => api.get(`/connect-api/teams/${para
  * @param data
  * @returns
  */
-export const postTeamsTrello = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/trello`, body, { version: 1 });
+export const postTeamsTrello = ({ params, body }) => upload.post(`/connect-api/teams/${params.teamId}/trello`, util.convertFormData(body), { version: 1 });
 
 /**
  * Connect Trello Service 설정 변경<br>
@@ -30,7 +31,7 @@ export const postTeamsTrello = ({ params, body }) => api.post(`/connect-api/team
  * @param data
  * @returns
  */
-export const putTeamsTrelloSetting = ({ params, body }) => api.put(`/connect-api/teams/${params.teamId}/trello/setting`, body, { version: 1 });
+export const putTeamsTrelloSetting = ({ params, body }) => upload.put(`/connect-api/teams/${params.teamId}/trello/setting`, util.convertFormData(body), { version: 1 });
 
 /**
  * Connect Trello Service 상태 변경<br>

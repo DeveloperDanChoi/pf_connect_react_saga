@@ -38,11 +38,11 @@ export const saga = (() => ({
   * getTeamsTrello(data) {
     const { team } = yield select((state) => state);
     // load initialModule
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.params, { ...data.data, teamId: team.teamId });
+    reduxModule.modules.sets(request.params, { ...data.data, teamId: team.teamId });
 
-    const result = yield call(moduleData.api, moduleData.request);
+    const result = yield call(api, request);
     const resultMembers = yield call(getV1AdminTeamsMembers, team.teamId);
 
     for (const member of resultMembers.data.records) {
@@ -58,7 +58,7 @@ export const saga = (() => ({
     for (const key in result.data) {
       yield put(creators.setInputTrello({ key, value: result.data[key] }));
     }
-
+    yield put(creators.setInputTrello({ key: 'type', value: 'trello' }));
     yield put(creators.setInputTrello({ key: 'createdAt', value: util.dateFormat(result.data.createdAt) }));
     yield put(creators.setInputTrello({ key: 'statusClss', value: converter.statusClss(result.data.status) }));
   },
@@ -70,13 +70,14 @@ export const saga = (() => ({
   * postTeamsTrello(data) {
     const { team } = yield select((state) => state);
     // load initialModule
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.body, data.data);
+    reduxModule.modules.sets(request.body, data.data);
     // custom request data
-    moduleData.request.params.teamId = team.teamId;
+    request.params.teamId = team.teamId;
+    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailUrl);
 
-    const result = yield call(moduleData.api, moduleData.request);
+    const result = yield call(api, request);
   },
   /**
    * Connect Trello Service 설정 변경<br>
@@ -84,21 +85,24 @@ export const saga = (() => ({
    * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
    */
   * putTeamsTrelloSetting(data) {
-    const moduleData = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
+    // load initialModule
+    const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
     // set request data
-    reduxModule.modules.sets(moduleData.request.body, data.data);
-    moduleData.request.body.connectId = data.data.id;
-    moduleData.request.params.teamId = data.data.teamId;
-    moduleData.request.body.trelloBoardId = data.data.webhookTrelloBoardId;
-    moduleData.request.body.trelloBoardName = data.data.webhookTrelloBoardName;
+    reduxModule.modules.sets(request.body, data.data);
+    // custom request data
+    request.body.connectId = data.data.id;
+    request.params.teamId = data.data.teamId;
+    request.body.trelloBoardId = data.data.webhookTrelloBoardId;
+    request.body.trelloBoardName = data.data.webhookTrelloBoardName;
+    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailUrl);
 
-    const result = yield call(moduleData.api, moduleData.request);
+    const result = yield call(api, request);
 
     if (result.status !== 200) {
       console.error('update fail !!');
       yield put(creators.getTeamsTrello({
-        connectId: moduleData.request.body.connectId,
-        teamId: moduleData.request.params.teamId,
+        connectId: request.body.connectId,
+        teamId: request.params.teamId,
       }));
     }
   },
@@ -110,8 +114,9 @@ export const saga = (() => ({
   * deleteAuthentications(data) {
     const { authenticationId } = data.data;
     const result = yield call(deleteAuthentications, { authenticationId });
-    yield put(creators.setInputTrello({ key: 'authenticationId', value: '' }));
-    yield put(creators.setInputTrello({ key: 'selectedAuthentication', value: '' }));
+    // yield put(creators.setInputTrello({ key: 'authenticationId', value: '' }));
+    // yield put(creators.setInputTrello({ key: 'selectedAuthentication', value: '' }));
+    yield put(creators.getAuthenticationTrelloBoardsList());
   },
   /**
    * 사용자 정의 데이터v

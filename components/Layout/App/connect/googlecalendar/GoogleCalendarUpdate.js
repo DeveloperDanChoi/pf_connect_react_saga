@@ -36,10 +36,22 @@ const GoogleCalendar = () => {
   useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
-      dispatch, document, team, user, googleCalendar, connectType, set: creators.setInputGoogleCalendar,
+      dispatch,
+      document,
+      team,
+      user,
+      googleCalendar,
+      connectType,
+      set: creators.setInputGoogleCalendar,
     });
     searcherLanguage.initialize({
-      dispatch, document, team, user, googleCalendar, connectType, set: creators.setInputGoogleCalendar,
+      dispatch,
+      document,
+      team,
+      user,
+      googleCalendar,
+      connectType,
+      set: creators.setInputGoogleCalendar,
     });
   }, [user.rooms]);
 
@@ -47,7 +59,7 @@ const GoogleCalendar = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'googleCalendar',
+      connectType,
       modules,
       list: creators.getAuthenticationGoogleCalendarCalendarList,
       load: creators.getTeamsGoogleCalendar,

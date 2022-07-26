@@ -4,19 +4,13 @@ import { useDispatch } from 'react-redux';
 import Router, { useRouter } from 'next/router';
 import JiraInsert from './JiraInsert';
 import JiraUpdate from './JiraUpdate';
+import { util } from '../../../../../service/util';
 
 const Jira = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  useEffect(() => {
-    console.log( router.query.id )
-    return;
-    if (!router.query.id) {
-      const prefix = '/app/connect';
-      Router.push(`${prefix}/jira?id=25094`, `${prefix}/jira`);
-    }
-  }, []);
+  useEffect(() => util.devCase1(router, "jira", "25466", true), []);
 
   return (<>
     { !router.query.id && <JiraInsert /> }

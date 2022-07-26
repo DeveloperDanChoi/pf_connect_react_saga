@@ -24,7 +24,12 @@ const RssUpdate = () => {
   useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
-      dispatch, document, team, user, rss, connectType, set: creators.setInputRss,
+      dispatch,
+      document,
+      team,
+      user,
+      rss, connectType,
+      set: creators.setInputRss,
     });
   }, [user.rooms]);
 
@@ -32,7 +37,7 @@ const RssUpdate = () => {
     template1.initialize({
       dispatch,
       router,
-      connectType: 'rss',
+      connectType,
       modules,
       load: creators.getTeamsRss,
       status: updateStatus,

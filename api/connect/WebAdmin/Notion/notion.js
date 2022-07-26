@@ -1,4 +1,6 @@
-import { api } from '../../../_call';
+import { api, connect_api, upload } from '../../../_call';
+import { util } from '../../../../service/util';
+
 
 /**
  * Notion Connect 설정을 삭제하는 API<br>
@@ -19,7 +21,7 @@ export const getTeamsNotion = ({ params }) => api.get(`/connect-api/teams/${para
  * @param data
  * @returns
  */
-export const postTeamsNotion = ({ params, body }) => api.post(`/connect-api/teams/${params.teamId}/notion`, body, { version: 1 });
+export const postTeamsNotion = ({ params, body }) => connect_api.post(`/connect-api/teams/${params.teamId}/notion`, body, { version: 1 });
 
 /**
  * Notion Connect 설정을 수정하는 API<br>

@@ -69,7 +69,16 @@ export const initialState = {
   connects: [],
   connectsObj: {},
   teamsConnect: {},
-  teamsConnectDetail: [],
+  teamsConnectDetail: {
+    googleCalendar: {
+
+    },
+    rss: {
+      datas: [],
+      current: 0,
+      interval: 13,
+    }
+  },
   authentication: [],
   teamsToken: {
     webhookToken: '',
@@ -175,6 +184,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case types.SET_TEAMS_CONNECT:
     case types.SET_TEAMS_CONNECT_DETAIL:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
+      break;
+    case types.GET_TEAMS_CONNECT_DETAIL:
+      console.log(draft, action);
       break;
     default:
       break;
