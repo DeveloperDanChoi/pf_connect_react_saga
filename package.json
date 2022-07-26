@@ -19,13 +19,13 @@
     "html-react-parser": "^1.4.10",
     "immer": "^9.0.12",
     "ismobilejs": "^1.1.1",
-    "lodash": "^4.17.21",
     "next": "12.1.4",
     "next-compose-plugins": "^2.2.1",
     "next-images": "^1.8.4",
     "next-redux-saga": "^4.1.2",
     "next-redux-wrapper": "^7.0.5",
     "react": "18.0.0",
+    "react-cropper": "^2.1.8",
     "react-device-detect": "^2.2.2",
     "react-dom": "18.0.0",
     "react-redux": "^7.2.8",
@@ -36,6 +36,7 @@
     "sass": "^1.50.0",
     "socket.io-client": "^2.1.1",
     "styled-components": "^5.3.0",
+    "swiper": "^8.2.2",
     "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
