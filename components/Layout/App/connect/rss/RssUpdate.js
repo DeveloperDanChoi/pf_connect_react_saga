@@ -28,7 +28,8 @@ const RssUpdate = () => {
       document,
       team,
       user,
-      rss, connectType,
+      rss,
+      connectType,
       set: creators.setInputRss,
     });
   }, [user.rooms]);

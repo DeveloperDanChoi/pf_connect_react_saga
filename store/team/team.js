@@ -33,6 +33,11 @@ export const initialModules = [
    */
   { type: 'get', name: 'TEAMS_MEMBER_PROFILES', data: false },
   { type: 'set', name: 'TEAMS_MEMBER_PROFILES', data: true },
+  /**
+   * 팀 룸 조회<br>
+   */
+  { type: 'get', name: 'TEAMS_ROOMS', data: false },
+  { type: 'set', name: 'TEAMS_ROOMS', data: true },
 ];
 export const modules = (() => reduxModule.modules.create(initialModules, 'team'))();
 

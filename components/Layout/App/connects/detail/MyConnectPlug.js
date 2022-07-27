@@ -5,10 +5,12 @@ import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { Input } from 'antd';
 import { deleteConnect, modules as connectModules, updateStatus } from '../../../../../store/connect/connect';
 import { modules as userModules } from '../../../../../store/user/user';
+import { modules as teamModules } from '../../../../../store/team/team';
 import {template1} from "../../../../../service/connect";
 import Router from "next/router";
 import {putTeamsGithubSetting} from "../../../../../api/connect/WebAdmin/Github/github";
 import {put} from "redux-saga/effects";
+import { validator } from '../../../../../service/validator';
 
 const MyConnectPlug = (props) => {
   const dispatch = useDispatch();
@@ -16,7 +18,16 @@ const MyConnectPlug = (props) => {
     return state;
   });
 
-  const allModules = template1.allModules();
+  /**
+   * sub request api
+   */
+  useEffect(() => {
+    if (validator.initializing({ team, user })) return;
+
+    dispatch(connectModules.creators.getTeamsConnect(team.teamId));
+    console.log( userModules )
+    dispatch(teamModules.creators.getTeamsRooms(team.teamId));
+  }, [team.teamId, user.user.member]);
 
   /**
    * 상세 페이지 이동
@@ -43,12 +54,6 @@ const MyConnectPlug = (props) => {
   const handleClickDeleteConnect = (data) => {
     dispatch(deleteConnect(data));
   };
-
-  useEffect(() => {
-    if (team.teamId === 0 || user.user.member.id === 0) return;
-
-    dispatch(connectModules.creators.getTeamsConnect(team.teamId));
-  }, [team.teamId, user.user.member]);
 
   /* switch toggle */
   const onToggle = (e) => {
@@ -176,7 +181,7 @@ const MyConnectPlug = (props) => {
                         ));
                       }
 
-                      obj2.current = obj2.current + 1;
+                      obj2.current += 1;
 
                       obj[data.name] = obj2;
 

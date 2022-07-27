@@ -11,11 +11,11 @@ import {
   setValues,
   initValues,
 } from './connect';
-import {getTeamsConnect, getTeamsToken, webAdmin} from '../../api/connect/WebAdmin/webAdmin';
-import {getV1AdminTeamsMembers} from "../../api/team/Admin/admin";
+import { getTeamsConnect, getTeamsToken, webAdmin } from '../../api/connect/WebAdmin/webAdmin';
+import { getV1AdminTeamsMembers } from '../../api/team/Admin/admin';
 import { putTeamsGithubStatus } from '../../api/connect/WebAdmin/Github/github';
-import {util} from "../../service/util";
-import {modules as connectModules} from "../connect/connect";
+import { util } from '../../service/util';
+import { modules as connectModules } from '../connect/connect';
 import {initValues as userInitValues, modules as userModules} from "../user/user";
 import { Router } from "next/router";
 import { getAuthenticationList } from "../../api/connect/Authentication/authentication";
@@ -119,6 +119,9 @@ const teamsConnectConvert = (() => {
   function initialize(result, teamData) {
     data = result.data;
     team = teamData;
+
+    console.log( data, team.rooms.topics )
+
     for (const connectType in data) {
       for (const item of data[connectType]) {
         item.statusClss = statusClss(item.status);
@@ -127,6 +130,12 @@ const teamsConnectConvert = (() => {
         // item.roomName = getTopicName(item.roomId);
         item.member = getMember(item.memberId);
         // item.roomName = "roomName";
+        for (const topics of team.rooms.topics) {
+          if (item.roomId === topics.id) {
+            item.roomName = topics.name;
+            break;
+          }
+        }
       }
     }
     return result;

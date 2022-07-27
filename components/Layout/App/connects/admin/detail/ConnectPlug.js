@@ -54,6 +54,7 @@ const ConnectPlug = (props) => {
 
     setConnectType(router.asPath.split('?')[1].split('#')[0]);
   }, []);
+
   useEffect(() => {
     if (connectType === '' || Object.keys(connect.connectsObj).length === 0) return;
 
@@ -165,7 +166,7 @@ const ConnectPlug = (props) => {
         } else {
           datas.push([...allData].slice(currentIndex, currentIndex + interval));
         }
-        currentIndex = currentIndex + interval;
+        currentIndex += interval;
       }
 
       return {
@@ -225,7 +226,7 @@ const ConnectPlug = (props) => {
                         <span></span>
                       </td>
                     }
-                    <td><span className='fc-green'>Mobile JIRA</span></td>
+                    <td><span className='fc-green'>{dataConnect.roomName}</span></td>
                     <td>
                       <span className='img-box'>
                         {
@@ -298,13 +299,13 @@ const ConnectPlug = (props) => {
                             obj.current = i;
                             // dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
                           }
-                          }>{i+1}</strong> }
+                          }>{i + 1}</strong> }
                           { i !== connect.teamsConnectDetail[connectType].current && <a href='#none' onClick={() => {
                             const obj = {...connect.teamsConnectDetail[connectType]};
                             obj.current = i;
                             dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
                           }
-                          }>{i+1}</a> }
+                          }>{i + 1}</a> }
                         </Fragment>
                     ))
                 }
