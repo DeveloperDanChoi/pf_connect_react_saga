@@ -31,10 +31,12 @@ const ImageCropper = ({ src, parent }) => {
   };
 
   return (<>
-    <p>프로필 사진 편집</p>
-    <Cropper
+    <div className='cropperTitle'>
+      <p>프로필 사진 편집</p>
+    </div>
+    <div className='cropperBlock'>
+      <Cropper
         src={src}
-        // style={{ height: 400, width: "100%" }}
         // Cropper.js options
         // initialAspectRatio={16 / 9}
         initialAspectRatio={1}
@@ -47,9 +49,10 @@ const ImageCropper = ({ src, parent }) => {
         viewMode={1}
         ref={cropperRef}
     />
-    <div>
-      <button onClick={handleClose}>닫기</button>
-      <button onClick={handleOK}>확인</button>
+    </div>
+    <div className='cropperBtn'>
+      <button className='btn btnCancel' onClick={handleClose}>닫기</button>
+      <button className='btn btnOk' onClick={handleOK}>확인</button>
     </div>
   </>);
 };

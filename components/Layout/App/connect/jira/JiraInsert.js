@@ -16,6 +16,7 @@ import {
   searcher, searcherLanguage,
 } from '../../../../../service/searcher';
 import { LANGUAGE2 } from '../../../../../constants/type';
+import 'swiper/css';
 
 SwiperCore.use([Navigation]);
 

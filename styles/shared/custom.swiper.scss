@@ -1,11 +1,20 @@
 /* swiper custom navigation */
 .connect-swiper-container{
+
     .swiper-button-prev,.swiper-button-next{
-        top: 22px;
+        top: 0px;
         left: 0;
         width: 32px;
-        height: 400px;
+        height: 100%;
+        max-height: 400px;
         @include rounded(6px);
+        position: absolute;
+        z-index: 10;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
         &:after{
             content: "\e90c";
             @include font-set;
@@ -16,13 +25,17 @@
             @include themed(){ background:t($bg-gray-11-color);}
         }
     }
+    .swiper-button-prev {
+        // border-radius: 0 6px 6px 0;
+    }
     .swiper-button-next{
+        // border-radius: 6px 0 0 6px;
         left: auto;
         right: 0;
         &:after{
             content: "\e90d";
         }
     }
-   
+
 }
 

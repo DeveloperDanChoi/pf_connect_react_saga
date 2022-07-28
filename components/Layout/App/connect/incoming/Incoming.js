@@ -10,7 +10,7 @@ const Incoming = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  useEffect(() => util.devCase1(router, "incoming", "25465", false), []);
+  useEffect(() => util.devCase1(router, "incoming", "25465", true), []);
 
   return (<>
     { !router.query.id && <IncomingInsert /> }

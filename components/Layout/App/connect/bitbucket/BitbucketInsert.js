@@ -14,6 +14,7 @@ import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { banner } from '../../../../../service/banner';
 import { searcher, searcherLanguage } from '../../../../../service/searcher';
 import { LANGUAGE2 } from '../../../../../constants/type';
+import 'swiper/css';
 
 SwiperCore.use([Navigation]);
 

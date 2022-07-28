@@ -13,6 +13,7 @@ import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { banner } from '../../../../../service/banner';
 import { searcher, searcherLanguage } from '../../../../../service/searcher';
+import 'swiper/css';
 
 const RssInsert = () => {
   const connectType = 'rss';

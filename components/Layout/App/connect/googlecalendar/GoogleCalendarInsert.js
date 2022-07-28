@@ -232,7 +232,7 @@ const GoogleCalendar = () => {
                           </dt>
                           <dd>
                             <div className='input-row'>
-                              <button type='button'>인증된 계정</button>
+                              <span>인증된 계정</span>
                               <div className="select-box type-full">
                                 <a href="javascript(void:0);:"
                                    title="검색필드 선택"

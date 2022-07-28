@@ -1,6 +1,7 @@
 import {
   all, call, fork, put, select, takeLatest,
 } from 'redux-saga/effects';
+import { Router } from 'next/router';
 import {
   DELETE_CONNECT,
   GET_TEAMS_CONNECT,
@@ -10,15 +11,14 @@ import {
   updateStatus,
   setValues,
   initValues,
+  modules as connectModules,
 } from './connect';
 import { getTeamsConnect, getTeamsToken, webAdmin } from '../../api/connect/WebAdmin/webAdmin';
 import { getV1AdminTeamsMembers } from '../../api/team/Admin/admin';
 import { putTeamsGithubStatus } from '../../api/connect/WebAdmin/Github/github';
 import { util } from '../../service/util';
-import { modules as connectModules } from '../connect/connect';
-import {initValues as userInitValues, modules as userModules} from "../user/user";
-import { Router } from "next/router";
-import { getAuthenticationList } from "../../api/connect/Authentication/authentication";
+import { initValues as userInitValues, modules as userModules } from '../user/user';
+import { getAuthenticationList } from '../../api/connect/Authentication/authentication';
 
 /**
  * 연결 상태 변경<br>
@@ -116,11 +116,9 @@ const teamsConnectConvert = (() => {
     return {};
   };
 
-  function initialize(result, teamData) {
+  function initialize(result, { team: teamData, user }) {
     data = result.data;
     team = teamData;
-
-    console.log( data, team.rooms.topics )
 
     for (const connectType in data) {
       for (const item of data[connectType]) {
@@ -129,10 +127,21 @@ const teamsConnectConvert = (() => {
         item.createdAt = util.dateFormat(item.createdAt);
         // item.roomName = getTopicName(item.roomId);
         item.member = getMember(item.memberId);
-        // item.roomName = "roomName";
+        item.roomName = '비공개 토픽 또는 1:1메시지';
         for (const topics of team.rooms.topics) {
           if (item.roomId === topics.id) {
             item.roomName = topics.name;
+            break;
+          }
+        }
+        for (const chats of user.rooms.chats) {
+          if (item.roomId === chats.id) {
+            for (const bots of user.rooms.bots) {
+              if (chats.companionId === bots.id) {
+                item.roomName = bots.name;
+                break;
+              }
+            }
             break;
           }
         }
@@ -141,8 +150,8 @@ const teamsConnectConvert = (() => {
     return result;
   }
   return {
-    initialize
-  }
+    initialize,
+  };
 })();
 function* watchUpdateStatus() {
   yield takeLatest(UPDATE_STATUS, updateStatusSaga);
@@ -160,7 +169,8 @@ export const saga = (() => ({
   * getTeamsConnect(data) {
     const { user, team } = yield select((state) => state);
     const memberId = user.user.member.id;
-    const result = teamsConnectConvert.initialize(yield call(getTeamsConnect, data.data), team);
+    const result = teamsConnectConvert
+      .initialize(yield call(getTeamsConnect, data.data), { team, user });
     let connectTotalCount = 0;
     const myConnect = ((data) => {
       // TODO: 나의 잔디 커넥트 api 필요
@@ -169,8 +179,10 @@ export const saga = (() => ({
       for (const connectType in data) {
         let connectCount = 0;
         for (const item of data[connectType]) {
-          if ( item.memberId === memberId) {
-            myConn[connectType] = myConn[connectType] || { data: [], datas: [], current: 0, page: 0, interval: 10, initCount: 3, count: 0 };
+          if (item.memberId === memberId) {
+            myConn[connectType] = myConn[connectType] || {
+              data: [], datas: [], current: 0, page: 0, interval: 10, initCount: 3, count: 0,
+            };
             connectTotalCount++;
             connectCount++;
             if (connectCount > 3) {
@@ -193,7 +205,6 @@ export const saga = (() => ({
     yield put(userCreators.setMyConnectCount(connectTotalCount));
   },
 }))();
-
 
 export default function* connectSaga() {
   yield all([

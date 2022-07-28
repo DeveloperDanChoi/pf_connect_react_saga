@@ -21,25 +21,22 @@ const modalWarapper = ({ content, mainClassName, overlayBg }) => {
     dispatch(close());
   };
 
-  return (<>
-    <div id="modalWrapper" style={{
-      position: 'absolute',
-      zIndex: 9,
-      top: 0,
-      height: 'inherit',
-      background: 'white',
-    }}>
-      <div>
-        <div><button onClick={handleClose}>X</button></div>
-        <div className="modal-content">
-          <div className={mainClassName}>
-            {content}
+  return (
+    <>
+      <div className="cropperModal">
+        <button className="modalClose" onClick={handleClose}>
+          <span className="icon-delete"></span>
+        </button>
+        <div id="modalWrapper">
+          <div className="modal-content">
+            <div className={mainClassName}>
+              {content}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    { overlayBg && <div className={'overlay'} onClick={handleClose} /> }
-  </>);
+      { overlayBg && <div className={'overlay'} onClick={handleClose} /> }
+    </>);
 };
 
 export default modalWarapper;

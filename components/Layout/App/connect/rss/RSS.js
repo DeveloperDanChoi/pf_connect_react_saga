@@ -10,7 +10,7 @@ const RSS = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  useEffect(() => util.devCase1(router, "rss", "25468", false), []);
+  useEffect(() => util.devCase1(router, "rss", "25468", true), []);
 
   return (<>
     { !router.query.id && <RssInsert /> }

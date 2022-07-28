@@ -16,7 +16,6 @@ $default-black-01: #000;
 1. shortcut에 변수 추가
 2. light, dark에 변수 값 정의
 3. @include themes() 내부 t() 함수 안에 정의한 변수 값 넣어 호출
-
 /**** shortcut *****/
 $bg-gray-01-color:'bg-gray-01-color';
 $bg-gray-11-color:'bg-gray-11-color';
@@ -26,6 +25,8 @@ $bg-gray-04-color:'bg-gray-04-color';
 $bg-green-01-color:'bg-green-01-color';
 $bg-white-01-color:'bg-white-01-color';
 $bg-white-02-color:'bg-white-02-color';
+$bg-white-03-color:'bg-white-03-color';
+$bg-white-03-color-hover:'bg-white-03-color-hover';
 $txt-black-01:'txt-black-01';
 $txt-black-02:'txt-black-02';
 $green-01:'green-01';
@@ -38,6 +39,8 @@ $gray-01:'gray-01';
 $gray-02:'gray-02';
 $gray-03:'gray-03';
 $gray-04:'gray-04';
+$gray-05:'gray-05';
+$gray-05-hover:'gray-05-hover';
 $btn-gray:'btn-gray';
 $btn-gray-hover:'btn-gray-hover';
 $btn-gray-02:'btn-gray-02';
@@ -61,6 +64,8 @@ $themes:(
     bg-green-01-color: #F2FCF8, 
     bg-white-01-color: #FFF, 
     bg-white-02-color: #FFF, 
+    bg-white-03-color: #FFF, 
+    bg-white-03-color-hover: #F2F2F2, 
     txt-black-01:#333, 
     txt-black-02:#A2A2A2, 
     white-01: #FFF,
@@ -69,6 +74,8 @@ $themes:(
     gray-02:#DDD,
     gray-03:#A2A2A2,
     gray-04:#DADADA,
+    gray-05:#A2A2A2,
+    gray-05-hover:#333333,
     btn-gray:#F2F4F8,
     btn-gray-hover:#E0E3E8,
     btn-gray-02:#F2F2F2,
@@ -91,6 +98,8 @@ $themes:(
     bg-green-01-color: #20322E, 
     bg-white-01-color: #212226, 
     bg-white-02-color: #18191A, 
+    bg-white-03-color: #596064, 
+    bg-white-03-color-hover: #41484D, 
     txt-black-01:#E8E9ED, 
     txt-black-02:#656565, 
     white-01: #212226,
@@ -99,6 +108,8 @@ $themes:(
     gray-02:#3F4448,
     gray-03:#909090,
     gray-04:#262A2F,
+    gray-05:#C2C2C2,
+    gray-05-hover:#FFFFFF,
     btn-gray: #2C3035,
     btn-gray-hover: #3C4147,
     btn-gray-02:#2C2D33,
@@ -132,5 +143,3 @@ $themes:(
 @function t($key) {
   @return map-get($theme-map, $key);
 }
-
-

@@ -14,9 +14,11 @@
     }
     &.type-swiper{
         @include responsive-innerbox(40px,0,big-type);
+
         .inner-cont {
             width: calc(100% - 64px);
             margin: 0 auto;
+
             .inner-cont-info{
                 display: table;
                 margin-top: 24px;
@@ -96,6 +98,9 @@
                 }
             }
         }
+    }
+    .swiper {
+        border-radius: 6px;
     }
 }
 .connect-right-box{

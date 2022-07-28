@@ -70,14 +70,46 @@ export const initialState = {
   connectsObj: {},
   teamsConnect: {},
   teamsConnectDetail: {
+    bitbucket: {
+      datas: [],
+      current: 0,
+      interval: 13,
+    },
+    github: {
+      datas: [],
+      current: 0,
+      interval: 13,
+    },
     googleCalendar: {
-
+      datas: [],
+      current: 0,
+      interval: 13,
+    },
+    incoming: {
+      datas: [],
+      current: 0,
+      interval: 13,
+    },
+    jira: {
+      datas: [],
+      current: 0,
+      interval: 13,
+    },
+    outgoing: {
+      datas: [],
+      current: 0,
+      interval: 13,
     },
     rss: {
       datas: [],
       current: 0,
       interval: 13,
-    }
+    },
+    trello: {
+      datas: [],
+      current: 0,
+      interval: 13,
+    },
   },
   authentication: [],
   teamsToken: {

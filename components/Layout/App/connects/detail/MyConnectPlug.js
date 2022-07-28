@@ -25,8 +25,6 @@ const MyConnectPlug = (props) => {
     if (validator.initializing({ team, user })) return;
 
     dispatch(connectModules.creators.getTeamsConnect(team.teamId));
-    console.log( userModules )
-    dispatch(teamModules.creators.getTeamsRooms(team.teamId));
   }, [team.teamId, user.user.member]);
 
   /**
