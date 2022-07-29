@@ -68,9 +68,9 @@ const App = ({ Component, pageProps }) => {
     <>
       <FixedMeta />
       <Layout {...pageInfo}>
-          <Component {...pageProps} />
+        <Component {...pageProps} />
+        <PcAddOnComponent />
       </Layout>
-      <PcAddOnComponent />
     </>
   );
 };

@@ -25,7 +25,7 @@
           font-size: 12px;
           text-align: left;
           @include themed() {
-            color: t($gray-01);
+            color: t($gray-01); 
             background: t($bg-gray-04-color);}
           }
         tbody th,td{
@@ -38,7 +38,7 @@
           @include themed() {
             border-bottom: 1px solid t($border-gray);
             color: t($txt-black-01);}
-            &.disabled{
+            &.disabled{ 
               @include opacity(0.35);
               .btn-wrap.tablet .btn-more,.btn-icon{
                 pointer-events: none;
@@ -93,7 +93,7 @@
         &.tablet{
           position: relative;
           display: none;
-          .btn-more{
+          .btn-more{ 
             padding: 4px;
             font-size: 18px;
             @include rounded(2px);
@@ -167,7 +167,7 @@
     .img-box{
         @include box(52px,52px,inline-block);
         margin-right: 12px;
-
+        
         img{
           width: 100%;
           height: 100%;
@@ -249,9 +249,16 @@
     margin-left: -6px;
     @include rounded(50%);
     @include themed{border: 2px solid t($bg-white-01-color);}
+    @include themed{background-color: t($bg-white-01-color);}
     cursor: pointer;
     img{
       position: absolute;
+      display: none;
+    }
+   
+    
+    img[src] {
+      display: block;
     }
     &:nth-child(1){z-index:4}
     &:nth-child(2){z-index:3}

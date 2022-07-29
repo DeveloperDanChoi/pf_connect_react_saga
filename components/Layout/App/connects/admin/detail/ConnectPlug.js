@@ -148,7 +148,7 @@ const ConnectPlug = (props) => {
     // TODO: 다시 페이지에 진입했을 때 이전 상태 유지?
     const thisDetail = connect.teamsConnectDetail[connectType] || {};
 
-    console.log( thisDetail )
+    // console.log( thisDetail )
 
     const allData = connect.teamsConnect[connectType];
 
@@ -158,7 +158,7 @@ const ConnectPlug = (props) => {
       const current = 0;
       const page = Math.floor(allData.length / 13);
       const datas = [];
-      const pageLinks = 10;
+      const pageSize = 10;
       let currentIndex = 0;
 
       for (let i = 0; i < page + 1; i++) {
@@ -176,86 +176,235 @@ const ConnectPlug = (props) => {
         current,
         page,
         datas,
+        pageSize,
       }
     })();
 
-    console.log( obj )
+    // console.log( obj )
 
     dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
   }, [connect.teamsConnect[connectType]]);
 
   const pagination = (() => {
+    if (!connect.teamsConnectDetail[connectType]) return;
+
+    const { pageSize, current, page } = connect.teamsConnectDetail[connectType];
     const arr = [];
-    for (let i = 0; i < 10; i++) {
-      arr.push(<strong>{i+1}</strong>);
+    const startPage = (() => {
+      if (current < pageSize) {
+        return 0;
+      }
+
+      return Math.floor(current / pageSize) * pageSize;
+    })();
+    const lastPage = (() => {
+      if (current < pageSize) {
+        return pageSize;
+      }
+      const currPage = Math.floor(current / pageSize) * pageSize + pageSize;
+
+      return currPage < page ? currPage : page + 1;
+    })();
+
+    // 현재 페이지 기준으로
+    for (let i = startPage; i < lastPage; i++) {
+      if (i === connect.teamsConnectDetail[connectType].current) {
+        arr.push(
+          <strong key={i} onClick={() => {
+            const obj = {...connect.teamsConnectDetail[connectType]};
+            obj.current = i;
+            // dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+          }}>{i + 1}</strong>
+        );
+      } else {
+        arr.push(
+          <a href='#none' key={i} onClick={() => {
+            const obj = {...connect.teamsConnectDetail[connectType]};
+            obj.current = i;
+            dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+          }
+          }>{i + 1}</a>
+        );
+      }
     }
     return arr;
   })();
 
   return (<>
-    <div className='detail-container'>
-      <ConnectPlugHeader />
-      {/* //detail-header */}
-      <div className='detail-wrapper'>
-        <div className='connect-table-wrap'>
-          <table>
-            <caption></caption>
-            <colgroup>
-              <col width="36%"/>
-              <col width="18%"/>
-              <col width="14%"/>
-              <col width="13%"/>
-              <col width="auto"/>
-            </colgroup>
-            <thead>
-            <tr>
-              <th scope="col">커넥트 프로필</th>
-              <th scope="col">연동된 토픽 / JANDI</th>
-              <th scope="col">생성자</th>
-              <th scope="col">생성일</th>
-              <th scope="col">상태</th>
-            </tr>
-            </thead>
-            <tbody>
-            {/* [D]: 13개 이상부터 페이징 처리 필요 */}
-            {
-              connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].datas.length > 0 && connect.teamsConnectDetail[connectType].datas[connect.teamsConnectDetail[connectType].current].map((dataConnect, i) => (
-                <tr key={i} className={dataConnect.status}>
-                  {
-                    dataConnect.bot &&
+        <div className='detail-container'>
+          <ConnectPlugHeader />
+          {/* //detail-header */}
+          <div className='detail-wrapper'>
+            <div className='connect-table-wrap'>
+              <table>
+                <caption></caption>
+                <colgroup>
+                  <col width="36%"/>
+                  <col width="18%"/>
+                  <col width="14%"/>
+                  <col width="13%"/>
+                  <col width="auto"/>
+                </colgroup>
+                <thead>
+                <tr>
+                  <th scope="col">커넥트 프로필</th>
+                  <th scope="col">연동된 토픽 / JANDI</th>
+                  <th scope="col">생성자</th>
+                  <th scope="col">생성일</th>
+                  <th scope="col">상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                {/* [D]: 13개 이상부터 페이징 처리 필요 */}
+                {
+                  connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].datas.length > 0 && connect.teamsConnectDetail[connectType].datas[connect.teamsConnectDetail[connectType].current].map((dataConnect, i) => (
+                  <tr key={i} className={dataConnect.status}>
+                    {
+                      dataConnect.bot &&
+                      <td>
+                        <span className='img-box'><img src={dataConnect.bot.thumbnailUrl} alt={dataConnect.bot.name}></img></span>
+                        <span>{dataConnect.bot.name}</span>
+                      </td>
+                    }
+                    {
+                      !dataConnect.bot &&
+                      <td>
+                        <span className='img-box'></span>
+                        <span></span>
+                      </td>
+                    }
+                    <td><span className='fc-green'>{dataConnect.roomName}</span></td>
                     <td>
-                      <span className='img-box'><img src={dataConnect.bot.thumbnailUrl} alt={dataConnect.bot.name}></img></span>
-                      <span>{dataConnect.bot.name}</span>
-                    </td>
-                  }
-                  {
-                    !dataConnect.bot &&
-                    <td>
-                      <span className='img-box'></span>
-                      <span></span>
-                    </td>
-                  }
-                  <td><span className='fc-green'>{dataConnect.roomName}</span></td>
-                  <td>
                       <span className='img-box'>
                         {
                           dataConnect.member.photoUrl &&
-                          <img src={dataConnect.member.photoUrl} alt={dataConnect.member.name}></img>
+                            <img src={dataConnect.member.photoUrl} alt={dataConnect.member.name}></img>
                         }
                       </span>
-                    <span>{dataConnect.member.name}</span>
+                      <span>{dataConnect.member.name}</span>
+                    </td>
+                    <td><span className='fw-normal'>{dataConnect.createdAt}</span></td>
+                    <td className='of-visible'>
+                      <div className='status-wrap'>
+                        <label className={dataConnect.statusClss} labefor="">
+                          <span className='txt'>{dataConnect.statusText}</span>
+                          <Input type="checkbox" id=""/>
+                          <a href="#none" className="slider" onClick={(e) => handleToggleStatus(dataConnect, e)}></a>
+                        </label>
+                        <div className='btn-wrap tablet'>
+                          <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span
+                              className='hidden'>열기</span></a>
+                          <div className='tooltip-box'>
+                            <div>
+                              <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                              <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
+                            </div>
+                          </div>
+                        </div>
+                        <div className='btn-wrap pc'>
+                          <button className='btn-icon' onClick={() => handleClick(dataConnect)}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
+                          <button className='btn-icon' onClick={() => handleClickDeleteConnect(dataConnect)}><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  ))
+                }
+                {
+                    connect.teamsConnectDetail && connect.teamsConnectDetail.length === 0 &&
+                    <tr>
+                      <td colSpan={5}>
+                        <div className='noresult-wrap'><span>&lsquo;변수처리할것&lsquo; 의 검색 결과가 없습니다.</span></div>
+                      </td>
+                    </tr>
+                }
+                </tbody>
+              </table>
+            </div>
+            {/* //connect-table-wrap */}
+            <div className='pagination-wrap'>
+              <button type='button' className='btn-paging first icon-ic-double-angle-left-02' disabled={connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].current === 0 ? 'disabled' : ''} onClick={() => {
+                const obj = {...connect.teamsConnectDetail[connectType]};
+                obj.current = 0;
+                dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+              }}>
+                <span className='hidden'>맨끝</span>
+              </button>
+              <button type='button' className='btn-paging prev icon-ic-mini-left' disabled={connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].current === 0 ? 'disabled' : ''} onClick={() => {
+                const obj = {...connect.teamsConnectDetail[connectType]};
+                obj.current = obj.current === 0 ? 0 : obj.current - 1;
+                dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+              }}>
+                <span className='hidden'>이전</span>
+              </button>
+              <div className='page-num'>{pagination}</div>
+              <button type='button' className='btn-paging next icon-ic-mini-right' disabled={connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].current === connect.teamsConnectDetail[connectType].page ? 'disabled' : ''} onClick={() => {
+                const obj = {...connect.teamsConnectDetail[connectType]};
+                obj.current = obj.current === obj.page ? obj.current : obj.current + 1;
+                dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+              }}>
+                <span className='hidden'>다음</span>
+              </button>
+              <button type='button' className='btn-paging last icon-ic-double-angle-right-02' disabled={connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].current === connect.teamsConnectDetail[connectType].page ? 'disabled' : ''} onClick={() => {
+                const obj = {...connect.teamsConnectDetail[connectType]};
+                obj.current = obj.page;
+                dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
+              }}>
+                <span className='hidden'>맨뒤</span>
+              </button>
+            </div>
+            {/* //pagination-wrap */}
+          </div>
+
+
+          {/*<p>--- 퍼블</p>*/}
+          <div className='detail-wrapper' style={{display: 'none'}}>
+            <div className='connect-table-wrap'>
+              <table>
+                <caption></caption>
+                <colgroup>
+                  <col width="36%"/>
+                  <col width="18%"/>
+                  <col width="14%"/>
+                  <col width="13%"/>
+                  <col width="auto"/>
+                </colgroup>
+                <thead>
+                <tr>
+                  <th scope="col">커넥트 프로필</th>
+                  <th scope="col">연동된 토픽 / JANDI</th>
+                  <th scope="col">생성자</th>
+                  <th scope="col">생성일</th>
+                  <th scope="col">상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                {/* [D]: 13개 이상부터 페이징 처리 필요 */}
+                <tr>
+                  <td>
+                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
+                                                   alt="dummy"></img></span>
+                    <span>
+                    JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
+                  </span>
                   </td>
-                  <td><span className='fw-normal'>{dataConnect.createdAt}</span></td>
+                  <td><span className='fc-green'>Mobile JIRA</span></td>
+                  <td>
+                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
+                                                   alt="dummy"></img></span>
+                    <span>이은혜</span>
+                  </td>
+                  <td><span className='fw-normal'>2021-12-06</span></td>
                   <td className='of-visible'>
                     <div className='status-wrap'>
-                      <label className={dataConnect.statusClss} labefor="">
-                        <span className='txt'>{dataConnect.statusText}</span>
+                      <label className="switch on" labefor="">
+                        <span className='txt'>작동중</span>
                         <Input type="checkbox" id=""/>
-                        <a href="#none" className="slider" onClick={(e) => handleToggleStatus(dataConnect, e)}></a>
+                        <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
                       </label>
                       <div className='btn-wrap tablet'>
                         <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span
-                          className='hidden'>열기</span></a>
+                            className='hidden'>열기</span></a>
                         <div className='tooltip-box'>
                           <div>
                             <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
@@ -264,377 +413,247 @@ const ConnectPlug = (props) => {
                         </div>
                       </div>
                       <div className='btn-wrap pc'>
-                        <button className='btn-icon' onClick={() => handleClick(dataConnect)}><i className="icon-ic-edit"></i><span className='hidden'>편집</span></button>
-                        <button className='btn-icon' onClick={() => handleClickDeleteConnect(dataConnect)}><i className="icon-ic-delete"></i><span className='hidden'>삭제</span></button>
+                        <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span>
+                        </button>
+                        <button className='btn-icon'><i className="icon-ic-delete"></i><span
+                            className='hidden'>삭제</span></button>
                       </div>
                     </div>
                   </td>
                 </tr>
-              ))
-            }
-            {
-              connect.teamsConnectDetail && connect.teamsConnectDetail.length === 0 &&
-              <tr>
-                <td colSpan={5}>
-                  <div className='noresult-wrap'><span>&lsquo;변수처리할것&lsquo; 의 검색 결과가 없습니다.</span></div>
-                </td>
-              </tr>
-            }
-            </tbody>
-          </table>
-        </div>
-        {/* //connect-table-wrap */}
-        <div className='pagination-wrap'>
-          <button type='button' className='btn-paging first icon-ic-double-angle-left-02' disabled={connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].current === 0 ? 'disabled' : ''} onClick={() => {
-            const obj = {...connect.teamsConnectDetail[connectType]};
-            obj.current = 0;
-            dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
-          }}>
-            <span className='hidden'>맨끝</span>
-          </button>
-          <button type='button' className='btn-paging prev icon-ic-mini-left' disabled={connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].current === 0 ? 'disabled' : ''} onClick={() => {
-            const obj = {...connect.teamsConnectDetail[connectType]};
-            obj.current = obj.current === 0 ? 0 : obj.current - 1;
-            dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
-          }}>
-            <span className='hidden'>이전</span>
-          </button>
-          <div className='page-num'>{pagination}
-            {
-              connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].datas.map((d, i) => (
-                <Fragment key={i}>
-                  { i === connect.teamsConnectDetail[connectType].current && <strong onClick={() => {
-                    const obj = {...connect.teamsConnectDetail[connectType]};
-                    obj.current = i;
-                    // dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
-                  }
-                  }>{i + 1}</strong> }
-                  { i !== connect.teamsConnectDetail[connectType].current && <a href='#none' onClick={() => {
-                    const obj = {...connect.teamsConnectDetail[connectType]};
-                    obj.current = i;
-                    dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
-                  }
-                  }>{i + 1}</a> }
-                </Fragment>
-              ))
-            }
+                <tr>
+                  <td>
+                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
+                                                   alt="dummy"></img></span>
+                    <span>
+                    JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
+                  </span>
+                  </td>
+                  <td><span className='fc-green'>Mobile JIRA</span></td>
+                  <td>
+                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
+                                                   alt="dummy"></img></span>
+                    <span>이은혜</span>
+                  </td>
+                  <td><span className='fw-normal'>2021-12-06</span></td>
+                  <td className='of-visible'>
+                    <div className='status-wrap'>
+                      <label className="switch on" labefor="">
+                        <span className='txt'>작동중</span>
+                        <Input type="checkbox" id=""/>
+                        <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                      </label>
+                      <div className='btn-wrap tablet'>
+                        <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span
+                            className='hidden'>열기</span></a>
+                        <div className='tooltip-box'>
+                          <div>
+                            <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                            <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className='btn-wrap pc'>
+                        <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span>
+                        </button>
+                        <button className='btn-icon'><i className="icon-ic-delete"></i><span
+                            className='hidden'>삭제</span></button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
+                                                   alt="dummy"></img></span>
+                    <span>
+                    JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
+                  </span>
+                  </td>
+                  <td><span className='fc-green'>Mobile JIRA</span></td>
+                  <td>
+                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
+                                                   alt="dummy"></img></span>
+                    <span>이은혜</span>
+                  </td>
+                  <td><span className='fw-normal'>2021-12-06</span></td>
+                  <td className='of-visible'>
+                    <div className='status-wrap'>
+                      <label className="switch on" labefor="">
+                        <span className='txt'>작동중</span>
+                        <Input type="checkbox" id=""/>
+                        <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                      </label>
+                      <div className='btn-wrap tablet'>
+                        <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span
+                            className='hidden'>열기</span></a>
+                        <div className='tooltip-box'>
+                          <div>
+                            <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                            <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className='btn-wrap pc'>
+                        <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span>
+                        </button>
+                        <button className='btn-icon'><i className="icon-ic-delete"></i><span
+                            className='hidden'>삭제</span></button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
+                                                   alt="dummy"></img></span>
+                    <span>
+                    JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
+                  </span>
+                  </td>
+                  <td><span className='fc-green'>Mobile JIRA</span></td>
+                  <td>
+                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
+                                                   alt="dummy"></img></span>
+                    <span>이은혜</span>
+                  </td>
+                  <td><span className='fw-normal'>2021-12-06</span></td>
+                  <td className='of-visible'>
+                    <div className='status-wrap'>
+                      <label className="switch on" labefor="">
+                        <span className='txt'>작동중</span>
+                        <Input type="checkbox" id=""/>
+                        <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                      </label>
+                      <div className='btn-wrap tablet'>
+                        <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span
+                            className='hidden'>열기</span></a>
+                        <div className='tooltip-box'>
+                          <div>
+                            <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                            <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className='btn-wrap pc'>
+                        <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span>
+                        </button>
+                        <button className='btn-icon'><i className="icon-ic-delete"></i><span
+                            className='hidden'>삭제</span></button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr className='disabled'>
+                  <td>
+                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
+                                                   alt="dummy"></img></span>
+                    <span>
+                    JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
+                  </span>
+                  </td>
+                  <td><span className='fc-green'>Mobile JIRA</span></td>
+                  <td>
+                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
+                                                   alt="dummy"></img></span>
+                    <span>이은혜</span>
+                  </td>
+                  <td><span className='fw-normal'>2021-12-06</span></td>
+                  <td className='of-visible'>
+                    <div className='status-wrap'>
+                      <label className="switch" labefor="">
+                        <span className='txt'>작동중</span>
+                        <Input type="checkbox" id=""/>
+                        <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
+                      </label>
+                      <div className='btn-wrap tablet'>
+                        <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span
+                            className='hidden'>열기</span></a>
+                        <div className='tooltip-box'>
+                          <div>
+                            <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                            <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className='btn-wrap pc'>
+                        <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span>
+                        </button>
+                        <button className='btn-icon'><i className="icon-ic-delete"></i><span
+                            className='hidden'>삭제</span></button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            {/* //connect-table-wrap */}
+            <div className='pagination-wrap'>
+              <button type='button' className='btn-paging first icon-ic-double-angle-left-02'><span
+                  className='hidden'>맨끝</span></button>
+              <button type='button' className='btn-paging prev icon-ic-mini-left'><span className='hidden'>이전</span>
+              </button>
+              <div className='page-num'>
+                <strong>1</strong>
+                <a href='#none'>2</a>
+                <a href='#none'>3</a>
+              </div>
+              <button type='button' className='btn-paging next icon-ic-mini-right'><span className='hidden'>다음</span>
+              </button>
+              <button type='button' className='btn-paging last icon-ic-double-angle-right-02' disabled><span
+                  className='hidden'>맨뒤</span></button>
+            </div>
+            {/* //pagination-wrap */}
           </div>
-          <button type='button' className='btn-paging next icon-ic-mini-right' disabled={connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].current === connect.teamsConnectDetail[connectType].page ? 'disabled' : ''} onClick={() => {
-            const obj = {...connect.teamsConnectDetail[connectType]};
-            obj.current = obj.current === obj.page ? obj.current : obj.current + 1;
-            dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
-          }}>
-            <span className='hidden'>다음</span>
-          </button>
-          <button type='button' className='btn-paging last icon-ic-double-angle-right-02' disabled={connect.teamsConnectDetail[connectType] && connect.teamsConnectDetail[connectType].current === connect.teamsConnectDetail[connectType].page ? 'disabled' : ''} onClick={() => {
-            const obj = {...connect.teamsConnectDetail[connectType]};
-            obj.current = obj.page;
-            dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
-          }}>
-            <span className='hidden'>맨뒤</span>
-          </button>
-        </div>
-        {/* //pagination-wrap */}
-      </div>
 
-
-      {/*<p>--- 퍼블</p>*/}
-      <div className='detail-wrapper' style={{display: 'none'}}>
-        <div className='connect-table-wrap'>
-          <table>
-            <caption></caption>
-            <colgroup>
-              <col width="36%"/>
-              <col width="18%"/>
-              <col width="14%"/>
-              <col width="13%"/>
-              <col width="auto"/>
-            </colgroup>
-            <thead>
-            <tr>
-              <th scope="col">커넥트 프로필</th>
-              <th scope="col">연동된 토픽 / JANDI</th>
-              <th scope="col">생성자</th>
-              <th scope="col">생성일</th>
-              <th scope="col">상태</th>
-            </tr>
-            </thead>
-            <tbody>
-            {/* [D]: 13개 이상부터 페이징 처리 필요 */}
-            <tr>
-              <td>
-                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
-                                                   alt="dummy"></img></span>
-                <span>
-                    JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
-                  </span>
-              </td>
-              <td><span className='fc-green'>Mobile JIRA</span></td>
-              <td>
-                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
-                                                   alt="dummy"></img></span>
-                <span>이은혜</span>
-              </td>
-              <td><span className='fw-normal'>2021-12-06</span></td>
-              <td className='of-visible'>
-                <div className='status-wrap'>
-                  <label className="switch on" labefor="">
-                    <span className='txt'>작동중</span>
-                    <Input type="checkbox" id=""/>
-                    <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
-                  </label>
-                  <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span
-                      className='hidden'>열기</span></a>
-                    <div className='tooltip-box'>
-                      <div>
-                        <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
-                        <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='btn-wrap pc'>
-                    <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span>
-                    </button>
-                    <button className='btn-icon'><i className="icon-ic-delete"></i><span
-                      className='hidden'>삭제</span></button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
-                                                   alt="dummy"></img></span>
-                <span>
-                    JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
-                  </span>
-              </td>
-              <td><span className='fc-green'>Mobile JIRA</span></td>
-              <td>
-                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
-                                                   alt="dummy"></img></span>
-                <span>이은혜</span>
-              </td>
-              <td><span className='fw-normal'>2021-12-06</span></td>
-              <td className='of-visible'>
-                <div className='status-wrap'>
-                  <label className="switch on" labefor="">
-                    <span className='txt'>작동중</span>
-                    <Input type="checkbox" id=""/>
-                    <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
-                  </label>
-                  <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span
-                      className='hidden'>열기</span></a>
-                    <div className='tooltip-box'>
-                      <div>
-                        <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
-                        <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='btn-wrap pc'>
-                    <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span>
-                    </button>
-                    <button className='btn-icon'><i className="icon-ic-delete"></i><span
-                      className='hidden'>삭제</span></button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
-                                                   alt="dummy"></img></span>
-                <span>
-                    JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
-                  </span>
-              </td>
-              <td><span className='fc-green'>Mobile JIRA</span></td>
-              <td>
-                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
-                                                   alt="dummy"></img></span>
-                <span>이은혜</span>
-              </td>
-              <td><span className='fw-normal'>2021-12-06</span></td>
-              <td className='of-visible'>
-                <div className='status-wrap'>
-                  <label className="switch on" labefor="">
-                    <span className='txt'>작동중</span>
-                    <Input type="checkbox" id=""/>
-                    <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
-                  </label>
-                  <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span
-                      className='hidden'>열기</span></a>
-                    <div className='tooltip-box'>
-                      <div>
-                        <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
-                        <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='btn-wrap pc'>
-                    <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span>
-                    </button>
-                    <button className='btn-icon'><i className="icon-ic-delete"></i><span
-                      className='hidden'>삭제</span></button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
-                                                   alt="dummy"></img></span>
-                <span>
-                    JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
-                  </span>
-              </td>
-              <td><span className='fc-green'>Mobile JIRA</span></td>
-              <td>
-                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
-                                                   alt="dummy"></img></span>
-                <span>이은혜</span>
-              </td>
-              <td><span className='fw-normal'>2021-12-06</span></td>
-              <td className='of-visible'>
-                <div className='status-wrap'>
-                  <label className="switch on" labefor="">
-                    <span className='txt'>작동중</span>
-                    <Input type="checkbox" id=""/>
-                    <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
-                  </label>
-                  <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span
-                      className='hidden'>열기</span></a>
-                    <div className='tooltip-box'>
-                      <div>
-                        <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
-                        <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='btn-wrap pc'>
-                    <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span>
-                    </button>
-                    <button className='btn-icon'><i className="icon-ic-delete"></i><span
-                      className='hidden'>삭제</span></button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr className='disabled'>
-              <td>
-                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
-                                                   alt="dummy"></img></span>
-                <span>
-                    JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동IRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동JIRA New - 20220313 재연동
-                  </span>
-              </td>
-              <td><span className='fc-green'>Mobile JIRA</span></td>
-              <td>
-                    <span className='img-box'><img src={getPublicAssetPath('static/dummy.png')}
-                                                   alt="dummy"></img></span>
-                <span>이은혜</span>
-              </td>
-              <td><span className='fw-normal'>2021-12-06</span></td>
-              <td className='of-visible'>
-                <div className='status-wrap'>
-                  <label className="switch" labefor="">
-                    <span className='txt'>작동중</span>
-                    <Input type="checkbox" id=""/>
-                    <a href="#none" className="slider" onClick={(e) => onToggle(e)}></a>
-                  </label>
-                  <div className='btn-wrap tablet'>
-                    <a href="#none" className='btn-more' onClick={openTooltip}><i className="icon-ic-more"></i><span
-                      className='hidden'>열기</span></a>
-                    <div className='tooltip-box'>
-                      <div>
-                        <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
-                        <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='btn-wrap pc'>
-                    <button className='btn-icon'><i className="icon-ic-edit"></i><span className='hidden'>편집</span>
-                    </button>
-                    <button className='btn-icon'><i className="icon-ic-delete"></i><span
-                      className='hidden'>삭제</span></button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        {/* //connect-table-wrap */}
-        <div className='pagination-wrap'>
-          <button type='button' className='btn-paging first icon-ic-double-angle-left-02'><span
-            className='hidden'>맨끝</span></button>
-          <button type='button' className='btn-paging prev icon-ic-mini-left'><span className='hidden'>이전</span>
-          </button>
-          <div className='page-num'>
-            <strong>1</strong>
-            <a href='#none'>2</a>
-            <a href='#none'>3</a>
+          {/* [D] : 검색결과 없을 경우 */}
+          <div className='detail-wrapper'>
+            <div className='connect-table-wrap'>
+              <table>
+                <caption></caption>
+                <colgroup>
+                  <col width="35%"/>
+                  <col width="20%"/>
+                  <col width="13%"/>
+                  <col width="13%"/>
+                  <col width="auto"/>
+                </colgroup>
+                <thead>
+                <tr>
+                  <th scope="col">커넥트 프로필</th>
+                  <th scope="col">연동된 토픽 / JANDI</th>
+                  <th scope="col">생성자</th>
+                  <th scope="col">생성일</th>
+                  <th scope="col">상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td colSpan={5}>
+                    <div className='noresult-wrap'><span>&lsquo;홍길동&lsquo; 의 검색 결과가 없습니다.</span></div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            {/* //connect-table-wrap */}
+            <div className='pagination-wrap'>
+              <button type='button' className='btn-paging first icon-ic-double-angle-left-02' disabled><span
+                  className='hidden'>맨끝</span></button>
+              <button type='button' className='btn-paging prev icon-ic-mini-left' disabled><span
+                  className='hidden'>이전</span></button>
+              <div className='page-num'>
+                <strong>1</strong>
+              </div>
+              <button type='button' className='btn-paging next icon-ic-mini-right' disabled><span
+                  className='hidden'>다음</span></button>
+              <button type='button' className='btn-paging last icon-ic-double-angle-right-02' disabled><span
+                  className='hidden'>맨뒤</span></button>
+            </div>
+            {/* //pagination-wrap */}
           </div>
-          <button type='button' className='btn-paging next icon-ic-mini-right'><span className='hidden'>다음</span>
-          </button>
-          <button type='button' className='btn-paging last icon-ic-double-angle-right-02' disabled><span
-            className='hidden'>맨뒤</span></button>
         </div>
-        {/* //pagination-wrap */}
-      </div>
-
-      {/* [D] : 검색결과 없을 경우 */}
-      <div className='detail-wrapper'>
-        <div className='connect-table-wrap'>
-          <table>
-            <caption></caption>
-            <colgroup>
-              <col width="35%"/>
-              <col width="20%"/>
-              <col width="13%"/>
-              <col width="13%"/>
-              <col width="auto"/>
-            </colgroup>
-            <thead>
-            <tr>
-              <th scope="col">커넥트 프로필</th>
-              <th scope="col">연동된 토픽 / JANDI</th>
-              <th scope="col">생성자</th>
-              <th scope="col">생성일</th>
-              <th scope="col">상태</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td colSpan={5}>
-                <div className='noresult-wrap'><span>&lsquo;홍길동&lsquo; 의 검색 결과가 없습니다.</span></div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        {/* //connect-table-wrap */}
-        <div className='pagination-wrap'>
-          <button type='button' className='btn-paging first icon-ic-double-angle-left-02' disabled><span
-            className='hidden'>맨끝</span></button>
-          <button type='button' className='btn-paging prev icon-ic-mini-left' disabled><span
-            className='hidden'>이전</span></button>
-          <div className='page-num'>
-            <strong>1</strong>
-          </div>
-          <button type='button' className='btn-paging next icon-ic-mini-right' disabled><span
-            className='hidden'>다음</span></button>
-          <button type='button' className='btn-paging last icon-ic-double-angle-right-02' disabled><span
-            className='hidden'>맨뒤</span></button>
-        </div>
-        {/* //pagination-wrap */}
-      </div>
-    </div>
   </>);
 };
 export default ConnectPlug;

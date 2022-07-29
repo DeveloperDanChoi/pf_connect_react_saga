@@ -10,7 +10,6 @@
         @include rounded(6px);
         position: absolute;
         z-index: 10;
-        background: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -34,6 +33,12 @@
         right: 0;
         &:after{
             content: "\e90d";
+        }
+    }
+
+    .swiper-button-disabled {
+        &:after {
+            @include themed(){ color:t($txt-black-02);}
         }
     }
 
