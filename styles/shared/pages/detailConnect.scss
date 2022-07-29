@@ -23,7 +23,7 @@
             }
         }
     }
-    .connect-info-box{ 
+    .connect-info-box{
         justify-content: flex-start;
         .img-box{margin-right: 20px}
     }
@@ -37,6 +37,9 @@
     .page-num{
         padding: 0 7px;
         vertical-align: baseline;
+        min-width: 400px;
+        display: flex;
+        justify-content: center;
         & > *{
             padding: 0 8px;
             font-weight: bold;
@@ -70,7 +73,7 @@
         margin-left: 5px;
         @include btn(medium,green);
         &:disabled{
-            @include themed(){ 
+            @include themed(){
                 background-color: t($bg-white-02-color);
                 color: t($gray-01);
             }
@@ -106,7 +109,7 @@
             display: inline-block;
             margin-bottom: 5px;
         }
-    }   
+    }
     button{
         position: relative;
         margin-top: 30px;
