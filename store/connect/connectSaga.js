@@ -204,6 +204,20 @@ export const saga = (() => ({
     yield put(userCreators.setMyConnect(myConnect));
     yield put(userCreators.setMyConnectCount(connectTotalCount));
   },
+  /**
+   * 사용자 정의 데이터<br>
+   * @param data
+   * @returns
+   */
+  * setInputConnect(data) {
+    yield put(connectCreators.setInputConnectValue(data));
+  },
+  /**
+   * 사용자 정의 데이터<br>
+   * @param data
+   * @returns
+   */
+  * setInputConnectValue() {},
 }))();
 
 export default function* connectSaga() {

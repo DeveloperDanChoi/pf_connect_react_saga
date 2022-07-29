@@ -23,6 +23,22 @@ export const initialModules = [
    */
   { type: 'get', name: 'TEAMS_CONNECT_DETAIL', data: false },
   { type: 'set', name: 'TEAMS_CONNECT_DETAIL', data: true },
+  /**
+   * 사용자 정의 데이터<br>
+   */
+  {
+    type: 'set',
+    name: 'INPUT_CONNECT',
+    data: true,
+  },
+  /**
+   * 사용자 정의 데이터<br>
+   */
+  {
+    type: 'set',
+    name: 'INPUT_CONNECT_VALUE',
+    data: true,
+  },
 ];
 export const modules = (() => reduxModule.modules.create(initialModules, 'connect'))();
 
@@ -115,7 +131,9 @@ export const initialState = {
   teamsToken: {
     webhookToken: '',
   },
-  input: {},
+  input: {
+    search: '',
+  },
   connectDetail: [],
 };
 
@@ -219,6 +237,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case types.GET_TEAMS_CONNECT_DETAIL:
       console.log(draft, action);
+      break;
+    case types.SET_INPUT_CONNECT_VALUE:
+      draft.input[action.data.data.key] = action.data.data.value;
       break;
     default:
       break;

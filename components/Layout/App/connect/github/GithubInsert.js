@@ -270,6 +270,7 @@ const Github = () => {
                                             return (
                                               <li key={i}>
                                                 <a href="#none"
+                                                   className={true ? 'on' : ''}
                                                    onClick={(e) => searcherAuth.select(e, data)}
                                                 >
                                                   <span className='icon-ic-user-white'>{data.connectId}</span>
@@ -510,6 +511,7 @@ const Github = () => {
 
                               {/* custom-select-wrap */}
                               {
+                                // 검색어가 없을 때
                                 github.input.searchText === '' && (
                                   <div className='custom-select-wrap'>
                                     <dl className='option-wrap'>
@@ -517,24 +519,32 @@ const Github = () => {
                                       <dd>
                                         {
                                           github.input.searchRooms.map((roomsData, roomsIndex) => (<Fragment key={roomsIndex}>
-                                            {roomsData.seq
-                                            && <div className='folder-group'>
-                                              <div className='folder-tit'>
-                                                <span className='icon-ic-folder-open'>{roomsData.name}</span>
+                                            {
+                                              // 폴더가 있는 경우
+                                              roomsData.seq &&
+                                              <div className='folder-group'>
+                                                <div className='folder-tit'>
+                                                  <span className='icon-ic-folder-open'>{roomsData.name}</span>
+                                                </div>
+                                                <ul>
+                                                  {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
+                                                    <li><a className={true ? 'on' : ''}
+                                                           onClick={(e) => searcher.select(e, roomData)}>{roomData.name}
+                                                    </a></li>
+                                                  </Fragment>))}
+                                                </ul>
                                               </div>
-                                              <ul>
-                                                {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                                  <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
-                                                </Fragment>))}
-                                              </ul>
-                                            </div>
                                             }
-                                            {!roomsData.seq
-                                            && <div>
-                                              <ul>
-                                                <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
-                                              </ul>
-                                            </div>
+                                            {
+                                              // 폴더가 없는 경우
+                                              !roomsData.seq &&
+                                              <div>
+                                                <ul>
+                                                  <li><a className={true ? 'on' : ''}
+                                                         onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}
+                                                  </a></li>
+                                                </ul>
+                                              </div>
                                             }
                                           </Fragment>))
                                         }
@@ -547,7 +557,9 @@ const Github = () => {
                                           user.rooms.bots.map((botData, botIndex) => (
                                             <div key={botIndex}>
                                               <ul>
-                                                <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                                <li><a className={true ? 'on' : ''}
+                                                       onClick={(e) => searcher.select(e, botData)}>{botData.name}
+                                                </a></li>
                                               </ul>
                                             </div>
                                           ))

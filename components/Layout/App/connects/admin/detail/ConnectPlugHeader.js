@@ -6,6 +6,7 @@ import { getPublicAssetPath } from '../../../../../../lib/assetHelper';
 import Router, {useRouter} from "next/router";
 import {modules as teamModules} from "../../../../../../store/team/team";
 import {modules as connectModules} from "../../../../../../store/connect/connect";
+import { template1 } from '../../../../../../service/connect';
 
 const ConnectPlugHeader = (props) => {
   const dispatch = useDispatch();
@@ -54,12 +55,61 @@ const ConnectPlugHeader = (props) => {
       const searchType = document.querySelector('.select-list .on');
       const query = fields()[searchType.getAttribute('value')].value;
 
+      if (!connect.teamsConnect[connectType]) return;
+
       for (const item of connect.teamsConnect[connectType]) {
-        if (query === 0 && item.member && item.member.name && item.member.name.indexOf(keyward[0]) > -1) {
-          filters.push(item);
+        switch(query) {
+          case 0: // 생성자
+            if (item.member && item.member.name && item.member.name.toUpperCase().indexOf(keyward[0].toUpperCase()) > -1) {
+              filters.push(item);
+            }
+            break;
+          case 1: // 토픽 이름
+            if (item.roomName.toUpperCase().indexOf(keyward[0].toUpperCase()) > -1) {
+              filters.push(item);
+            }
+            break;
+          case 2: // 커넥트 이름
+            if (item.bot && item.bot.name.toUpperCase().indexOf(keyward[0].toUpperCase()) > -1) {
+              filters.push(item);
+            }
+            break;
         }
       }
-      dispatch(connectModules.creators.setTeamsConnectDetail(filters));
+
+      const allData = filters;
+
+      const obj = (() => {
+        const interval = 13;
+        const count = allData.length;
+        const current = 0;
+        const page = Math.floor(allData.length / 13);
+        const datas = [];
+        const pageSize = 10;
+        let currentIndex = 0;
+
+        for (let i = 0; i < page + 1; i++) {
+          if (i === page) {
+            datas.push([...allData].slice(currentIndex, count));
+          } else {
+            datas.push([...allData].slice(currentIndex, currentIndex + interval));
+          }
+          currentIndex += interval;
+        }
+
+        return {
+          interval,
+          count,
+          current,
+          page,
+          datas,
+          pageSize,
+        }
+      })();
+
+      // console.log(connectModules.creators);
+      dispatch(connectModules.creators.setInputConnect({ key: 'search', value: keyward[0] }));
+      dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));
     }
     return {
       initialize,
@@ -150,13 +200,13 @@ const ConnectPlugHeader = (props) => {
           }
           <div className="board-search-bar">
             <div className="select-box">
-              <a href="#none" title="검색필드 선택" className="select-value" value={selectVal}
+              <a title="검색필드 선택" className="select-value" value={selectVal}
                  onClick={searcher.open}><span>{selectVal === '' ? '생성자' : selectVal}</span></a>
               <div className="select-list">
                 <ul>
                   {
                     searcher.fields().map((data, i) => (
-                      <li key={i}><a href="#none" className={data.class} value={data.value}><span>{data.label}</span></a></li>
+                      <li key={i}><a className={data.class} value={data.value}><span>{data.label}</span></a></li>
                     ))
                   }
                 </ul>
