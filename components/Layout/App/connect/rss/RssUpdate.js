@@ -133,7 +133,7 @@ const RssUpdate = () => {
                                     </div>
                                     <ul>
                                       {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                        <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                        <li><a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
                                       </Fragment>))}
                                     </ul>
                                   </div>
@@ -141,7 +141,7 @@ const RssUpdate = () => {
                                   {!roomsData.seq
                                   && <div>
                                     <ul>
-                                      <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                      <li><a onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
                                     </ul>
                                   </div>
                                   }
@@ -156,7 +156,7 @@ const RssUpdate = () => {
                                 user.rooms.bots.map((botData, botIndex) => (
                                   <div key={botIndex}>
                                     <ul>
-                                      <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                      <li><a onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
                                     </ul>
                                   </div>
                                 ))
@@ -180,7 +180,7 @@ const RssUpdate = () => {
                                 {
                                   rss.input.searchFilters.map((roomData, roomIndex) => (
                                     <li key={roomIndex}>
-                                      <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                      <a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
                                     </li>
                                   ))
                                 }

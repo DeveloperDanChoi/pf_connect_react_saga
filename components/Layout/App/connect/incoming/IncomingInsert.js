@@ -7,12 +7,13 @@ import { useRouter } from 'next/router';
 import { Input } from 'antd';
 import SwiperCore, { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { modules } from '../../../../../store/connect/incoming/incoming';
+import { modules, initialModules } from '../../../../../store/connect/incoming/incoming';
 import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { banner } from '../../../../../service/banner';
 import { searcher, searcherLanguage } from '../../../../../service/searcher';
+import { util } from '../../../../../service/util';
 import 'swiper/css';
 
 SwiperCore.use([Navigation]);
@@ -35,7 +36,7 @@ const Incoming = () => {
     observer: true,
     observeParents: true,
     spaceBetween: 50,
-    shouldSwiperUpdate: true,
+    // shouldSwiperUpdate: false,
   };
 
   /**
@@ -91,6 +92,21 @@ const Incoming = () => {
   };
 
   useEffect(() => {
+    template1.initialize({
+      dispatch,
+      router,
+      connectType,
+      modules,
+      initialModules,
+      list: creators.getTeamsToken,
+      load: creators.getTeamsIncoming,
+      connect: [creators.postTeamsIncoming, creators.putTeamsIncomingSetting],
+      disconnect: creators.deleteAuthentications,
+      set: creators.setInputIncoming,
+    }, false);
+  }, []);
+
+  useEffect(() => {
     searcher.initialize({
       dispatch,
       document,
@@ -109,21 +125,10 @@ const Incoming = () => {
       connectType,
       set: creators.setInputIncoming,
     });
-  }, [user.rooms]);
 
-  useEffect(() => {
-    template1.initialize({
-      dispatch,
-      router,
-      connectType,
-      modules,
-      list: creators.getTeamsToken,
-      load: creators.getTeamsIncoming,
-      connect: [creators.postTeamsIncoming, creators.putTeamsIncomingSetting],
-      disconnect: creators.deleteAuthentications,
-      set: creators.setInputIncoming,
-    }, false);
-  }, []);
+    // default roomId
+    template1.set('roomId', util.initTopic(user.rooms));
+  }, [user.rooms]);
 
   return (<>
     {/* [D] : 연동하기 */}
@@ -144,9 +149,9 @@ const Incoming = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
-            <li><a href='#none' onClick={tab.change} id="2">사용방법</a></li>
-            <li><a href='#none' onClick={tab.change} id="3">연동하기</a></li>
+            <li><a onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a onClick={tab.change} id="2">사용방법</a></li>
+            <li><a onClick={tab.change} id="3">연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
@@ -233,7 +238,7 @@ const Incoming = () => {
                 <SwiperSlide>
                   <div className='inner-cont'>
                     <img src={getPublicAssetPath('static/incoming/ko/contents/img_contents_03.png')} alt="사용방법"></img>
-                    <p className="inner-cont-info"><strong className='badge'>6</strong><span className='txt'>이렇게 수신된 메시지는 선택된 대화에 다음과 같이 전송됩니다.<br/>프로필 이미지와 이름 변경이 필요할 경우 수정이 가능합니다. 더 궁금한 점이 있으시면 <a href='#none' className='fc-blue'>잔디 고객센터</a>로 문의해주시기 바랍니다.</span></p>
+                    <p className="inner-cont-info"><strong className='badge'>6</strong><span className='txt'>이렇게 수신된 메시지는 선택된 대화에 다음과 같이 전송됩니다.<br/>프로필 이미지와 이름 변경이 필요할 경우 수정이 가능합니다. 더 궁금한 점이 있으시면 <a className='fc-blue'>잔디 고객센터</a>로 문의해주시기 바랍니다.</span></p>
                   </div>
                 </SwiperSlide>
               </Swiper>
@@ -304,7 +309,7 @@ const Incoming = () => {
                                             </div>
                                             <ul>
                                               {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                                <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                                <li><a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
                                               </Fragment>))}
                                             </ul>
                                           </div>
@@ -312,7 +317,7 @@ const Incoming = () => {
                                           {!roomsData.seq
                                           && <div>
                                             <ul>
-                                              <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                              <li><a onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
                                             </ul>
                                           </div>
                                           }
@@ -327,7 +332,9 @@ const Incoming = () => {
                                         user.rooms.bots.map((botData, botIndex) => (
                                           <div key={botIndex}>
                                             <ul>
-                                              <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                              <li><a className='on'
+                                                     onClick={(e) => searcher.select(e, botData)}>{botData.name}
+                                              </a></li>
                                             </ul>
                                           </div>
                                         ))
@@ -351,7 +358,7 @@ const Incoming = () => {
                                         {
                                           incoming.input.searchFilters.map((roomData, roomIndex) => (
                                             <li key={roomIndex}>
-                                              <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                              <a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
                                             </li>
                                           ))
                                         }

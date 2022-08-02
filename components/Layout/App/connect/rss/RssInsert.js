@@ -7,13 +7,15 @@ import { useRouter } from 'next/router';
 import { Input } from 'antd';
 import SwiperCore, { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { modules } from '../../../../../store/connect/rss/rss';
+import { modules, initialModules } from '../../../../../store/connect/rss/rss';
 import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { banner } from '../../../../../service/banner';
 import { searcher, searcherLanguage } from '../../../../../service/searcher';
+import { util } from '../../../../../service/util';
 import 'swiper/css';
+import { LANGUAGE4 } from "../../../../../constants/type";
 
 const RssInsert = () => {
   const connectType = 'rss';
@@ -33,7 +35,7 @@ const RssInsert = () => {
     observer: true,
     observeParents: true,
     spaceBetween: 50,
-    shouldSwiperUpdate: true,
+    // shouldSwiperUpdate: false,
   };
 
   /**
@@ -80,6 +82,19 @@ const RssInsert = () => {
   })();
 
   useEffect(() => {
+    template1.initialize({
+      dispatch,
+      router,
+      connectType,
+      modules,
+      initialModules,
+      load: creators.getTeamsRss,
+      connect: [creators.postTeamsRss, creators.putTeamsRssSetting],
+      set: creators.setInputRss,
+    }, false);
+  }, []);
+
+  useEffect(() => {
     searcher.initialize({
       dispatch,
       document,
@@ -89,19 +104,13 @@ const RssInsert = () => {
       connectType,
       set: creators.setInputRss,
     });
-  }, [user.rooms]);
 
-  useEffect(() => {
-    template1.initialize({
-      dispatch,
-      router,
-      connectType,
-      modules,
-      load: creators.getTeamsRss,
-      connect: [creators.postTeamsRss, creators.putTeamsRssSetting],
-      set: creators.setInputRss,
-    }, false);
-  }, []);
+    // default roomId
+    template1.set('roomId', util.initTopic(user.rooms));
+    // default language
+    template1.set('lang', user.user.account.lang);
+    template1.set('langText', LANGUAGE4[user.user.account.lang]);
+  }, [user.rooms]);
 
   return (<>
   {/* [D] : 연동하기 */}
@@ -123,8 +132,8 @@ const RssInsert = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
-            <li><a href='#none' onClick={tab.change} id="2">연동하기</a></li>
+            <li><a onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a onClick={tab.change} id="2">연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
@@ -205,7 +214,7 @@ const RssInsert = () => {
                                             </div>
                                             <ul>
                                               {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                                <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                                <li><a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
                                               </Fragment>))}
                                             </ul>
                                           </div>
@@ -213,7 +222,7 @@ const RssInsert = () => {
                                           {!roomsData.seq
                                           && <div>
                                             <ul>
-                                              <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                              <li><a onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
                                             </ul>
                                           </div>
                                           }
@@ -228,7 +237,9 @@ const RssInsert = () => {
                                         user.rooms.bots.map((botData, botIndex) => (
                                           <div key={botIndex}>
                                             <ul>
-                                              <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                              <li><a className='on'
+                                                     onClick={(e) => searcher.select(e, botData)}>{botData.name}
+                                              </a></li>
                                             </ul>
                                           </div>
                                         ))
@@ -252,7 +263,7 @@ const RssInsert = () => {
                                         {
                                           rss.input.searchFilters.map((roomData, roomIndex) => (
                                             <li key={roomIndex}>
-                                              <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                              <a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
                                             </li>
                                           ))
                                         }

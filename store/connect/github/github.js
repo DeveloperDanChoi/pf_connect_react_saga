@@ -6,7 +6,7 @@ import {
   postTeamsGithub,
   putTeamsGithubSetting,
 } from '../../../api/connect/WebAdmin/Github/github';
-import {
+import authentication, {
   deleteAuthentications,
   getAuthenticationGithubReposList,
 } from '../../../api/connect/Authentication/authentication';
@@ -68,6 +68,14 @@ export const initialModules = [
         hookBranch: '연동할 Branch 목록, master,develop,feature/connect',
         webhookToken: 'Webhook Token String - webhook url 재생성 한 경우',
       },
+      validate: [
+        { name: 'roomId', type: 'string', msg: '1' },
+        { name: 'lang', type: 'string', msg: '2' },
+        { name: 'authenticationId', type: 'string', msg: '3' },
+        { name: 'hookRepoId', type: 'string', msg: '4' },
+        { name: 'hookEvent', type: 'array', msg: '알림을 받고자 하 이벤트를 최소 한 개 이상 선택해주세요.' },
+        { name: 'botName', type: 'string', msg: '5' },
+      ],
     },
   },
   /**
@@ -97,6 +105,15 @@ export const initialModules = [
         webhookToken: 'Webhook Token String - webhook url 재생성 한 경우',
         authenticationId: '인증 ID',
       },
+      validate: [
+        { name: 'connectId', type: 'string', msg: 'connectId' },
+        { name: 'roomId', type: 'string', msg: '1' },
+        { name: 'lang', type: 'string', msg: '2' },
+        { name: 'authenticationId', type: 'string', msg: '3' },
+        { name: 'hookRepoId', type: 'string', msg: '4' },
+        { name: 'hookEvent', type: 'array', msg: '알림을 받고자 하 이벤트를 최소 한 개 이상 선택해주세요.' },
+        { name: 'botName', type: 'string', msg: '5' },
+      ],
     },
   },
   /**
@@ -139,7 +156,7 @@ export const initialState = {
     mode: 'authed',
     roomId: '',
     botName: '',
-    botThumbnailFile: '',
+    botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-github.png',
     lang: '',
     authenticationId: '',
     hookRepoId: '',
@@ -159,14 +176,14 @@ export const initialState = {
     searchFilters: [],
     member: { name: '' },
     hookEventChecked: {
-      commit: false,
-      commitComment: false,
-      pullRequest: false,
-      pullRequestComment: false,
-      issue: false,
-      issueComment: false,
+      commit: true,
+      commitComment: true,
+      pullRequest: true,
+      pullRequestComment: true,
+      issue: true,
+      issueComment: true,
       branchTag: false,
-      pullRequestReview: false,
+      pullRequestReview: true,
     },
   },
   getHookEventList: [

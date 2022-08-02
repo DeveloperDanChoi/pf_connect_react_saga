@@ -29,11 +29,11 @@ const ConnectCard = () => {
         <button onClick={() => banner.help(user)}>더 알아보기</button>
       </div>
       {/* 신규 서비스 */}
-      <div className='title-wrap type02'>
+      <div style={{display: 'none'}} className='title-wrap type02'>
         <h2>신규 서비스</h2>
         <span className='badge'>NEW</span>
       </div>
-      <div className='connect-card-wrap type_list_new'>
+      <div style={{display: 'none'}} className='connect-card-wrap type_list_new'>
         <div className='connect-card'>
           <div className='img-box'>
             <img src={getPublicAssetPath('static/icon_notion.png')} alt="notion"></img>
@@ -71,7 +71,7 @@ const ConnectCard = () => {
         <h2>커넥트 목록</h2>
       </div>
       <div className='connect-card-wrap type_list'>
-        {
+        {/*
           connect.connects && connect.connects.map((data, i) => (
             <div className='connect-card' key={i} >
               <div className='inner'>
@@ -82,6 +82,77 @@ const ConnectCard = () => {
               </div>
             </div>
           ))
+        */}
+        {
+          connect.connects && connect.connects.length > 0 &&
+          (
+            <>
+              <div className='connect-card'>
+                <div className='inner'>
+                  <img src={connect.connects[1].botThumbnail} className='img'></img>
+                  <strong>{connect.connects[1].label}</strong>
+                  <p>{connect.connects[1].text}</p>
+                  <button onClick={() => handleClick(connect.connects[1])}>연동하기</button>
+                </div>
+              </div>
+              <div className='connect-card'>
+                <div className='inner'>
+                  <img src={connect.connects[7].botThumbnail} className='img'></img>
+                  <strong>{connect.connects[7].label}</strong>
+                  <p>{connect.connects[7].text}</p>
+                  <button onClick={() => handleClick(connect.connects[7])}>연동하기</button>
+                </div>
+              </div>
+              <div className='connect-card'>
+                <div className='inner'>
+                  <img src={connect.connects[6].botThumbnail} className='img'></img>
+                  <strong>{connect.connects[6].label}</strong>
+                  <p>{connect.connects[6].text}</p>
+                  <button onClick={() => handleClick(connect.connects[6])}>연동하기</button>
+                </div>
+              </div>
+              <div className='connect-card'>
+                <div className='inner'>
+                  <img src={connect.connects[3].botThumbnail} className='img'></img>
+                  <strong>{connect.connects[3].label}</strong>
+                  <p>{connect.connects[3].text}</p>
+                  <button onClick={() => handleClick(connect.connects[3])}>연동하기</button>
+                </div>
+              </div>
+              <div className='connect-card'>
+                <div className='inner'>
+                  <img src={connect.connects[0].botThumbnail} className='img'></img>
+                  <strong>{connect.connects[0].label}</strong>
+                  <p>{connect.connects[0].text}</p>
+                  <button onClick={() => handleClick(connect.connects[0])}>연동하기</button>
+                </div>
+              </div>
+              <div className='connect-card'>
+                <div className='inner'>
+                  <img src={connect.connects[8].botThumbnail} className='img'></img>
+                  <strong>{connect.connects[8].label}</strong>
+                  <p>{connect.connects[8].text}</p>
+                  <button onClick={() => handleClick(connect.connects[8])}>연동하기</button>
+                </div>
+              </div>
+              <div className='connect-card'>
+                <div className='inner'>
+                  <img src={connect.connects[4].botThumbnail} className='img'></img>
+                  <strong>{connect.connects[4].label}</strong>
+                  <p>{connect.connects[4].text}</p>
+                  <button onClick={() => handleClick(connect.connects[4])}>연동하기</button>
+                </div>
+              </div>
+              <div className='connect-card'>
+                <div className='inner'>
+                  <img src={connect.connects[2].botThumbnail} className='img'></img>
+                  <strong>{connect.connects[2].label}</strong>
+                  <p>{connect.connects[2].text}</p>
+                  <button onClick={() => handleClick(connect.connects[2])}>연동하기</button>
+                </div>
+              </div>
+            </>
+          )
         }
       </div>
       {/*<p>아래는 퍼블</p>*/}

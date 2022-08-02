@@ -48,6 +48,11 @@ export const initialModules = [
         botThumbnailFile: '봇의 프로필 이미지',
         lang: 'Language',
       },
+      validate: [
+        { name: 'roomId', type: 'string', msg: 'roomId' },
+        { name: 'feedUrl', type: 'string', msg: 'feedUrl' },
+        { name: 'botName', type: 'string', msg: 'botName' },
+      ],
     },
   },
   /**
@@ -68,6 +73,12 @@ export const initialModules = [
         botName: 'Bot name',
         botThumbnailFile: '봇의 프로필 이미지',
       },
+      validate: [
+        { name: 'connectId', type: 'string', msg: 'connectId' },
+        { name: 'roomId', type: 'string', msg: 'roomId' },
+        { name: 'feedUrl', type: 'string', msg: 'feedUrl' },
+        { name: 'botName', type: 'string', msg: 'botName' },
+      ],
     },
   },
   /**
@@ -112,7 +123,7 @@ export const initialState = {
     roomId: '20128232',
     feedUrl: '',
     botName: '',
-    botThumbnailFile: '',
+    botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-rss.png',
     lang: 'ko',
     langText: '한국어',
     searchCalText: '',

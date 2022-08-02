@@ -220,7 +220,7 @@ const GoogleCalendar = () => {
                                       <ul>{
                                         calData.list.map((listData, listIndex) => (
                                           <li key={listIndex}>
-                                            <a href='#none' onClick={(e) => searcherCal.select(e, listData)}>{listData.summary}</a>
+                                            <a onClick={(e) => searcherCal.select(e, listData)}>{listData.summary}</a>
                                           </li>
                                         ))
                                       }</ul>
@@ -241,8 +241,7 @@ const GoogleCalendar = () => {
                                   <ul>{
                                     googleCalendar.input.searchCalFilters.map((calData, calIndex) => (
                                       <li key={calIndex}>
-                                        <a href='#none'
-                                           onClick={(e) => searcherCal.select(e, calData)}>{calData.summary}</a>
+                                        <a onClick={(e) => searcherCal.select(e, calData)}>{calData.summary}</a>
                                       </li>
                                     ))
                                   }</ul>
@@ -513,7 +512,7 @@ const GoogleCalendar = () => {
                                       </div>
                                       <ul>
                                         {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                          <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                          <li><a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
                                         </Fragment>))}
                                       </ul>
                                     </div>
@@ -521,7 +520,7 @@ const GoogleCalendar = () => {
                                     {!roomsData.seq
                                     && <div>
                                       <ul>
-                                        <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                        <li><a onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
                                       </ul>
                                     </div>
                                     }
@@ -536,7 +535,7 @@ const GoogleCalendar = () => {
                                   user.rooms.bots.map((botData, botIndex) => (
                                     <div key={botIndex}>
                                       <ul>
-                                        <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                        <li><a onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
                                       </ul>
                                     </div>
                                   ))
@@ -560,7 +559,7 @@ const GoogleCalendar = () => {
                                   {
                                     googleCalendar.input.searchFilters.map((roomData, roomIndex) => (
                                       <li key={roomIndex}>
-                                        <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                        <a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
                                       </li>
                                     ))
                                   }

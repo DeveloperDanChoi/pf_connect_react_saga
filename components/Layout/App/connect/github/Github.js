@@ -9,12 +9,13 @@ import { util } from '../../../../../service/util';
 const Github = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const isUpdate = router.query.id && router.query.id !== '';
 
   useEffect(() => util.devCase1(router, "github", "25461", true), []);
 
   return (<>
-    { !router.query.id && <GithubInsert /> }
-    { router.query.id && router.query.id !== '' && <GithubUpdate /> }
+    { !isUpdate && <GithubInsert /> }
+    { isUpdate && <GithubUpdate /> }
   </>);
 };
 

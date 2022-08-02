@@ -12,6 +12,7 @@ export const reduxModule = (() => {
   const typeName = {
     create: ({ type, name }) => `${type.toUpperCase()}_${name}`,
     get: (str) => {
+      console.log(str)
       const orignalKey = str.split('/');
       const names = orignalKey[orignalKey.length - 1].split('_');
       return { type: names[0].toLowerCase(), name: names.splice(1).join('_') };
@@ -60,6 +61,29 @@ export const reduxModule = (() => {
             oldData[key] = newData[key];
         }
       }
+    },
+    validate: (data, values) => {
+      let msg = '';
+
+      for (const key of data) {
+        switch (key.type) {
+          case 'string':
+            if (values[key.name] === null || values[key.name] === '') {
+              msg = key.msg;
+              break;
+            }
+            break;
+          case 'array':
+            if (values[key.name] === null || values[key.name].length === 0) {
+              msg = key.msg;
+              break;
+            }
+            break;
+          default:
+        }
+      }
+
+      return msg;
     },
   };
 

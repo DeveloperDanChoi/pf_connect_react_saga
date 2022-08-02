@@ -23,7 +23,7 @@ const ImageCropper = ({ src, parent }) => {
 
         if (base64) {
           // dispatch(thumbnail(base64.toString()));
-          parent.set('botThumbnailUrl', base64.toString());
+          parent.set('botThumbnailFile', base64.toString());
           dispatch(close());
         }
       };

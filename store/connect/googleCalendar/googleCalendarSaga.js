@@ -15,6 +15,8 @@ import { getV1AdminTeamsMembers } from '../../../api/team/Admin/admin';
 import { util } from '../../../service/util';
 import { reduxModule } from "../../../service/reduxModule";
 import { converter } from "../../../service/converter";
+import { redirectToMain } from "../../../lib/helpers/routeHelper";
+import { Toast } from "../../../components/ui/Toast/Toast";
 
 const { creators } = modules;
 export const saga = (() => ({
@@ -64,6 +66,7 @@ export const saga = (() => ({
    * @returns {Generator<*, void, *>}
    */
   * postTeamsGoogleCalendar(data) {
+    console.log( data )
     const { team } = yield select((state) => state);
     // load initialModule
     const { request, api } = reduxModule.modules.get(initialModules, reduxModule.typeName.get(data.type));
@@ -71,9 +74,41 @@ export const saga = (() => ({
     reduxModule.modules.sets(request.body, data.data);
     // custom request data
     request.params.teamId = team.teamId;
-    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailUrl);
+    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailFile);
 
+    // validation
+    const validMsg = reduxModule.modules.validate(request.validate, request.body);
+
+    if (validMsg !== '') {
+      yield put(Toast.show({ msg: validMsg, type: 'warning' }));
+      return;
+    }
+
+    // request save
     const result = yield call(api, request);
+
+    if (result.status === 200) {
+      redirectToMain();
+      return;
+    }
+
+    switch (result.status) {
+      case 400:
+      case 403:
+        switch (result.data.code) {
+          case 40305:
+            yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+            break;
+          default:
+            yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+        }
+        break;
+      case 500:
+        yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+        break;
+      default:
+        yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+    }
   },
   /**
    * 구글 캘린더 Connect 연동 설정을 변경하는 API<br>
@@ -88,16 +123,40 @@ export const saga = (() => ({
     // custom request data
     request.body.connectId = data.data.id;
     request.params.teamId = data.data.teamId;
-    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailUrl);
+    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailFile);
 
+    // validation
+    const validMsg = reduxModule.modules.validate(request.validate, request.body);
+
+    if (validMsg !== '') {
+      yield put(Toast.show({ msg: validMsg, type: 'warning' }));
+      return;
+    }
+
+    // request save
     const result = yield call(api, request);
 
-    if (result.status !== 200) {
-      console.error('update fail !!');
-      yield put(creators.getTeamsGoogleCalendar({
-        connectId: request.body.connectId,
-        teamId: request.params.teamId,
-      }));
+    if (result.status === 200) {
+      redirectToMain();
+      return;
+    }
+
+    switch (result.status) {
+      case 400:
+      case 403:
+        switch (result.data.code) {
+          case 40305:
+            yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+            break;
+          default:
+            yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+        }
+        break;
+      case 500:
+        yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+        break;
+      default:
+        yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
     }
   },
   /**

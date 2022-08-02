@@ -64,6 +64,12 @@ export const initialModules = [
         botName: 'Bot name',
         botThumbnailFile: '봇의 프로필 이미지',
       },
+      validate: [
+        { name: 'roomId', type: 'string', msg: 'roomId' },
+        { name: 'lang', type: 'string', msg: 'lang' },
+        { name: 'webhookToken', type: 'string', msg: 'webhookToken' },
+        { name: 'botName', type: 'string', msg: 'botName' },
+      ],
     },
   },
   /**
@@ -84,6 +90,13 @@ export const initialModules = [
         botName: 'Bot name',
         botThumbnailFile: '봇의 프로필 이미지',
       },
+      validate: [
+        { name: 'connectId', type: 'string', msg: 'connectId' },
+        { name: 'roomId', type: 'string', msg: 'roomId' },
+        { name: 'lang', type: 'string', msg: 'lang' },
+        { name: 'webhookToken', type: 'string', msg: 'webhookToken' },
+        { name: 'botName', type: 'string', msg: 'botName' },
+      ],
     },
   },
   /**
@@ -112,8 +125,8 @@ export const initialState = {
     roomId: '',
     webhookToken: '',
     webhookUrl: '',
-    botName: '',
-    botThumbnailFile: '',
+    botName: 'Incoming',
+    botThumbnailFile: 'https://cdn.jandi.io/files-resource/bots/bot-incoming.png',
     langText: '한국어',
     searchCalText: '',
     selectedAuthentication: '',

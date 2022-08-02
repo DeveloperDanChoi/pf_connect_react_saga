@@ -5,7 +5,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Input } from 'antd';
-import { modules } from '../../../../../store/connect/googleCalendar/googleCalendar';
+import { modules, initialModules } from '../../../../../store/connect/googleCalendar/googleCalendar';
 import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
@@ -13,7 +13,8 @@ import { banner } from '../../../../../service/banner';
 import {
   searcher, searcherAuth, searcherLanguage, searcherCal,
 } from '../../../../../service/searcher';
-import { LANGUAGE2 } from '../../../../../constants/type';
+import { LANGUAGE2, LANGUAGE3, LANGUAGE4 } from '../../../../../constants/type';
+import { util } from '../../../../../service/util';
 import {Toast} from "../../../../ui/Toast/Toast";
 
 const GoogleCalendar = () => {
@@ -34,7 +35,7 @@ const GoogleCalendar = () => {
     observer: true,
     observeParents: true,
     spaceBetween: 50,
-    shouldSwiperUpdate: true,
+    // shouldSwiperUpdate: false,
   };
 
   /**
@@ -90,6 +91,22 @@ const GoogleCalendar = () => {
   };
 
   useEffect(() => {
+    template1.initialize({
+      dispatch,
+      router,
+      connectType,
+      modules,
+      initialModules,
+      list: creators.getAuthenticationGoogleCalendarCalendarList,
+      load: creators.getTeamsGoogleCalendar,
+      connect: [creators.postTeamsGoogleCalendar, creators.putTeamsGoogleCalendarSetting],
+      disconnect: creators.deleteAuthentications,
+      set: creators.setInputGoogleCalendar,
+      elements: googleCalendar.input,
+    });
+  }, []);
+
+  useEffect(() => {
     searcher.initialize({
       dispatch,
       document,
@@ -108,22 +125,13 @@ const GoogleCalendar = () => {
       connectType,
       set: creators.setInputGoogleCalendar,
     });
-  }, [user.rooms]);
 
-  useEffect(() => {
-    template1.initialize({
-      dispatch,
-      router,
-      connectType,
-      modules,
-      list: creators.getAuthenticationGoogleCalendarCalendarList,
-      load: creators.getTeamsGoogleCalendar,
-      connect: [creators.postTeamsGoogleCalendar, creators.putTeamsGoogleCalendarSetting],
-      disconnect: creators.deleteAuthentications,
-      set: creators.setInputGoogleCalendar,
-      elements: googleCalendar.input,
-    });
-  }, []);
+    // default roomId
+    template1.set('roomId', util.initTopic(user.rooms));
+    // default language
+    template1.set('lang', user.user.account.lang);
+    template1.set('langText', LANGUAGE4[user.user.account.lang]);
+  }, [user.rooms]);
 
   useEffect(() => {
     if (googleCalendar.authenticationGoogleCalendarCalendarList.length === 0) return;
@@ -136,7 +144,10 @@ const GoogleCalendar = () => {
     });
 
     template1.set('authenticationId', googleCalendar.authenticationGoogleCalendarCalendarList[0].authenticationId);
+    template1.set('googleId', googleCalendar.authenticationGoogleCalendarCalendarList[0].authenticationName);
     template1.set('selectedAuthentication', googleCalendar.authenticationGoogleCalendarCalendarList[0].authenticationName);
+    template1.set('calendarId', googleCalendar.authenticationGoogleCalendarCalendarList[0].list[0].id);
+    template1.set('calendarSummary', googleCalendar.authenticationGoogleCalendarCalendarList[0].list[0].summary);
     template1.set('selectedCal', googleCalendar.authenticationGoogleCalendarCalendarList[0].list[0].summary);
   }, [googleCalendar.authenticationGoogleCalendarCalendarList]);
 
@@ -176,8 +187,8 @@ const GoogleCalendar = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
-            <li><a href='#none' onClick={tab.change} id="2">연동하기</a></li>
+            <li><a onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a onClick={tab.change} id="2">연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
@@ -256,12 +267,13 @@ const GoogleCalendar = () => {
                                     {
                                       googleCalendar.authenticationGoogleCalendarCalendarList.map((authData, authIndex) => (
                                       <li key={authIndex}>
-                                        <a onClick={(e) => searcherAuth.select(e, authData)} href="#none"><span className='icon-ic-user-white'>{authData.authenticationName}</span></a>
+                                        <a className={authData.authenticationId === googleCalendar.input.authenticationId ? 'on' : ''}
+                                           onClick={(e) => searcherAuth.select(e, authData)} href="#none"><span className='icon-ic-user-white'>{authData.authenticationName}</span></a>
                                         <button type='button' className='btn-delete icon-ic-close' onClick={(e) => template1.disconnect(e, googleCalendar.input)}></button>
                                       </li>
                                       ))
                                     }
-                                      <li><a href="#none" onClick={(e) => template1.authorize(e, googleCalendar)}><span className='icon-ic-user-add'>계정 추가하기</span></a></li>
+                                      <li><a onClick={(e) => template1.authorize(e, googleCalendar)}><span className='icon-ic-user-add'>계정 추가하기</span></a></li>
                                   </ul>
                                 </div>
                               </div>
@@ -313,7 +325,8 @@ const GoogleCalendar = () => {
                                                   <ul>{
                                                     calData.list.map((listData, listIndex) => (
                                                       <li key={listIndex}>
-                                                        <a href='#none' onClick={(e) => searcherCal.select(e, listData)}>{listData.summary}</a>
+                                                        <a className={listData.id === googleCalendar.input.calendarId ? 'on' : ''}
+                                                           onClick={(e) => searcherCal.select(e, listData)}>{listData.summary}</a>
                                                       </li>
                                                     ))
                                                   }</ul>
@@ -334,8 +347,7 @@ const GoogleCalendar = () => {
                                               <ul>{
                                                   googleCalendar.input.searchCalFilters.map((calData, calIndex) => (
                                                     <li key={calIndex}>
-                                                      <a href='#none'
-                                                         onClick={(e) => searcherCal.select(e, calData)}>{calData.summary}</a>
+                                                      <a onClick={(e) => searcherCal.select(e, calData)}>{calData.summary}</a>
                                                     </li>
                                                   ))
                                               }</ul>
@@ -606,7 +618,7 @@ const GoogleCalendar = () => {
                                                   </div>
                                                   <ul>
                                                     {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                                      <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                                      <li><a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
                                                     </Fragment>))}
                                                   </ul>
                                                 </div>
@@ -614,7 +626,7 @@ const GoogleCalendar = () => {
                                                 {!roomsData.seq
                                                 && <div>
                                                   <ul>
-                                                    <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                                    <li><a onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
                                                   </ul>
                                                 </div>
                                                 }
@@ -629,7 +641,9 @@ const GoogleCalendar = () => {
                                               user.rooms.bots.map((botData, botIndex) => (
                                                 <div key={botIndex}>
                                                   <ul>
-                                                    <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                                    <li><a className='on'
+                                                           onClick={(e) => searcher.select(e, botData)}>{botData.name}
+                                                    </a></li>
                                                   </ul>
                                                 </div>
                                               ))
@@ -653,7 +667,7 @@ const GoogleCalendar = () => {
                                               {
                                                 googleCalendar.input.searchFilters.map((roomData, roomIndex) => (
                                                   <li key={roomIndex}>
-                                                    <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                                    <a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
                                                   </li>
                                                 ))
                                               }
@@ -694,7 +708,12 @@ const GoogleCalendar = () => {
                                     {
                                       Object.keys(LANGUAGE2).map((lang, langIndex) => (
                                         <Fragment key={langIndex}>
-                                          <li><a href="#none" onClick={(e) => searcherLanguage.select(e, LANGUAGE2[lang])}><span>{lang}</span></a></li>
+                                          <li>
+                                            <a className={LANGUAGE3[lang] === googleCalendar.input.lang ? 'on' : ''}
+                                               onClick={(e) => searcherLanguage.select(e, LANGUAGE2[lang])}>
+                                              <span>{lang}</span>
+                                            </a>
+                                          </li>
                                         </Fragment>
                                       ))
                                     }

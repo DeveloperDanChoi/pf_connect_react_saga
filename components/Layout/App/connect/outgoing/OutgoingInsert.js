@@ -7,13 +7,15 @@ import { useRouter } from 'next/router';
 import { Input } from 'antd';
 import SwiperCore, { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { modules } from '../../../../../store/connect/outgoing/outgoing';
+import { modules, initialModules } from '../../../../../store/connect/outgoing/outgoing';
 import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { banner } from '../../../../../service/banner';
 import { searcher, searcherLanguage } from '../../../../../service/searcher';
+import { util } from '../../../../../service/util';
 import 'swiper/css';
+import { LANGUAGE4 } from "../../../../../constants/type";
 
 SwiperCore.use([Navigation]);
 
@@ -35,7 +37,7 @@ const Outgoing = () => {
     observer: true,
     observeParents: true,
     spaceBetween: 50,
-    shouldSwiperUpdate: true,
+    // shouldSwiperUpdate: false,
   };
 
   /**
@@ -82,6 +84,37 @@ const Outgoing = () => {
   })();
 
   useEffect(() => {
+    if (team.teamId === 0) return;
+
+    template1.initialize({
+      dispatch,
+      router,
+      connectType,
+      modules,
+      initialModules,
+      list: creators.getTeamsToken,
+      load: creators.getTeamsOutgoing,
+      connect: [creators.postTeamsOutgoing, creators.putTeamsOutgoingSetting],
+      set: creators.setInputOutgoing,
+    });
+    searcher.initialize({
+      dispatch,
+      document,
+      team,
+      user,
+      outgoing,
+      connectType,
+      set: creators.setInputOutgoing,
+    });
+
+    // default roomId
+    template1.set('roomId', util.initTopic(user.rooms));
+    // default language
+    template1.set('lang', user.user.account.lang);
+    template1.set('langText', LANGUAGE4[user.user.account.lang]);
+  }, [team.teamId, user.rooms]);
+/*
+  useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
       dispatch,
@@ -93,22 +126,7 @@ const Outgoing = () => {
       set: creators.setInputOutgoing,
     });
   }, [user.rooms]);
-
-  useEffect(() => {
-    if (team.teamId === 0) return;
-
-    template1.initialize({
-      dispatch,
-      router,
-      connectType,
-      modules,
-      list: creators.getTeamsToken,
-      load: creators.getTeamsOutgoing,
-      connect: [creators.postTeamsOutgoing, creators.putTeamsOutgoingSetting],
-      set: creators.setInputOutgoing,
-    });
-  }, [team.teamId]);
-
+ */
   return (<>
     {/* [D] : 연동하기 */}
     <div className='detail-container'>
@@ -126,9 +144,9 @@ const Outgoing = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
-            <li><a href='#none' onClick={tab.change} id="2">사용방법</a></li>
-            <li><a href='#none' onClick={tab.change} id="3">연동하기</a></li>
+            <li><a onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a onClick={tab.change} id="2">사용방법</a></li>
+            <li><a onClick={tab.change} id="3">연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
@@ -197,7 +215,7 @@ const Outgoing = () => {
                       </div>
                     </div>
                     <p className="inner-cont-info"><em className='bullet'>Responding :</em><span>POST 요청에 대한 응답 값을 통해 커넥트를 설정한 대화방에 메시지를 작성할 수 있습니다. 응답 data format과 메시지 출력은 outgoing Webhook Connect와 동일합니다. <span className='fc-gray'>(위 format과 다른 응답은 무시하며, "200 OK" 응답이 아닌 그외 모든 응답 또한 별도로 처리되지 않습니다.)</span></span></p>
-                    <p className="inner-cont-info"><em className='bullet'>Additional Formatting :</em><span>body 부분에 "굵게", "링크삽입" 등 메시지 효과를 표현할 수 있는 markdown 적용이 가능합니다. 더 궁금한 점이 있으시면 <a href='#none' className='fc-blue'>잔디 고객센터</a>로 문의해주시기 바랍니다.</span></p>
+                    <p className="inner-cont-info"><em className='bullet'>Additional Formatting :</em><span>body 부분에 "굵게", "링크삽입" 등 메시지 효과를 표현할 수 있는 markdown 적용이 가능합니다. 더 궁금한 점이 있으시면 <a className='fc-blue'>잔디 고객센터</a>로 문의해주시기 바랍니다.</span></p>
                   </div>
                 </SwiperSlide>
               </Swiper>
@@ -304,7 +322,7 @@ const Outgoing = () => {
                                             </div>
                                             <ul>
                                               {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                                <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                                <li><a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
                                               </Fragment>))}
                                             </ul>
                                           </div>
@@ -312,7 +330,7 @@ const Outgoing = () => {
                                           {!roomsData.seq
                                           && <div>
                                             <ul>
-                                              <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                              <li><a onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
                                             </ul>
                                           </div>
                                           }
@@ -327,7 +345,9 @@ const Outgoing = () => {
                                         user.rooms.bots.map((botData, botIndex) => (
                                           <div key={botIndex}>
                                             <ul>
-                                              <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                              <li><a className='on'
+                                                     onClick={(e) => searcher.select(e, botData)}>{botData.name}
+                                              </a></li>
                                             </ul>
                                           </div>
                                         ))
@@ -351,7 +371,7 @@ const Outgoing = () => {
                                         {
                                           outgoing.input.searchFilters.map((roomData, roomIndex) => (
                                             <li key={roomIndex}>
-                                              <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                              <a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
                                             </li>
                                           ))
                                         }

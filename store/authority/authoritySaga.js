@@ -120,7 +120,7 @@ function* authorize(action) {
     console.error(e);
   } finally {
     if (isUnauthorized) {
-      // redirectToLoginAndList();
+      redirectToLoginAndList();
     }
   }
 }

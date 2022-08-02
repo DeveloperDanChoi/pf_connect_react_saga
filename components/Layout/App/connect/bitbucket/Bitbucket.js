@@ -5,16 +5,19 @@ import Router, { useRouter } from 'next/router';
 import BitbucketInsert from './BitbucketInsert';
 import BitbucketUpdate from './BitbucketUpdate';
 import { util } from '../../../../../service/util';
+import { searcherAuth } from "../../../../../service/searcher";
+import { template1 } from "../../../../../service/connect";
 
 const Bitbucket = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const isUpdate = router.query.id && router.query.id !== '';
 
-  useEffect(() => util.devCase1(router, "bitbucket", "25460", true), []);
+  useEffect(() => util.devCase1(router, "bitbucket", "25460", false), []);
 
   return (<>
-    { !router.query.id && <BitbucketInsert /> }
-    { router.query.id && router.query.id !== '' && <BitbucketUpdate /> }
+    { !isUpdate && <BitbucketInsert /> }
+    { isUpdate && <BitbucketUpdate /> }
   </>);
 };
 

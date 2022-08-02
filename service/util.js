@@ -1,6 +1,9 @@
 import Router from "next/router";
 
 export const util = (() => {
+  function toSnakeCase(value) {
+    return value.split(/(?=[A-Z])/).join('_').toLowerCase();
+  }
   /**
    * snake -> camel
    * SAMPLE_VARIABLE -> sampleVariable
@@ -103,7 +106,6 @@ export const util = (() => {
    * @deprecated
    */
   function devCase1(router, type, id, isCreate = true) {
-    console.log( router.query.id , isCreate)
     if (isCreate) return;
     if (!router.query.id) {
       const prefix = '/app/connect';
@@ -111,13 +113,49 @@ export const util = (() => {
     }
   }
 
+  /**
+   *
+   */
+  function initTopic({ chats, bots }) {
+    for (const bot of bots) {
+      if (bot.name === 'JANDI') { // botType: jandi_bot
+        for (const chat of chats) {
+          if (chat.companionId === bot.id) {
+            return chat.id;
+          }
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  /**
+   *
+   * @param data
+   * @param key
+   * @returns {boolean}
+   */
+  function includes(data, key) {
+    for (const item of data) {
+      if (item === key) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   return {
+    toSnakeCase,
     toCamelCase,
     prefixRemoveToCamelCase,
     dateFormat,
     convertFormData,
     base64ToBlob,
     devCase1,
+    initTopic,
+    includes,
   };
 })();
 

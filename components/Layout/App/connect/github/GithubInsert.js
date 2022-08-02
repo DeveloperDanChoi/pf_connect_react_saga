@@ -5,7 +5,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Input } from 'antd';
-import { modules } from '../../../../../store/connect/github/github';
+import { modules, initialModules } from '../../../../../store/connect/github/github';
 import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
@@ -13,7 +13,8 @@ import { banner } from '../../../../../service/banner';
 import {
   searcher, searcherAuth, searcherLanguage, searcherRepo,
 } from '../../../../../service/searcher';
-import { LANGUAGE2 } from '../../../../../constants/type';
+import { LANGUAGE2, LANGUAGE3, LANGUAGE4 } from '../../../../../constants/type';
+import { util } from '../../../../../service/util';
 
 const Github = () => {
   const connectType = 'github';
@@ -33,7 +34,7 @@ const Github = () => {
     observer: true,
     observeParents: true,
     spaceBetween: 50,
-    shouldSwiperUpdate: true,
+    // shouldSwiperUpdate: false,
   };
 
   /**
@@ -90,6 +91,21 @@ const Github = () => {
   };
 
   useEffect(() => {
+    template1.initialize({
+      dispatch,
+      router,
+      connectType,
+      modules,
+      initialModules,
+      list: creators.getAuthenticationGithubReposList,
+      load: creators.getTeamsGithub,
+      connect: [creators.postTeamsGithub, creators.putTeamsGithubSetting],
+      disconnect: creators.deleteAuthentications,
+      set: creators.setInputGithub,
+    });
+  }, []);
+
+  useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
       dispatch,
@@ -109,21 +125,13 @@ const Github = () => {
       connectType,
       set: creators.setInputGithub,
     });
-  }, [user.rooms]);
 
-  useEffect(() => {
-    template1.initialize({
-      dispatch,
-      router,
-      connectType,
-      modules,
-      list: creators.getAuthenticationGithubReposList,
-      load: creators.getTeamsGithub,
-      connect: [creators.postTeamsGithub, creators.putTeamsGithubSetting],
-      disconnect: creators.deleteAuthentications,
-      set: creators.setInputGithub,
-    });
-  }, []);
+    // default roomId
+    template1.set('roomId', util.initTopic(user.rooms));
+    // default language
+    template1.set('lang', user.user.account.lang);
+    template1.set('langText', LANGUAGE4[user.user.account.lang]);
+  }, [user.rooms]);
 
   useEffect(() => {
     searcherRepo.initialize({
@@ -190,8 +198,8 @@ const Github = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
-            <li><a href='#none' onClick={tab.change} id="2">연동하기</a></li>
+            <li><a onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a onClick={tab.change} id="2">연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
@@ -269,8 +277,7 @@ const Github = () => {
                                           if (data.status === 'created') {
                                             return (
                                               <li key={i}>
-                                                <a href="#none"
-                                                   className={true ? 'on' : ''}
+                                                <a className={true ? 'on' : ''}
                                                    onClick={(e) => searcherAuth.select(e, data)}
                                                 >
                                                   <span className='icon-ic-user-white'>{data.connectId}</span>
@@ -349,7 +356,7 @@ const Github = () => {
                                               {
                                                 repoData.lists.map((listData, listsIndex) => (
                                                   <li key={listsIndex}>
-                                                    <a href='#none' onClick={(e) => searcherRepo.select(e, listData)}>{listData.name}</a>
+                                                    <a onClick={(e) => searcherRepo.select(e, listData)}>{listData.name}</a>
                                                   </li>
                                                 ))
                                               }
@@ -375,7 +382,7 @@ const Github = () => {
                                         {
                                           github.input.searchRepoFilters.map((repoData, repoIndex) => (
                                             <li key={repoIndex}>
-                                              <a href='#none' onClick={(e) => searcherRepo.select(e, repoData)}>{repoData.name}</a>
+                                              <a onClick={(e) => searcherRepo.select(e, repoData)}>{repoData.name}</a>
                                             </li>
                                           ))
                                         }
@@ -528,8 +535,7 @@ const Github = () => {
                                                 </div>
                                                 <ul>
                                                   {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                                    <li><a className={true ? 'on' : ''}
-                                                           onClick={(e) => searcher.select(e, roomData)}>{roomData.name}
+                                                    <li><a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}
                                                     </a></li>
                                                   </Fragment>))}
                                                 </ul>
@@ -540,8 +546,7 @@ const Github = () => {
                                               !roomsData.seq &&
                                               <div>
                                                 <ul>
-                                                  <li><a className={true ? 'on' : ''}
-                                                         onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}
+                                                  <li><a onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}
                                                   </a></li>
                                                 </ul>
                                               </div>
@@ -557,7 +562,7 @@ const Github = () => {
                                           user.rooms.bots.map((botData, botIndex) => (
                                             <div key={botIndex}>
                                               <ul>
-                                                <li><a className={true ? 'on' : ''}
+                                                <li><a className='on'
                                                        onClick={(e) => searcher.select(e, botData)}>{botData.name}
                                                 </a></li>
                                               </ul>
@@ -583,7 +588,7 @@ const Github = () => {
                                           {
                                             github.input.searchFilters.map((roomData, roomIndex) => (
                                               <li key={roomIndex}>
-                                                <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                                <a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
                                               </li>
                                             ))
                                           }
@@ -624,7 +629,12 @@ const Github = () => {
                                 {
                                   Object.keys(LANGUAGE2).map((lang, langIndex) => (
                                     <Fragment key={langIndex}>
-                                      <li><a href="#none" onClick={(e) => searcherLanguage.select(e, LANGUAGE2[lang])}><span>{lang}</span></a></li>
+                                      <li>
+                                        <a className={LANGUAGE3[lang] === github.input.lang ? 'on' : ''}
+                                           onClick={(e) => searcherLanguage.select(e, LANGUAGE2[lang])}>
+                                          <span>{lang}</span>
+                                        </a>
+                                      </li>
                                     </Fragment>
                                   ))
                                 }

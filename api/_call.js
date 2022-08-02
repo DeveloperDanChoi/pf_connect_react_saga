@@ -55,23 +55,23 @@ const call = (target, method, uri, headersInfo, data = null) => {
     case 'get': {
       return axios.get(url, {
         headers,
-      }).catch((err) => console.error(err));
+      }).catch((err) => err.response);
     }
     case 'post': {
       return axios.post(url, data, {
         headers,
-      }).catch((err) => console.error(err));
+      }).catch((err) => err.response);
     }
     case 'put': {
       return axios.put(url, data, {
         headers,
-      }).catch((err) => console.error(err));
+      }).catch((err) => err.response);
     }
     case 'delete': {
       return axios.delete(url, {
         data,
         headers,
-      }).catch((err) => console.error(err));
+      }).catch((err) => err.response);
     }
     default: {
       console.error('error');
@@ -114,23 +114,23 @@ const call2 = (target, method, uri, headersInfo, data = null) => {
     case 'get': {
       return axios.get(url, {
         headers,
-      }).catch((err) => console.error(err));
+      }).catch((err) => err.response);
     }
     case 'post': {
       return axios.post(url, data, {
         headers,
-      }).catch((err) => console.error(err));
+      }).catch((err) => err.response);
     }
     case 'put': {
       return axios.put(url, data, {
         headers,
-      }).catch((err) => console.error(err));
+      }).catch((err) => err.response);
     }
     case 'delete': {
       return axios.delete(url, {
         data,
         headers,
-      }).catch((err) => console.error(err));
+      }).catch((err) => err.response);
     }
     default: {
       console.error('error');

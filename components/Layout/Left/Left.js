@@ -35,7 +35,7 @@ const Left = () => {
     { (isMain || isMy || isAdm)
      && <div className='menu-container'>
        <div className='tablet-menu'>
-         <a href='#none' className='icon-ic-plug btn-open' onClick={openMenu}><span className='hidden'>메뉴 열기</span></a>
+         <a className='icon-ic-plug btn-open' onClick={openMenu}><span className='hidden'>메뉴 열기</span></a>
        </div>
         <div className='menu-wrap'>
           <ul>

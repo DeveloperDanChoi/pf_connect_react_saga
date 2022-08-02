@@ -235,7 +235,7 @@ const Github = () => {
                                       {
                                         repoData.lists.map((listData, listsIndex) => (
                                           <li key={listsIndex}>
-                                            <a href='#none' onClick={(e) => searcherRepo.select(e, listData)}>{listData.name}</a>
+                                            <a onClick={(e) => searcherRepo.select(e, listData)}>{listData.name}</a>
                                           </li>
                                         ))
                                       }
@@ -261,7 +261,7 @@ const Github = () => {
                                   {
                                     github.input.searchRepoFilters.map((repoData, repoIndex) => (
                                       <li key={repoIndex}>
-                                        <a href='#none' onClick={(e) => searcherRepo.select(e, repoData)}>{repoData.name}</a>
+                                        <a onClick={(e) => searcherRepo.select(e, repoData)}>{repoData.name}</a>
                                       </li>
                                     ))
                                   }
@@ -371,7 +371,7 @@ const Github = () => {
                                       </div>
                                       <ul>
                                         {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                          <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                          <li><a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
                                         </Fragment>))}
                                       </ul>
                                     </div>
@@ -379,7 +379,7 @@ const Github = () => {
                                     {!roomsData.seq
                                     && <div>
                                       <ul>
-                                        <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                        <li><a onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
                                       </ul>
                                     </div>
                                     }
@@ -394,7 +394,7 @@ const Github = () => {
                                   user.rooms.bots.map((botData, botIndex) => (
                                     <div key={botIndex}>
                                       <ul>
-                                        <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                        <li><a onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
                                       </ul>
                                     </div>
                                   ))
@@ -418,7 +418,7 @@ const Github = () => {
                                   {
                                     github.input.searchFilters.map((roomData, roomIndex) => (
                                       <li key={roomIndex}>
-                                        <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                        <a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
                                       </li>
                                     ))
                                   }

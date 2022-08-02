@@ -9,12 +9,13 @@ import { util } from '../../../../../service/util';
 const GoogleCalendar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const isUpdate = router.query.id && router.query.id !== '';
 
   useEffect(() => util.devCase1(router, "googleCalendar", "25452", true), []);
 
   return (<>
-    { !router.query.id && <GoogleCalendarInsert /> }
-    { router.query.id && router.query.id !== '' && <GoogleCalendarUpdate /> }
+    { !isUpdate && <GoogleCalendarInsert /> }
+    { isUpdate && <GoogleCalendarUpdate /> }
   </>);
 };
 

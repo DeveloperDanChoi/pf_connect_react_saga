@@ -144,7 +144,7 @@ const Bitbucket = () => {
                                       </div>
                                       <ul>
                                         {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                          <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                          <li><a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
                                         </Fragment>))}
                                       </ul>
                                     </div>
@@ -152,7 +152,7 @@ const Bitbucket = () => {
                                     {!roomsData.seq
                                     && <div>
                                       <ul>
-                                        <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                        <li><a onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
                                       </ul>
                                     </div>
                                     }
@@ -168,7 +168,7 @@ const Bitbucket = () => {
                                     <div key={botIndex}>
                                       <ul>
                                         {/* TODO: icon 적용할 것 */}
-                                        <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}<i className="icon-ic-lock"></i><i className="icon-ic-board"></i><i className="icon-ic-bell-slash"></i></a></li>
+                                        <li><a onClick={(e) => searcher.select(e, botData)}>{botData.name}<i className="icon-ic-lock"></i><i className="icon-ic-board"></i><i className="icon-ic-bell-slash"></i></a></li>
                                       </ul>
                                     </div>
                                   ))
@@ -192,7 +192,7 @@ const Bitbucket = () => {
                                   {
                                     bitbucket.input.searchFilters.map((roomData, roomIndex) => (
                                       <li key={roomIndex}>
-                                        <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                        <a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
                                       </li>
                                     ))
                                   }

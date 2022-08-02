@@ -9,12 +9,13 @@ import { util } from '../../../../../service/util';
 const Jira = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const isUpdate = router.query.id && router.query.id !== '';
 
   useEffect(() => util.devCase1(router, "jira", "25466", true), []);
 
   return (<>
-    { !router.query.id && <JiraInsert /> }
-    { router.query.id && router.query.id !== '' && <JiraUpdate /> }
+    { !isUpdate && <JiraInsert /> }
+    { isUpdate && <JiraUpdate /> }
   </>);
 };
 

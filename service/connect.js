@@ -1,5 +1,8 @@
-/* eslint-disable no-restricted-syntax,guard-for-in */
+/* eslint-disable no-restricted-syntax,guard-for-in,max-len */
 import { modules as githubModules } from '../store/connect/github/github';
+import { Toast } from '../components/ui/Toast/Toast';
+import { reduxModule } from './reduxModule';
+import { util } from './util';
 // import { Toast } from '../components/ui/Toast/Toast';
 
 export const template1 = (() => {
@@ -11,16 +14,15 @@ export const template1 = (() => {
   /**
    * 인증
    */
-  // function authorize(e, obj) {
   function authorize() {
     // const url = `http://local.jandi.io:6001/connect/auth/${that.connectType}?callbackEventName=popupDone`;
     const url = `https://www.jandi.io/connect/auth/${that.connectType}?callbackEventName=popupDone`;
     const target = that.connectType === 'googleCalendar' ? 'googleAuth' : 'connectAuth';
 
     window.open(
-        url,
-        target,
-        'resizable=no, scrollbars=1, toolbar=no, menubar=no, status=no, directories=no, width=1024, height=768',
+      url,
+      target,
+      'resizable=no, scrollbars=1, toolbar=no, menubar=no, status=no, directories=no, width=1024, height=768',
     );
   }
 
@@ -59,8 +61,6 @@ export const template1 = (() => {
    * @param action
    */
   function connect(e, { input }) {
-    // that.dispatch(Toast.show({ msg: 'message', type: 'error' }));
-    // console.log( data , that.router.query)
     if (that.router.query.id && that.router.query.id !== '') {
       // data.connectId = that.router.query.id;
       that.dispatch(that.connect[1].call(null, input));

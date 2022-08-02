@@ -9,12 +9,13 @@ import { util } from '../../../../../service/util';
 const RSS = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const isUpdate = router.query.id && router.query.id !== '';
 
   useEffect(() => util.devCase1(router, "rss", "25468", true), []);
 
   return (<>
-    { !router.query.id && <RssInsert /> }
-    { router.query.id && router.query.id !== '' && <RssUpdate /> }
+    { !isUpdate && <RssInsert /> }
+    { isUpdate && <RssUpdate /> }
   </>);
 };
 

@@ -9,12 +9,13 @@ import { util } from '../../../../../service/util';
 const Trello = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const isUpdate = router.query.id && router.query.id !== '';
 
   useEffect(() => util.devCase1(router, "trello", "25471", true), []);
 
   return (<>
-    { !router.query.id && <TrelloInsert /> }
-    { router.query.id && router.query.id !== '' && <TrelloUpdate /> }
+    { !isUpdate && <TrelloInsert /> }
+    { isUpdate && <TrelloUpdate /> }
   </>);
 };
 

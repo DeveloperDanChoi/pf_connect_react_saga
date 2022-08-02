@@ -9,12 +9,13 @@ import { util } from '../../../../../service/util';
 const Incoming = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const isUpdate = router.query.id && router.query.id !== '';
 
   useEffect(() => util.devCase1(router, "incoming", "25465", true), []);
 
   return (<>
-    { !router.query.id && <IncomingInsert /> }
-    { router.query.id && router.query.id !== '' && <IncomingUpdate /> }
+    { !isUpdate && <IncomingInsert /> }
+    { isUpdate && <IncomingUpdate /> }
   </>);
 };
 

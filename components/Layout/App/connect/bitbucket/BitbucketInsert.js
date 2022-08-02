@@ -7,13 +7,14 @@ import { useRouter } from 'next/router';
 import SwiperCore, { Navigation } from 'swiper';
 import { Input } from 'antd';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { modules } from '../../../../../store/connect/bitbucket/bitbucket';
+import { modules, initialModules } from '../../../../../store/connect/bitbucket/bitbucket';
 import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { banner } from '../../../../../service/banner';
 import { searcher, searcherLanguage } from '../../../../../service/searcher';
-import { LANGUAGE2 } from '../../../../../constants/type';
+import { LANGUAGE2, LANGUAGE3, LANGUAGE4 } from '../../../../../constants/type';
+import { util } from '../../../../../service/util';
 import 'swiper/css';
 
 SwiperCore.use([Navigation]);
@@ -36,7 +37,7 @@ const Bitbucket = () => {
     observer: true,
     observeParents: true,
     spaceBetween: 50,
-    shouldSwiperUpdate: true,
+    // shouldSwiperUpdate: false,
   };
 
   /**
@@ -92,6 +93,20 @@ const Bitbucket = () => {
   };
 
   useEffect(() => {
+    template1.initialize({
+      dispatch,
+      router,
+      connectType,
+      modules,
+      initialModules,
+      list: creators.getTeamsToken,
+      load: creators.getTeamsBitbucket,
+      connect: [creators.postTeamsBitbucket, creators.putTeamsBitbucketSetting],
+      set: creators.setInputBitbucket,
+    }, false);
+  }, []);
+
+  useEffect(() => {
     searcher.initialize({
       dispatch,
       document,
@@ -110,20 +125,13 @@ const Bitbucket = () => {
       connectType,
       set: creators.setInputBitbucket,
     });
-  }, [user.rooms]);
 
-  useEffect(() => {
-    template1.initialize({
-      dispatch,
-      router,
-      connectType,
-      modules,
-      list: creators.getTeamsToken,
-      load: creators.getTeamsBitbucket,
-      connect: [creators.postTeamsBitbucket, creators.putTeamsBitbucketSetting],
-      set: creators.setInputBitbucket,
-    }, false);
-  }, []);
+    // default roomId
+    template1.set('roomId', util.initTopic(user.rooms));
+    // default language
+    template1.set('lang', user.user.account.lang);
+    template1.set('langText', LANGUAGE4[user.user.account.lang]);
+  }, [user.rooms]);
 
   return (<>
     {/* [D] : 연동하기 */}
@@ -145,9 +153,9 @@ const Bitbucket = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
-            <li><a href='#none' onClick={tab.change} id="2">사용방법</a></li>
-            <li><a href='#none' onClick={tab.change} id="3">연동하기</a></li>
+            <li><a onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a onClick={tab.change} id="2">사용방법</a></li>
+            <li><a onClick={tab.change} id="3">연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
@@ -267,7 +275,7 @@ const Bitbucket = () => {
                                                 </div>
                                                 <ul>
                                                   {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                                    <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                                    <li><a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
                                                   </Fragment>))}
                                                 </ul>
                                               </div>
@@ -275,7 +283,7 @@ const Bitbucket = () => {
                                           {!roomsData.seq
                                               && <div>
                                                 <ul>
-                                                  <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                                  <li><a onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
                                                 </ul>
                                               </div>
                                           }
@@ -291,7 +299,9 @@ const Bitbucket = () => {
                                           <div key={botIndex}>
                                             <ul>
                                               {/* TODO: icon 적용할 것 */}
-                                              <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}<i className="icon-ic-lock"></i><i className="icon-ic-board"></i><i className="icon-ic-bell-slash"></i></a></li>
+                                              <li><a className='on'
+                                                     onClick={(e) => searcher.select(e, botData)}>{botData.name}
+                                              </a></li>
                                             </ul>
                                           </div>
                                         ))
@@ -315,7 +325,7 @@ const Bitbucket = () => {
                                             {
                                               bitbucket.input.searchFilters.map((roomData, roomIndex) => (
                                                 <li key={roomIndex}>
-                                                  <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                                  <a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
                                                 </li>
                                               ))
                                             }
@@ -352,15 +362,20 @@ const Bitbucket = () => {
                              onClick={searcherLanguage.open}
                           ><span>{bitbucket.input.langText}</span></a>
                           <div className="select-list">
-                              <ul>
-                                {
-                                  Object.keys(LANGUAGE2).map((lang, langIndex) => (
-                                    <Fragment key={langIndex}>
-                                      <li><a href="#none" onClick={(e) => searcherLanguage.select(e, LANGUAGE2[lang])}><span>{lang}</span></a></li>
-                                    </Fragment>
-                                  ))
-                                }
-                              </ul>
+                            <ul>
+                              {
+                                Object.keys(LANGUAGE2).map((lang, langIndex) => (
+                                  <Fragment key={langIndex}>
+                                    <li>
+                                      <a className={LANGUAGE3[lang] === bitbucket.input.lang ? 'on' : ''}
+                                         onClick={(e) => searcherLanguage.select(e, LANGUAGE2[lang])}>
+                                        <span>{lang}</span>
+                                      </a>
+                                    </li>
+                                  </Fragment>
+                                ))
+                              }
+                            </ul>
                           </div>
                         </div>
                       </div>

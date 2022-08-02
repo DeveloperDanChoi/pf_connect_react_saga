@@ -7,13 +7,14 @@ import { useRouter } from 'next/router';
 import { Input } from 'antd';
 import SwiperCore, { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { modules } from '../../../../../store/connect/trello/trello';
+import { modules, initialModules } from '../../../../../store/connect/trello/trello';
 import { template1 } from '../../../../../service/connect';
 import Thumbnail from '../../../../ui/Thumbnail/Thumbnail';
 import { getPublicAssetPath } from '../../../../../lib/assetHelper';
 import { banner } from '../../../../../service/banner';
 import { searcher, searcherAuth, searcherLanguage, searcherBoard, } from '../../../../../service/searcher';
-import { LANGUAGE2 } from '../../../../../constants/type';
+import { LANGUAGE2, LANGUAGE3, LANGUAGE4 } from '../../../../../constants/type';
+import { util } from '../../../../../service/util';
 import 'swiper/css';
 
 const Trello = () => {
@@ -34,7 +35,7 @@ const Trello = () => {
     observer: true,
     observeParents: true,
     spaceBetween: 50,
-    shouldSwiperUpdate: true,
+    // shouldSwiperUpdate: false,
   };
 
   /**
@@ -88,6 +89,21 @@ const Trello = () => {
   };
 
   useEffect(() => {
+    template1.initialize({
+      dispatch,
+      router,
+      connectType,
+      modules,
+      initialModules,
+      list: creators.getAuthenticationTrelloBoardsList,
+      load: creators.getTeamsTrello,
+      connect: [creators.postTeamsTrello, creators.putTeamsTrelloSetting],
+      disconnect: creators.deleteAuthentications,
+      set: creators.setInputTrello,
+    }, false);
+  }, []);
+
+  useEffect(() => {
     // if (user.rooms.chats.length === 0) return;
     searcher.initialize({
       dispatch,
@@ -107,21 +123,13 @@ const Trello = () => {
       connectType,
       set: creators.setInputTrello,
     });
-  }, [user.rooms]);
 
-  useEffect(() => {
-    template1.initialize({
-      dispatch,
-      router,
-      connectType,
-      modules,
-      list: creators.getAuthenticationTrelloBoardsList,
-      load: creators.getTeamsTrello,
-      connect: [creators.postTeamsTrello, creators.putTeamsTrelloSetting],
-      disconnect: creators.deleteAuthentications,
-      set: creators.setInputTrello,
-    }, false);
-  }, []);
+    // default roomId
+    template1.set('roomId', util.initTopic(user.rooms));
+    // default language
+    template1.set('lang', user.user.account.lang);
+    template1.set('langText', LANGUAGE4[user.user.account.lang]);
+  }, [user.rooms]);
 
   useEffect(() => {
     for (const item of connect.authentication) {
@@ -133,12 +141,19 @@ const Trello = () => {
   }, [connect.authentication]);
 
   useEffect(() => {
+    if (trello.authenticationTrelloBoardsList.authenticationId === '') return;
+
     searcherBoard.initialize({
       dispatch, document, team, user, trello, connectType, set: creators.setInputTrello,
     });
     searcherAuth.initialize({
       dispatch, document, team, user, trello, connectType, set: creators.setInputTrello,
     });
+
+    console.log(trello.authenticationTrelloBoardsList);
+    template1.set('trelloBoardId', trello.authenticationTrelloBoardsList.boards[0].id);
+    template1.set('trelloBoardName', trello.authenticationTrelloBoardsList.boards[0].name);
+    template1.set('selectedBoard', trello.authenticationTrelloBoardsList.boards[0].name);
   }, [trello.authenticationTrelloBoardsList]);
 
   useEffect(() => {
@@ -174,8 +189,8 @@ const Trello = () => {
       <div className='tab-container'>
         <div className='tab-menu'>
           <ul>
-            <li><a href='#none' onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
-            <li><a href='#none' onClick={tab.change} id="2">연동하기</a></li>
+            <li><a onClick={tab.change} id="1" className='on'>서비스 소개</a></li>
+            <li><a onClick={tab.change} id="2">연동하기</a></li>
           </ul>
         </div>
         <div className='tab-content'>
@@ -256,7 +271,10 @@ const Trello = () => {
                                 <div className="select-list account-type">
                                   <ul>
                                     <li>
-                                      <a onClick={(e) => searcherAuth.select(e, trello.authenticationTrelloBoardsList)}><span className='icon-ic-user-white'>{trello.authenticationTrelloBoardsList.authenticationName}</span></a>
+                                      <a className={true ? 'on' : ''}
+                                         onClick={(e) => searcherAuth.select(e, trello.authenticationTrelloBoardsList)}>
+                                        <span className='icon-ic-user-white'>{trello.authenticationTrelloBoardsList.authenticationName}</span>
+                                      </a>
                                       <button type='button' className='btn-delete icon-ic-close' onClick={(e) => template1.disconnect(e, trello.input)}></button>
                                     </li>
                                   </ul>
@@ -311,7 +329,8 @@ const Trello = () => {
                                               <ul>{
                                                 trello.authenticationTrelloBoardsList.boards.map((boardData, boardIndex) => (
                                                   <li key={boardIndex}>
-                                                    <a href='#none' onClick={(e) => searcherBoard.select(e, boardData)}>{boardData.name}</a>
+                                                    <a className={boardData.id === trello.input.trelloBoardId ? 'on' : ''}
+                                                       onClick={(e) => searcherBoard.select(e, boardData)}>{boardData.name}</a>
                                                   </li>
                                                 ))
                                               }</ul>
@@ -334,7 +353,7 @@ const Trello = () => {
                                                 {
                                                   trello.input.searchBoardFilters.map((boardData, boardIndex) => (
                                                     <li key={boardIndex}>
-                                                      <a href='#none' onClick={(e) => searcherBoard.select(e, boardData)}>{boardData.name}</a>
+                                                      <a onClick={(e) => searcherBoard.select(e, boardData)}>{boardData.name}</a>
                                                     </li>
                                                   ))
                                                 }
@@ -557,7 +576,7 @@ const Trello = () => {
                                                     </div>
                                                     <ul>
                                                       {roomsData.rooms.map((roomData, roomIndex) => (<Fragment key={roomIndex}>
-                                                        <li><a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
+                                                        <li><a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a></li>
                                                       </Fragment>))}
                                                     </ul>
                                                   </div>
@@ -565,7 +584,7 @@ const Trello = () => {
                                                   {!roomsData.seq
                                                   && <div>
                                                     <ul>
-                                                      <li><a href='#none' onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
+                                                      <li><a onClick={(e) => searcher.select(e, roomsData)}>{roomsData.name}</a></li>
                                                     </ul>
                                                   </div>
                                                   }
@@ -580,7 +599,9 @@ const Trello = () => {
                                                 user.rooms.bots.map((botData, botIndex) => (
                                                   <div key={botIndex}>
                                                     <ul>
-                                                      <li><a href='#none' onClick={(e) => searcher.select(e, botData)}>{botData.name}</a></li>
+                                                      <li><a className='on'
+                                                             onClick={(e) => searcher.select(e, botData)}>{botData.name}
+                                                      </a></li>
                                                     </ul>
                                                   </div>
                                                 ))
@@ -604,7 +625,7 @@ const Trello = () => {
                                                 {
                                                   trello.input.searchFilters.map((roomData, roomIndex) => (
                                                     <li key={roomIndex}>
-                                                      <a href='#none' onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
+                                                      <a onClick={(e) => searcher.select(e, roomData)}>{roomData.name}</a>
                                                     </li>
                                                   ))
                                                 }
@@ -645,7 +666,12 @@ const Trello = () => {
                                       {
                                         Object.keys(LANGUAGE2).map((lang, langIndex) => (
                                           <Fragment key={langIndex}>
-                                            <li><a href="#none" onClick={(e) => searcherLanguage.select(e, LANGUAGE2[lang])}><span>{lang}</span></a></li>
+                                            <li>
+                                              <a className={LANGUAGE3[lang] === trello.input.lang ? 'on' : ''}
+                                                 onClick={(e) => searcherLanguage.select(e, LANGUAGE2[lang])}>
+                                                <span>{lang}</span>
+                                              </a>
+                                            </li>
                                           </Fragment>
                                         ))
                                       }

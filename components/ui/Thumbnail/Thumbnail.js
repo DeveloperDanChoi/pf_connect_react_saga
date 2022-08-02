@@ -41,8 +41,8 @@ const Thumbnail = ({ state, parent }) => {
   };
 
   return (<>
-    <a href='#none' className='btn-profile' onClick={handleUpload}>
-      <img src={state.input.botThumbnailUrl} /><span>Edit</span>
+    <a className='btn-profile' onClick={handleUpload}>
+      <img src={state.input.botThumbnailFile} /><span>Edit</span>
       <input type="file" onChange={handleChange} ref={fileRef} style={{ display: 'none' }} />
     </a>
   </>);

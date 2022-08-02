@@ -16,6 +16,8 @@ import { util } from '../../../service/util';
 import { reduxModule } from '../../../service/reduxModule';
 import { converter } from '../../../service/converter';
 import { template1 } from "../../../service/connect";
+import { redirectToMain } from "../../../lib/helpers/routeHelper";
+import { Toast } from "../../../components/ui/Toast/Toast";
 
 const { creators } = modules;
 export const saga = (() => ({
@@ -75,14 +77,46 @@ export const saga = (() => ({
     reduxModule.modules.sets(request.body, data.data);
     // custom request data
     request.params.teamId = team.teamId;
-    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailUrl);
+    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailFile);
 
+    // validation
+    const validMsg = reduxModule.modules.validate(request.validate, request.body);
+
+    if (validMsg !== '') {
+      yield put(Toast.show({ msg: validMsg, type: 'warning' }));
+      return;
+    }
+
+    // request save
     const result = yield call(api, request);
+
+    if (result.status === 200) {
+      redirectToMain();
+      return;
+    }
+
+    switch (result.status) {
+      case 400:
+      case 403:
+        switch (result.data.code) {
+          case 40305:
+            yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+            break;
+          default:
+            yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+        }
+        break;
+      case 500:
+        yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+        break;
+      default:
+        yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+    }
   },
   /**
    * Connect Trello Service 설정 변경<br>
    * @param data
-   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
+   * @returns
    */
   * putTeamsTrelloSetting(data) {
     // load initialModule
@@ -94,22 +128,46 @@ export const saga = (() => ({
     request.params.teamId = data.data.teamId;
     request.body.trelloBoardId = data.data.webhookTrelloBoardId;
     request.body.trelloBoardName = data.data.webhookTrelloBoardName;
-    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailUrl);
+    request.body.botThumbnailFile = util.base64ToBlob(data.data.botThumbnailFile);
 
+    // validation
+    const validMsg = reduxModule.modules.validate(request.validate, request.body);
+
+    if (validMsg !== '') {
+      yield put(Toast.show({ msg: validMsg, type: 'warning' }));
+      return;
+    }
+
+    // request save
     const result = yield call(api, request);
 
-    if (result.status !== 200) {
-      console.error('update fail !!');
-      yield put(creators.getTeamsTrello({
-        connectId: request.body.connectId,
-        teamId: request.params.teamId,
-      }));
+    if (result.status === 200) {
+      redirectToMain();
+      return;
+    }
+
+    switch (result.status) {
+      case 400:
+      case 403:
+        switch (result.data.code) {
+          case 40305:
+            yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+            break;
+          default:
+            yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+        }
+        break;
+      case 500:
+        yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
+        break;
+      default:
+        yield put(Toast.show({ msg: result.data.msg, type: 'error' }));
     }
   },
   /**
    * 연동 서비스 인증 삭제<br>
    * @param data
-   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
+   * @returns
    */
   * deleteAuthentications(data) {
     const { authenticationId } = data.data;
@@ -121,7 +179,7 @@ export const saga = (() => ({
   /**
    * 사용자 정의 데이터v
    * @param data
-   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
+   * @returns
    */
   * setInputTrello(data) {
     yield put(creators.setInputTrelloValue(data));
@@ -129,7 +187,7 @@ export const saga = (() => ({
   /**
    * 사용자 정의 데이터<br>
    * @param data
-   * @returns {Generator<SimpleEffect<"CALL", CallEffectDescriptor<(function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => SagaIterator<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => Promise<infer RT>) ? RT : ((function(*): Promise<AxiosResponse<*>>)|* extends ((...args: any[]) => infer RT) ? RT : never))>>, void, *>}
+   * @returns
    */
   * setInputTrelloValue() {},
 }))();

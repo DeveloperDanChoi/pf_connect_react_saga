@@ -218,7 +218,7 @@ const ConnectPlug = (props) => {
         );
       } else {
         arr.push(
-          <a href='#none' key={i} onClick={() => {
+          <a key={i} onClick={() => {
             const obj = {...connect.teamsConnectDetail[connectType]};
             obj.current = i;
             dispatch(connectModules.creators.setTeamsConnectDetail({[connectType]: obj}));

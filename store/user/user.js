@@ -45,7 +45,7 @@ const initialState = {
     },
     member: {
       id: 0,
-    }
+    },
   },
 };
 
@@ -55,8 +55,10 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case types.SET_MY_CONNECT:
     case types.SET_MY_CONNECT_COUNT:
     case types.SET_MY_CONNECT_INFO:
-    case types.SET_USER:
     case types.SET_ROOMS:
+      draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
+      break;
+    case types.SET_USER:
       draft[util.prefixRemoveToCamelCase(action.type, `${action.type.split('_')[0]}_`)] = action.data;
       break;
     default:
