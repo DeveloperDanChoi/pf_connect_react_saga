@@ -4,7 +4,7 @@ import Router from 'next/router';
 import { getPublicAssetPath } from '../../../../lib/assetHelper';
 import { banner } from '../../../../service/banner';
 
-const ConnectCard = () => {
+const ConnectCard = (props) => {
   const { connect, user } = useSelector((state) => state);
 
   const handleClick = (data) => {
@@ -20,7 +20,7 @@ const ConnectCard = () => {
       <div className='connect-card-banner'>
         <span className='bg-type icon-ic-plug'></span>
         <div className='txt-wrap'>
-          <strong>잔디 커넥트를 처음 사용하시나요?</strong>
+          <strong>{props.l10n['@jnd-connect-28']}</strong>
           <p>이제 Google 캘린더, Trello, GitHub, JIRA 등을 연동하여 잔디에서 알림을 받아보세요.</p>
         </div>
         <button onClick={() => banner.help(user)}>더 알아보기</button>

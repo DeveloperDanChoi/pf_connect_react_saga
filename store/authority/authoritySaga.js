@@ -112,6 +112,7 @@ function* authorize(action) {
       //   getL10N,
       //   accountV4TeamsMe.data.account.lang,
       // );
+      //
       // yield put(teamModules.creators.setL10n(resultL10N.data));
 
       isUnauthorized = false;
@@ -120,7 +121,7 @@ function* authorize(action) {
     console.error(e);
   } finally {
     if (isUnauthorized) {
-      redirectToLoginAndList();
+      // redirectToLoginAndList();
     }
   }
 }

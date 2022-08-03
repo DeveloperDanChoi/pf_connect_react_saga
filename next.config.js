@@ -63,9 +63,9 @@ const publicRuntimeConfig = {
   }),
   BASE_PATH: basePath,
   L10N_URL: getAddress({
-    production: 'https://connect.jandi.io',
+    production: 'https://www.jandi.io', // production: 'https://connect.jandi.io'
     alpha: 'https://alpha-cdn.jandi.io',
-    development: 'https://connect.jandi.io',
+    development: 'https://www.jandi.io', // development: 'https://connect.jandi.io',
     oprs: 'https://cdn.gamevilcom2us.net',
   }),
   LOCAL_SITE_OWNER: process.env.LOCAL_SITE_OWNER || '',

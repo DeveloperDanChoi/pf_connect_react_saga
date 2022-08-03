@@ -11,7 +11,7 @@ const Outgoing = () => {
   const router = useRouter();
   const isUpdate = router.query.id && router.query.id !== '';
 
-  useEffect(() => util.devCase1(router, "outgoing", "26399", false), []);
+  useEffect(() => util.devCase1(router, "outgoing", "26399", true), []);
 
   return (<>
     { !isUpdate && <OutgoingInsert /> }

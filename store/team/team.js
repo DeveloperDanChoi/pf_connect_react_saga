@@ -55,6 +55,9 @@ export const initialState = {
   langList: [
     { label: '한국어', value: 'ko' },
   ],
+  l10n: {
+    '@jdn-connect-28': '',
+  },
 };
 
 const { types } = modules;

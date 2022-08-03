@@ -309,8 +309,8 @@ const ConnectPlug = (props) => {
                                 className='hidden'>열기</span></a>
                               <div className='tooltip-box'>
                                 <div>
-                                  <button className='btn-icon'><i className="icon-ic-edit"></i><span>수정하기</span></button>
-                                  <button className='btn-icon'><i className="icon-ic-delete"></i><span>삭제하기</span></button>
+                                  <button className='btn-icon' onClick={() => handleClick(dataConnect)}><i className="icon-ic-edit"></i><span>수정하기</span></button>
+                                  <button className='btn-icon' onClick={() => handleClickDeleteConnect(dataConnect)}><i className="icon-ic-delete"></i><span>삭제하기</span></button>
                                 </div>
                               </div>
                             </div>

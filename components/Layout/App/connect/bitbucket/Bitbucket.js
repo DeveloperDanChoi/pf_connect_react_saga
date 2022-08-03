@@ -13,7 +13,7 @@ const Bitbucket = () => {
   const router = useRouter();
   const isUpdate = router.query.id && router.query.id !== '';
 
-  useEffect(() => util.devCase1(router, "bitbucket", "25460", false), []);
+  useEffect(() => util.devCase1(router, "bitbucket", "25460", true), []);
 
   return (<>
     { !isUpdate && <BitbucketInsert /> }
