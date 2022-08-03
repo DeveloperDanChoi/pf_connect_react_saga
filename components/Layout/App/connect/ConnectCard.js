@@ -1,10 +1,7 @@
-/* eslint-disable max-len,import/no-unresolved,no-unused-vars,no-param-reassign,prefer-template,no-useless-concat,arrow-body-style,operator-linebreak,space-in-parens,keyword-spacing,no-plusplus,no-restricted-syntax,radix,prefer-const,consistent-return,comma-spacing,default-case,no-use-before-define,indent,quote-props,spaced-comment,object-curly-spacing,function-paren-newline,padded-blocks,comma-dangle,semi,array-bracket-spacing,no-undef,quotes,import/order,react/jsx-no-duplicate-props,guard-for-in,operator-assignment,no-unreachable,object-curly-newline,react/no-unescaped-entities,react/jsx-no-comment-textnodes,space-before-function-paren,array-callback-return */
 import { useSelector } from 'react-redux';
 import React from 'react';
-import Link from 'next/Link';
-import TeamsConnectPlug from '../connects/TeamsConnectPlug';
+import Router from 'next/router';
 import { getPublicAssetPath } from '../../../../lib/assetHelper';
-import Router, {useRouter} from "next/router";
 import { banner } from '../../../../service/banner';
 
 const ConnectCard = () => {
@@ -29,11 +26,11 @@ const ConnectCard = () => {
         <button onClick={() => banner.help(user)}>더 알아보기</button>
       </div>
       {/* 신규 서비스 */}
-      <div style={{display: 'none'}} className='title-wrap type02'>
+      <div style={{ display: 'none' }} className='title-wrap type02'>
         <h2>신규 서비스</h2>
         <span className='badge'>NEW</span>
       </div>
-      <div style={{display: 'none'}} className='connect-card-wrap type_list_new'>
+      <div style={{ display: 'none' }} className='connect-card-wrap type_list_new'>
         <div className='connect-card'>
           <div className='img-box'>
             <img src={getPublicAssetPath('static/icon_notion.png')} alt="notion"></img>
@@ -41,7 +38,7 @@ const ConnectCard = () => {
           <div className='inner'>
             <strong>Notion</strong>
             <p>Notion 문서의 변동 사항을 잔디에서 확인하 수 있습니다.</p>
-            <button onClick={() => handleClick({name: 'notion'})}>연동하기</button>
+            <button onClick={() => handleClick({ name: 'notion' })}>연동하기</button>
           </div>
         </div>
         <div className='connect-card'>
@@ -51,7 +48,7 @@ const ConnectCard = () => {
           <div className='inner'>
             <strong>Figma</strong>
             <p>figma 문서의 변동 사항을 잔디에서 확인하 수 있습니다.</p>
-            <button onClick={() => handleClick({name: 'figma'})}>연동하기</button>
+            <button onClick={() => handleClick({ name: 'figma' })}>연동하기</button>
           </div>
         </div>
         <div className='connect-card'>
@@ -61,7 +58,7 @@ const ConnectCard = () => {
           <div className='inner'>
             <strong>Asana</strong>
             <p>Asana의 변동 사항을 잔디에서 확인하 수 있습니다.</p>
-            <button onClick={() => handleClick({name: 'asana'})}>연동하기</button>
+            <button onClick={() => handleClick({ name: 'asana' })}>연동하기</button>
           </div>
         </div>
       </div>
@@ -84,8 +81,8 @@ const ConnectCard = () => {
           ))
         */}
         {
-          connect.connects && connect.connects.length > 0 &&
-          (
+          connect.connects && connect.connects.length > 0
+          && (
             <>
               <div className='connect-card'>
                 <div className='inner'>
@@ -155,9 +152,9 @@ const ConnectCard = () => {
           )
         }
       </div>
-      {/*<p>아래는 퍼블</p>*/}
+      {/* <p>아래는 퍼블</p> */}
       {/* [D] : 로고 이미지 변경 필요 */}
-      <div className='connect-card-wrap type_list' style={{display: 'none'}}>
+      <div className='connect-card-wrap type_list' style={{ display: 'none' }}>
         <div className='connect-card'>
           <div className='inner'>
             <img src={getPublicAssetPath('static/icon_google.png')} alt="googleCalendar" className='img'></img>

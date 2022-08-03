@@ -5,7 +5,7 @@ import {
   getTeamsAsana,
   postTeamsAsana,
   putTeamsAsanaSetting,
-} from '../../../api/connect/WebAdmin/asana/asana';
+} from '../../../api/connect/WebAdmin/Asana/asana';
 import { getTeamsToken } from '../../../api/connect/WebAdmin/webAdmin';
 import { reduxModule } from '../../../service/reduxModule';
 

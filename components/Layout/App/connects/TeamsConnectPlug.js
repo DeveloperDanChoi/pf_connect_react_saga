@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 /* eslint-disable max-len,import/no-unresolved,no-unused-vars,no-param-reassign,prefer-template,no-useless-concat,arrow-body-style,operator-linebreak,space-in-parens,keyword-spacing,no-plusplus,no-restricted-syntax,radix,prefer-const,consistent-return,comma-spacing,default-case,no-use-before-define,indent,quote-props,spaced-comment,object-curly-spacing,function-paren-newline,padded-blocks,comma-dangle,semi,array-bracket-spacing,no-undef,quotes,import/order,react/jsx-no-duplicate-props,guard-for-in,operator-assignment,no-unreachable,object-curly-newline */
 import React, { useEffect, useState } from 'react';
 import Router, { useRouter } from 'next/router';
-import Link from 'next/Link';
 import { updateStatus, deleteConnect } from '../../../../store/connect/connect';
 
 const TeamsConnectPlug = (props) => {
